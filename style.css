@@ -64,3 +64,7 @@ h1{font-family:Georgia,serif;font-size:35px;font-weight:500;line-height:1.05;mar
 /* v1.3.1: el mapa només forma part de Restaurants */
 .bottom{grid-template-columns:repeat(4,1fr)}
 .bottom.restaurant-nav{grid-template-columns:repeat(5,1fr)}
+
+/* v1.3.2: navegació simplificada */
+.bottom{grid-template-columns:repeat(2,1fr)}
+.bottom.restaurant-nav{grid-template-columns:repeat(3,1fr)}
