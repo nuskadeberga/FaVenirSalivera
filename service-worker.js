@@ -1,4 +1,4 @@
-const CACHE = 'salivera-v1.0.0';
+const CACHE = 'salivera-v1.3.0';
 const APP_SHELL = [
   './', './index.html', './style.css', './app.js', './data.js', './manifest.json',
   './assets/icons/icon-192.png', './assets/icons/icon-512.png',

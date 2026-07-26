@@ -11,12 +11,13 @@
 <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
 <title>Fa venir Salivera · Biblioteca personal</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynhHdT2Hh5K2aN0mN9xDkW2X3YgE=" crossorigin="">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="app">
 <header>
- <div class="brand"><div class="brand-left"><div class="mark">◡</div><div class="brand-name"><span class="brand-prefix">fa venir</span><strong>SALIVERA</strong><small>La teva biblioteca personal</small></div></div><button class="heart" aria-label="Preferits">♡</button></div>
+ <div class="brand"><div class="brand-left"><div class="mark">◡</div><div class="brand-name"><span class="brand-prefix">fa venir</span><strong>SALIVERA</strong><small>La teva biblioteca personal</small></div></div><button class="heart" id="adminBtn" aria-label="Administrar llistes">⚙</button></div>
  <div class="search"><span class="glass">⌕</span><input id="globalSearch" placeholder="Busca un lloc, un plat, un vi..."><button id="clear" class="x hidden">×</button></div>
 </header>
 <main>
@@ -28,6 +29,7 @@
    <button class="module pending" data-module="vi"><span class="icon">🍷</span><b>Vins</b><small>DO catalanes</small><span class="count">—</span></button>
    <button class="module" data-module="botiga"><span class="icon">🛍️</span><b>Botigues</b><small>On comprar</small><span class="count" id="countBotiga"></span></button>
    <button class="module" data-module="experiencia"><span class="icon">✨</span><b>Experiències</b><small>Què descobrir</small><span class="count" id="countExperiencia"></span></button>
+   <button class="module map-module" id="openMapModule"><span class="icon">🗺️</span><b>Mapa de restaurants</b><small>Països Catalans i altres territoris</small><span class="count" id="countMapped"></span></button>
   </div>
   <div id="globalArea" class="hidden"><div class="section-title"><h2>Resultats globals</h2><small id="globalCount"></small></div><div id="globalResults" class="global-results"></div></div>
  </section>
@@ -36,12 +38,23 @@
   <div class="toolbar"><div><h2 id="moduleTitle"></h2><small id="moduleSubtitle"></small></div><button class="filter" id="filterBtn">☰ Filtres</button></div>
   <div id="cards" class="cards"></div>
  </section>
+
+ <section id="mapView" class="view hidden">
+  <div class="toolbar"><div><h2>Mapa de restaurants</h2><small id="mapSubtitle">Restaurants dels Països Catalans</small></div></div>
+  <div class="map-tabs" role="tablist">
+   <button class="active" data-map-scope="ppcc">Països Catalans</button>
+   <button data-map-scope="altres">Altres</button>
+  </div>
+  <div id="restaurantsMap" class="restaurants-map" aria-label="Mapa de restaurants"></div>
+  <p class="map-help">Clica un marcador per veure el restaurant i obrir-ne la fitxa completa.</p>
+ </section>
 </main>
 </div>
 <nav class="bottom">
  <button class="active" data-nav="home"><span>⌂</span>Inici</button>
  <button data-nav="search"><span>⌕</span>Cercar</button>
  <button data-nav="favorites"><span>♡</span>Preferits</button>
+ <button data-nav="map"><span>⌖</span>Mapa</button>
  <button data-nav="history"><span>◷</span>Historial</button>
 </nav>
 
@@ -58,8 +71,22 @@
  </div>
 </div>
 
+
+<div class="overlay" id="adminPanel">
+ <div class="drawer admin-drawer"><div class="handle"></div><div class="admin-head"><div><h2>Administrar llistes</h2><p>Crea opcions noves per als filtres. Es desen en aquest navegador.</p></div><button class="drawer-close" id="closeAdmin">×</button></div>
+  <div class="admin-grid">
+   <form class="admin-card" data-admin-type="vegueries"><h3>Vegueria</h3><input name="value" placeholder="NOVA VEGUERIA" required><button>Afegir</button></form>
+   <form class="admin-card" data-admin-type="zones"><h3>Zona</h3><select name="parent" id="adminZoneVegueria" required></select><input name="value" placeholder="NOVA ZONA" required><button>Afegir</button></form>
+   <form class="admin-card" data-admin-type="cuines"><h3>Cuina</h3><input name="value" placeholder="NOVA CUINA" required><button>Afegir</button></form>
+   <form class="admin-card" data-admin-type="categories"><h3>Categoria</h3><input name="value" placeholder="NOVA CATEGORIA" required><button>Afegir</button></form>
+  </div>
+  <div class="admin-lists" id="adminLists"></div>
+ </div>
+</div>
+
 <div class="detail" id="detail"><article class="sheet"><div class="heroimg" id="heroimg"><button class="close" id="close">×</button></div><div class="detailbody" id="detailbody"></div></article></div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="data.js"></script>
 <script src="app.js"></script>
 </body>
