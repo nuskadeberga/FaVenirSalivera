@@ -29,7 +29,6 @@
    <button class="module pending" data-module="vi"><span class="icon">🍷</span><b>Vins</b><small>DO catalanes</small><span class="count">—</span></button>
    <button class="module" data-module="botiga"><span class="icon">🛍️</span><b>Botigues</b><small>On comprar</small><span class="count" id="countBotiga"></span></button>
    <button class="module" data-module="experiencia"><span class="icon">✨</span><b>Experiències</b><small>Què descobrir</small><span class="count" id="countExperiencia"></span></button>
-   <button class="module map-module" id="openMapModule"><span class="icon">🗺️</span><b>Mapa de restaurants</b><small>Països Catalans i altres territoris</small><span class="count" id="countMapped"></span></button>
   </div>
   <div id="globalArea" class="hidden"><div class="section-title"><h2>Resultats globals</h2><small id="globalCount"></small></div><div id="globalResults" class="global-results"></div></div>
  </section>
@@ -54,7 +53,7 @@
  <button class="active" data-nav="home"><span>⌂</span>Inici</button>
  <button data-nav="search"><span>⌕</span>Cercar</button>
  <button data-nav="favorites"><span>♡</span>Preferits</button>
- <button data-nav="map"><span>⌖</span>Mapa</button>
+ <button data-nav="map" id="restaurantMapNav" class="hidden"><span>⌖</span>Mapa</button>
  <button data-nav="history"><span>◷</span>Historial</button>
 </nav>
 
