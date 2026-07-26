@@ -42,17 +42,18 @@
   <div class="toolbar"><div><h2>Mapa de restaurants</h2><small id="mapSubtitle">Restaurants dels Països Catalans</small></div></div>
   <div class="map-tabs" role="tablist">
    <button class="active" data-map-scope="ppcc">Països Catalans</button>
-   <button data-map-scope="altres">Altres</button>
   </div>
   <div id="restaurantsMap" class="restaurants-map" aria-label="Mapa de restaurants"></div>
   <p class="map-help">Clica un marcador per veure el restaurant i obrir-ne la fitxa completa.</p>
+  <button id="showOtherMap" class="secondary-map-link">Veure restaurants de fora dels Països Catalans</button>
  </section>
 </main>
 </div>
 <nav class="bottom">
  <button class="active" data-nav="home"><span>⌂</span>Inici</button>
- <button data-nav="search"><span>⌕</span>Cercar</button>
+ <button data-nav="restaurants" id="restaurantListNav" class="hidden"><span>🍴</span>Restaurants</button>
  <button data-nav="map" id="restaurantMapNav" class="hidden"><span>⌖</span>Mapa</button>
+ <button data-nav="favorites" id="restaurantFavoritesNav" class="hidden"><span>♡</span>Preferits</button>
 </nav>
 
 <div class="overlay" id="filters">
