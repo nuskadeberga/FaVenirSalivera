@@ -1431,6 +1431,12 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
 .auth-cancel{border:1px solid #dfcec2;background:white;color:#514239}
 .auth-submit:disabled{opacity:.58;cursor:wait}
 
+
+/* Oculta només l'avís tècnic de càrrega, sense tocar el carregador de Supabase */
+#supabaseStatus {
+  display: none !important;
+}
+
 </style>
 
 <script>
@@ -1494,7 +1500,7 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
 <label class="field"><select id="vegueria"><option value="">Totes les vegueries</option></select></label>
 <label class="field"><select id="zona"><option value="">Totes les zones</option></select></label>
 <label class="field"><select id="cuina"><option value="">Totes les cuines</option></select></label>
-<label class="field"><select id="categoria"><option value="">Totes les categories</option></select></label>
+<label class="field"><select id="categoria"><option value="">Totes les especialitats</option></select></label>
 <label class="field"><select id="preu"><option value="">Tots els preus</option></select></label>
 <label class="field"><select id="recomanador"><option value="">Tothom qui recomana</option></select></label>
 <label class="field"><select id="diaObert"><option value="">Obert qualsevol dia</option></select></label>
@@ -1956,9 +1962,7 @@ function renderModules(){
   const order=['restaurant','recepta','vi','botiga','experiencia'];
   $('#modules').innerHTML=order.map(t=>{
     const [n,d]=moduleMeta[t];
-    const c=t==='restaurant'
-      ?byType('restaurant').filter(x=>x.territori==='ppcc').length
-      :byType(t).length;
+    const c=byType(t).length;
     return `<button class="module-card ${t==='vi'?'vins':t}" onclick="openType('${t}')">
       <span class="module-count">${c}</span>
       <div class="module-illustration"><img src="${moduleImages[t]}" alt=""></div>
@@ -2004,7 +2008,7 @@ function fillCategories(){
   const pool=baseRestaurantPool(['categoria']);
   const allowed=masterValues('especialitat').map(v=>v.toUpperCase());
   const counts=countsFor(pool,r=>(r.especialitats||[]).map(x=>String(x).toUpperCase()).filter(v=>allowed.includes(v)));
-  setSelectCountOptions('categoria',allowed,'Totes les categories',counts,pool.length)
+  setSelectCountOptions('categoria',allowed,'Totes les especialitats',counts,pool.length)
 }
 function fillPrices(){
   const pool=baseRestaurantPool(['preu']);
@@ -2022,7 +2026,15 @@ function fillOpenDays(){
   if([...sel.options].some(o=>o.value===cur))sel.value=cur;
 }
 
-function fillRecommenders(){const pool=baseRestaurantPool(['recomanador']);const allowed=masterValues('persona');const counts=countsFor(pool,r=>allowed.includes(String(r.recomanatPer||''))?[String(r.recomanatPer)]:[]);setSelectCountOptions('recomanador',allowed,'Tothom qui recomana',counts,pool.length)}
+function fillRecommenders(){
+  const pool=baseRestaurantPool(['recomanador']);
+  const counts=countsFor(pool,r=>{
+    const value=String(r.recomanatPer||'').trim();
+    return value?[value]:[];
+  });
+  const values=[...counts.keys()].filter(v=>(counts.get(v)||0)>0);
+  setSelectCountOptions('recomanador',values,'Tothom qui recomana',counts,pool.length);
+}
 function updateFeatureCounts(){document.querySelectorAll('.feature-chip').forEach(btn=>{const f=btn.dataset.feature;const pool=baseRestaurantPool(['feature:'+f]);const count=pool.filter(r=>truthyFeature(r[f])).length;btn.querySelector('b').textContent=count;btn.classList.toggle('active',selectedFeatures.has(f));btn.disabled=count===0&&!selectedFeatures.has(f)})}
 function toggleFeatureFilter(feature){selectedFeatures.has(feature)?selectedFeatures.delete(feature):selectedFeatures.add(feature);fillFilters();renderCurrent();updateClearFiltersButton()}
 function updateCascadingFilters(from){if(from==='vegueria'){$('#zona').value='';$('#cuina').value='';$('#categoria').value='';$('#preu').value='';$('#recomanador').value=''}else if(from==='zona'){$('#cuina').value='';$('#categoria').value='';$('#preu').value='';$('#recomanador').value=''}else if(from==='cuina'){$('#categoria').value='';$('#preu').value='';$('#recomanador').value=''}fillFilters();renderCurrent()}
@@ -2037,7 +2049,7 @@ function formatScaledNumber(n){if(Math.abs(n-Math.round(n))<.001)return String(M
 function parseAmount(raw){const t=raw.trim().replace(',','.');if(/^\d+\/\d+$/.test(t)){const [a,b]=t.split('/').map(Number);return b?a/b:null}if(/^\d+\s+\d+\/\d+$/.test(t)){const [w,f]=t.split(/\s+/);const [a,b]=f.split('/').map(Number);return Number(w)+a/b}const n=Number(t);return Number.isFinite(n)?n:null}
 function scaleIngredients(text,factor){return String(text||'').split('\n').map(line=>line.replace(/(^|[\s(])((?:\d+\s+)?\d+\/\d+|\d+(?:[.,]\d+)?)/g,(all,prefix,num)=>{const n=parseAmount(num);return n===null?all:prefix+formatScaledNumber(n*factor)})).join('\n')}
 function updateRecipeServings(id){const x=DATA.find(y=>y.id===id),input=$('#servings-'+id),box=$('#scaled-'+id);if(!x||!input||!box)return;const base=parseFloat(String(x.comensals||'1').replace(',','.'))||1;const target=Math.max(.5,parseFloat(input.value)||base);box.textContent=scaleIngredients(x.ingredients,target/base)}
-function openDetail(id){const x=DATA.find(y=>y.id===id);if(!x)return;const isR=x.tipus==='restaurant',isRecipe=x.tipus==='recepta';const phone=cleanPhone(x.telefon1);const wa=cleanPhone(x.whatsapp||x.telefon1);let acts=isR?[action('📞 Trucar',phone?`tel:${phone}`:''),action('💬 WhatsApp',wa?`https://wa.me/${wa}`:''),action('🌐 Web',x.web),action('📷 Instagram',x.instagram),action('📄 Carta',x.carta),action('📅 Reserva',x.reserva),action('▶ Vídeo',x.video)].join(''):action('🔗 Obrir enllaç',x.enllac);let body='';if(isR){const galleries=uniq([x.imatge,...(x.galeria||[])]);body=`<div class="tags">${(x.cuines||[]).map(c=>`<span class="tag">${esc(c.toUpperCase())}</span>`).join('')}</div><div class="action-row">${acts}</div><div class="info-grid">${info('Ubicació',[x.adreca,x.zona,x.vegueria].filter(Boolean).join(' · '),true)}${info('Horari',val(x.horari))}${info('Tancament',val(x.tancament))}${info('Rang de preu',x.rang||x.preuMitja)}${info('Recomanat per',x.recomanatPer)}${info('Especialitats',(x.especialitats||[]).join(', '))}${info('Serveis',[...(x.serveis||[]),truthyFeature(x.terrassa)?'Terrassa':'',truthyFeature(x.vegetaria)?'Opcions vegetarianes':'',truthyFeature(x.senseGluten)?'Sense gluten':''].filter(Boolean).join(', '))}${info('Estat',[truthyFeature(x.top)?'TOP':'',truthyFeature(x.novetat)?'Novetat':'',truthyFeature(x.perAnarHi)?'Per anar-hi':'',truthyFeature(x.pendent)?'Pendent':''].filter(Boolean).join(' · '))}${info('Menús',[x.menu,x.menu2,x.preuMenu2?x.preuMenu2+' €':''].filter(Boolean).join(' · '),true)}${info('Observacions',x.observacionsHorari||x.notes,true)}</div>${ratingsDetailHtml(x)}${galleries.length>1?`<h3>Galeria</h3><div class="gallery">${galleries.map(u=>`<img src="${esc(u)}" loading="lazy" referrerpolicy="no-referrer">`).join('')}</div>`:''}`}else if(isRecipe){const base=parseFloat(String(x.comensals||'4').replace(',','.'))||4;body=`<div class="action-row">${acts}</div><div class="recipe-calculator"><h3>Calculadora de comensals</h3><div class="servings-row"><span>Recepta original: <b>${base}</b></span><label>Vull cuinar per <input id="servings-${x.id}" type="number" min="0.5" step="0.5" value="${base}" oninput="updateRecipeServings('${x.id}')"> persones</label></div><div id="scaled-${x.id}" class="scaled-ingredients">${esc(x.ingredients||'')}</div></div><div class="info-grid">${info('Categoria',x.categoria)}${info('Cuiner/a',x.cuiner)}${info('Temps',x.temps?x.temps+' min':'')}${info('Dificultat',x.dificultat)}${info('Preparació',x.preparacio,true)}${info('Variacions',x.variacions,true)}${info('Notes',x.notes||x.observacions,true)}</div>`}else{body=`<div class="action-row">${acts}</div><div class="info-grid">${info('Categoria',x.categoria)}${info('Zona',x.zona)}${info('Descripció',x.notes||x.observacions||x.narracio,true)}</div>`}const logo=isR&&x.logo?`<img class="detail-logo" src="${esc(x.logo)}" alt="Logotip de ${esc(x.nom)}" onerror="this.style.display='none'">`:'';$('#sheet').innerHTML=`<div class="detail-cover">${imageHtml({...x,logo:''})}<button class="close" onclick="closeModal()">×</button><button class="close detail-heart" onclick="toggleFav('${x.id}',event)">${favorites.has(x.id)?'♥':'♡'}</button></div><div class="detail"><div class="detail-title-row">${logo}<div><h2>${esc(x.nom).toUpperCase()}</h2><div class="meta">${esc([x.zona,x.vegueria].filter(Boolean).join(' · '))}</div></div></div>${body}${adminMode?`<div class="admin-actions"><button class="primary-btn" onclick="editItem('${x.id}')">✎ Modificar</button><button class="danger-btn" onclick="deleteItem('${x.id}')">Desactivar</button></div>`:''}</div>`;$('#modal').classList.remove('hidden');document.body.style.overflow='hidden'}
+function openDetail(id){const x=DATA.find(y=>y.id===id);if(!x)return;const isR=x.tipus==='restaurant',isRecipe=x.tipus==='recepta';const phone=cleanPhone(x.telefon1);const wa=cleanPhone(x.whatsapp||x.telefon1);let acts=isR?[action('📞 Trucar',phone?`tel:${phone}`:''),action('💬 WhatsApp',wa?`https://wa.me/${wa}`:''),action('🌐 Web',x.web),action('📷 Instagram',x.instagram),action('📄 Carta',x.carta),action('📅 Reserva',x.reserva),action('▶ Vídeo',x.video)].join(''):action('🔗 Obrir enllaç',x.enllac);let body='';if(isR){const galleries=uniq([x.imatge,...(x.galeria||[])]);body=`<div class="tags">${(x.cuines||[]).map(c=>`<span class="tag">${esc(c.toUpperCase())}</span>`).join('')}</div><div class="action-row">${acts}</div><div class="info-grid">${info('Ubicació',[x.adreca,x.zona,x.vegueria].filter(Boolean).join(' · '),true)}${info('Horari',val(x.horari))}${info('Tancament',val(x.tancament))}${info('Rang de preu',x.rang||x.preuMitja)}${info('Recomanat per',x.recomanatPer)}${info('Especialitats',(x.especialitats||[]).join(', '))}${info('Serveis',[...(x.serveis||[]),truthyFeature(x.terrassa)?'Terrassa':'',truthyFeature(x.vegetaria)?'Opcions vegetarianes':'',truthyFeature(x.senseGluten)?'Sense gluten':''].filter(Boolean).join(', '))}${info('Estat',[truthyFeature(x.top)?'TOP':'',truthyFeature(x.novetat)?'Novetat':'',truthyFeature(x.perAnarHi)?'Per anar-hi':'',truthyFeature(x.pendent)?'Pendent':''].filter(Boolean).join(' · '))}${info('Menús',[x.menu,x.menu2,x.preuMenu2?x.preuMenu2+' €':''].filter(Boolean).join(' · '),true)}${info('Observacions',x.observacionsHorari||x.notes,true)}</div>${ratingsDetailHtml(x)}${galleries.length>1?`<h3>Galeria</h3><div class="gallery">${galleries.map(u=>`<img src="${esc(u)}" loading="lazy" referrerpolicy="no-referrer">`).join('')}</div>`:''}`}else if(isRecipe){const base=parseFloat(String(x.comensals||'4').replace(',','.'))||4;body=`<div class="action-row">${acts}</div><div class="recipe-calculator"><h3>Calculadora de comensals</h3><div class="servings-row"><span>Recepta original: <b>${base}</b></span><label>Vull cuinar per <input id="servings-${x.id}" type="number" min="0.5" step="0.5" value="${base}" oninput="updateRecipeServings('${x.id}')"> persones</label></div><div id="scaled-${x.id}" class="scaled-ingredients">${esc(x.ingredients||'')}</div></div><div class="info-grid">${info('Especialitat',x.categoria)}${info('Cuiner/a',x.cuiner)}${info('Temps',x.temps?x.temps+' min':'')}${info('Dificultat',x.dificultat)}${info('Preparació',x.preparacio,true)}${info('Variacions',x.variacions,true)}${info('Notes',x.notes||x.observacions,true)}</div>`}else{body=`<div class="action-row">${acts}</div><div class="info-grid">${info('Especialitat',x.categoria)}${info('Zona',x.zona)}${info('Descripció',x.notes||x.observacions||x.narracio,true)}</div>`}const logo=isR&&x.logo?`<img class="detail-logo" src="${esc(x.logo)}" alt="Logotip de ${esc(x.nom)}" onerror="this.style.display='none'">`:'';$('#sheet').innerHTML=`<div class="detail-cover">${imageHtml({...x,logo:''})}<button class="close" onclick="closeModal()">×</button><button class="close detail-heart" onclick="toggleFav('${x.id}',event)">${favorites.has(x.id)?'♥':'♡'}</button></div><div class="detail"><div class="detail-title-row">${logo}<div><h2>${esc(x.nom).toUpperCase()}</h2><div class="meta">${esc([x.zona,x.vegueria].filter(Boolean).join(' · '))}</div></div></div>${body}${adminMode?`<div class="admin-actions"><button class="primary-btn" onclick="editItem('${x.id}')">✎ Modificar</button><button class="danger-btn" onclick="deleteItem('${x.id}')">Desactivar</button></div>`:''}</div>`;$('#modal').classList.remove('hidden');document.body.style.overflow='hidden'}
 function closeModal(){$('#modal').classList.add('hidden');document.body.style.overflow=''}
 function parseCoords(s){if(!s)return null;const p=String(s).split(',').map(Number);return p.length===2&&p.every(Number.isFinite)?p:null}
 
@@ -2302,7 +2314,9 @@ function scheduleSummary(schedule={}){
   });
   return groups.map(g=>`${g.start===g.end?g.start:`${g.start}–${g.end}`}: ${g.value}`).join(' · ');
 }
-function isOpenOnDay(r,day){return !!r.horarisStructured?.[day]?.open}
+function isOpenOnDay(r,day){
+  return Boolean(r.diesObert?.[day]);
+}
 
 
 function personOptions(selected=''){
@@ -2752,6 +2766,15 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
       novetat: Boolean(row.novetat),
       pendent: Boolean(row.pendent),
       perAnarHi: Boolean(row.per_anar_hi),
+      diesObert: {
+        dl: Boolean(row.o_dl),
+        dm: Boolean(row.o_dm),
+        dc: Boolean(row.o_dc),
+        dj: Boolean(row.o_dj),
+        dv: Boolean(row.o_dv),
+        ds: Boolean(row.o_ds),
+        du: Boolean(row.o_du)
+      },
       tancat: Boolean(row.tancat || ['tancat','eliminat'].includes(row.estat)),
       origenDades: 'supabase'
     };
@@ -2829,6 +2852,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
 </div>
 
 <script>
-document.documentElement.dataset.saliveraVersion='2026.08.01.4-supabase-only';
+document.documentElement.dataset.saliveraVersion='2026.08.01.5-dies-obertura';
 </script>
 </body></html>
