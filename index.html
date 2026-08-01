@@ -1820,7 +1820,9 @@ let deletedIds=new Set(JSON.parse(localStorage.getItem(DELETED_KEY)||'[]'));
 
 /* Quan les dades venen de Supabase, Supabase és l'única font oficial dels restaurants.
    Eliminem còpies locals antigues que podrien sobreescriure coordenades o altres camps. */
-if(document.documentElement.dataset.dataSource==='supabase'){
+{
+  /* Els restaurants sempre tenen Supabase com a font única.
+     No s'aplica mai cap edició, alta o baixa local antiga als restaurants. */
   const restaurantIds=new Set(
     RAW_BASE_DATA.filter(x=>x.tipus==='restaurant').map(x=>String(x.id))
   );
@@ -2827,6 +2829,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
 </div>
 
 <script>
-document.documentElement.dataset.saliveraVersion='2026.08.01.3-cache-clean';
+document.documentElement.dataset.saliveraVersion='2026.08.01.4-supabase-only';
 </script>
 </body></html>
