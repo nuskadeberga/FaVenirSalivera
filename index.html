@@ -1781,7 +1781,43 @@ window.SaliveraDB=(()=>{
 <script type="text/plain" id="saliveraMain">
 
 const FORM_TAXONOMY={"vegueries": ["EL BERGUEDÀ", "BARCELONA", "CATALUNYA CENTRAL", "GIRONA", "EL PENEDÈS", "ALT PIRINEU I ARAN", "CAMP DE TARRAGONA", "TERRES DE L'EBRE", "ILLES BALEARS", "ONLINE", "LLEIDA", "CATALUNYA NORD"], "zones": [{"nom": "SANT MARTÍ", "vegueria": "BARCELONA"}, {"nom": "ÀREA METROPOLITANA", "vegueria": "BARCELONA"}, {"nom": "CIUTAT VELLA", "vegueria": "BARCELONA"}, {"nom": "EIXAMPLE", "vegueria": "BARCELONA"}, {"nom": "GRÀCIA", "vegueria": "BARCELONA"}, {"nom": "LES CORTS", "vegueria": "BARCELONA"}, {"nom": "MARESME", "vegueria": "BARCELONA"}, {"nom": "SANTS-MONTJUÏC", "vegueria": "BARCELONA"}, {"nom": "SARRIÀ-SANT GERVASI", "vegueria": "BARCELONA"}, {"nom": "AVIÀ", "vegueria": "EL BERGUEDÀ"}, {"nom": "BERGA", "vegueria": "EL BERGUEDÀ"}, {"nom": "CASTELLÀ DEL RIU", "vegueria": "EL BERGUEDÀ"}, {"nom": "GIRONELLA", "vegueria": "EL BERGUEDÀ"}, {"nom": "MONTCLAR", "vegueria": "EL BERGUEDÀ"}, {"nom": "OLVAN", "vegueria": "EL BERGUEDÀ"}, {"nom": "PUIG-REIG", "vegueria": "EL BERGUEDÀ"}, {"nom": "SAGÀS", "vegueria": "EL BERGUEDÀ"}, {"nom": "SERRATEIX", "vegueria": "EL BERGUEDÀ"}, {"nom": "CONCA DE BARBERÀ", "vegueria": "CAMP DE TARRAGONA"}, {"nom": "TARRAGONÈS", "vegueria": "CAMP DE TARRAGONA"}, {"nom": "BAGES", "vegueria": "CATALUNYA CENTRAL"}, {"nom": "LLUÇANÈS", "vegueria": "CATALUNYA CENTRAL"}, {"nom": "MOIANÈS", "vegueria": "CATALUNYA CENTRAL"}, {"nom": "OSONA", "vegueria": "CATALUNYA CENTRAL"}, {"nom": "SOLSONÈS", "vegueria": "CATALUNYA CENTRAL"}, {"nom": "BAIX PENEDÈS", "vegueria": "EL PENEDÈS"}, {"nom": "ALT EMPORDÀ", "vegueria": "GIRONA"}, {"nom": "GIRONÈS", "vegueria": "GIRONA"}, {"nom": "LA SELVA", "vegueria": "GIRONA"}, {"nom": "ONLINE", "vegueria": "ONLINE"}, {"nom": "EIVISSA", "vegueria": "ILLES BALEARS"}, {"nom": "FORMENTERA", "vegueria": "ILLES BALEARS"}, {"nom": "BAIX EBRE", "vegueria": "TERRES DE L'EBRE"}, {"nom": "MONTSIÀ", "vegueria": "TERRES DE L'EBRE"}, {"nom": "URGELL", "vegueria": "LLEIDA"}, {"nom": "MENORCA", "vegueria": "ILLES BALEARS"}, {"nom": "...Altres", "vegueria": "...Altres"}, {"nom": "LA POBLA DE LILLET", "vegueria": "EL BERGUEDÀ"}, {"nom": "MAÇANERS", "vegueria": "EL BERGUEDÀ"}, {"nom": "ALT URGELL", "vegueria": "ALT PIRINEU I ARAN"}, {"nom": "PALLARS SOBIRÀ", "vegueria": "ALT PIRINEU I ARAN"}, {"nom": "MALANYEU", "vegueria": "EL BERGUEDÀ"}, {"nom": "ALT PENEDÈS", "vegueria": "EL PENEDÈS"}, {"nom": "ROSSELLÓ", "vegueria": "CATALUNYA NORD"}], "cuines": ["CATALANA", "MEDITERRÀNIA", "ITALIANA", "FUSIÓ", "TAPES I PLATETS", "GASTROBAR", "CUINA DE MERCAT", "ENTREPANS", "ORIENTAL", "ALTRES", "ESMORZAR DE FORQUILLA", "CERVESERIA", "VERMUTERIA", "VINET", "COCTELERIA", "SIDRERIA"], "especialitats": ["Arrossos", "Peix i Marisc", "Brasa", "Pizzes", "Truites", "Entrepans", "Pasta", "Sushi"], "rangsPreu": ["Menys de 20€", "Entre 20 i 35€", "Entre 35 i 50€", "Entre 50 i 100€", "Més de 100€"], "recomanadors": ["Abda Forés", "Anna Freixa", "Neus Ribera", "Òscar Garcia", "Gemma Jacas", "Blanca Jacas", "Joan Franquesa", "Elvira Busoma", "Judith Palomo", "Enric Ribera", "Dolors Forés", "Tik Tok", "Instagram", "Aran Sanfeliu", "Edu Cal Marino", "Els Blais", "Laura Molina", "Núria Montoro", "Francesc Ribera", "Joc de Cartes", "Eva Abertis", "Júlia Martí", "Josep i Yolanda", "Rafa Provi", "Joseba", "Pablo"], "categoriesRecepta": ["Entrants", "Primers", "Segons", "Postres", "Guarnicions"], "tipusAliment": ["Carns", "Peixos i Mariscos", "Ous", "Farines", "Verdures", "Arrossos i Pasta", "Sopes i Cremes", "Xocolata"], "allergens": ["Gluten", "Làctics", "Crustacis", "Bolets", "Fruits secs", "Formatge", "Alcohol", "Peixos"], "cuiners": ["Anna", "Carles", "Gemma", "Joan", "Carme", "Mercè"], "saludable": ["Si", "No"]};
-const RAW_BASE_DATA=JSON.parse(document.getElementById('appData').textContent);const ITEMS_KEY='salivera-custom-items-v23',EDITS_KEY='salivera-edits-v24',DELETED_KEY='salivera-deleted-v24';let customItems=JSON.parse(localStorage.getItem(ITEMS_KEY)||'[]');let savedEdits=JSON.parse(localStorage.getItem(EDITS_KEY)||'{}');let deletedIds=new Set(JSON.parse(localStorage.getItem(DELETED_KEY)||'[]'));const BASE_DATA=RAW_BASE_DATA.filter(x=>!deletedIds.has(x.id)).map(x=>savedEdits[x.id]?{...x,...savedEdits[x.id]}:x);customItems=customItems.filter(x=>!deletedIds.has(x.id)).map(x=>savedEdits[x.id]?{...x,...savedEdits[x.id]}:x);const DATA=[...BASE_DATA,...customItems];const byType=t=>DATA.filter(x=>x.tipus===t);const restaurants=byType('restaurant');let currentType='restaurant',favOnly=false,activeOnly=false,selectedFeatures=new Set(),map=null,mapLayer=null,showOutside=false,currentEditingId=null;let adminMode=false;let favorites=new Set(JSON.parse(localStorage.getItem('salivera-favs')||'[]'));function saveItems(){localStorage.setItem(ITEMS_KEY,JSON.stringify(customItems))}function saveEdits(){localStorage.setItem(EDITS_KEY,JSON.stringify(savedEdits));localStorage.setItem(DELETED_KEY,JSON.stringify([...deletedIds]))}
+const RAW_BASE_DATA=JSON.parse(document.getElementById('appData').textContent);
+const ITEMS_KEY='salivera-custom-items-v23',EDITS_KEY='salivera-edits-v24',DELETED_KEY='salivera-deleted-v24';
+let customItems=JSON.parse(localStorage.getItem(ITEMS_KEY)||'[]');
+let savedEdits=JSON.parse(localStorage.getItem(EDITS_KEY)||'{}');
+let deletedIds=new Set(JSON.parse(localStorage.getItem(DELETED_KEY)||'[]'));
+
+/* Quan les dades venen de Supabase, Supabase és l'única font oficial dels restaurants.
+   Eliminem còpies locals antigues que podrien sobreescriure coordenades o altres camps. */
+if(document.documentElement.dataset.dataSource==='supabase'){
+  const restaurantIds=new Set(
+    RAW_BASE_DATA.filter(x=>x.tipus==='restaurant').map(x=>String(x.id))
+  );
+
+  for(const id of Object.keys(savedEdits)){
+    const edit=savedEdits[id];
+    if(restaurantIds.has(String(id)) || edit?.tipus==='restaurant'){
+      delete savedEdits[id];
+    }
+  }
+
+  customItems=customItems.filter(x=>x.tipus!=='restaurant');
+  deletedIds=new Set([...deletedIds].filter(id=>!restaurantIds.has(String(id))));
+
+  localStorage.setItem(EDITS_KEY,JSON.stringify(savedEdits));
+  localStorage.setItem(ITEMS_KEY,JSON.stringify(customItems));
+  localStorage.setItem(DELETED_KEY,JSON.stringify([...deletedIds]));
+}
+
+const BASE_DATA=RAW_BASE_DATA
+  .filter(x=>!deletedIds.has(x.id))
+  .map(x=>savedEdits[x.id]?{...x,...savedEdits[x.id]}:x);
+
+customItems=customItems
+  .filter(x=>!deletedIds.has(x.id))
+  .map(x=>savedEdits[x.id]?{...x,...savedEdits[x.id]}:x);
+
+const DATA=[...BASE_DATA,...customItems];const byType=t=>DATA.filter(x=>x.tipus===t);const restaurants=byType('restaurant');let currentType='restaurant',favOnly=false,activeOnly=false,selectedFeatures=new Set(),map=null,mapLayer=null,showOutside=false,currentEditingId=null;let adminMode=false;let favorites=new Set(JSON.parse(localStorage.getItem('salivera-favs')||'[]'));function saveItems(){localStorage.setItem(ITEMS_KEY,JSON.stringify(customItems))}function saveEdits(){localStorage.setItem(EDITS_KEY,JSON.stringify(savedEdits));localStorage.setItem(DELETED_KEY,JSON.stringify([...deletedIds]))}
 const TAX_KEY='salivera-taxonomies-v214';
 const TAX_TYPES=['vegueria','zona','cuinaRestaurant','especialitat','rangPreu','persona','categoriaRecepta','cuinaRecepta','tipusAliment','allergen','cuiner'];
 function blankTax(){const custom={},renames={},deleted={};TAX_TYPES.forEach(t=>{custom[t]=[];renames[t]={};deleted[t]=[]});return{custom,renames,deleted}}
@@ -2759,4 +2795,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
   </div>
 </div>
 
+<script>
+document.documentElement.dataset.saliveraVersion='2026.08.01.2';
+</script>
 </body></html>
