@@ -1785,14 +1785,47 @@ function renderModules(){
 function openRestaurants(favs=false){favOnly=!!favs;currentType='restaurant';openType('restaurant');$('#favChip').classList.toggle('active',favOnly)}
 function openType(t){currentType=t;$('#homeView').classList.add('hidden');$('#mapView').classList.add('hidden');$('#globalFavoritesView').classList.add('hidden');$('#listView').classList.remove('hidden');const m=moduleMeta[t]||['','Biblioteca',''];$('#listTitle').textContent=m[1];$('#listEyebrow').textContent=m[2];$('#restaurantTools').classList.toggle('hidden',t!=='restaurant');$('#genericTools').classList.toggle('hidden',t==='restaurant');if($('#genericFavChip'))$('#genericFavChip').classList.toggle('active',favOnly);setNav(t==='restaurant'?(favOnly?'favorites':'restaurants'):'home');renderCurrent();scrollTo(0,0)}
 function truthyFeature(v){return v===true||v===1||String(v||'').toLowerCase()==='sí'||String(v||'').toLowerCase()==='si'||String(v||'').toLowerCase()==='true'||String(v||'').toLowerCase()==='x'}
-function baseRestaurantPool(exclude=[]){let a=[...restaurants],q=$('#search').value.trim().toLowerCase();if(q)a=a.filter(r=>JSON.stringify(r).toLowerCase().includes(q));if(favOnly)a=a.filter(r=>favorites.has(r.id));if(activeOnly)a=a.filter(r=>!r.tancat);const v=$('#vegueria').value,z=$('#zona').value,c=$('#cuina').value,cat=$('#categoria').value,preu=$('#preu').value,rec=$('#recomanador').value,dia=$('#diaObert')?.value||'';if(!exclude.includes('vegueria')&&v)a=a.filter(r=>r.vegueria===v);if(!exclude.includes('zona')&&z)a=a.filter(r=>r.zona===z);if(!exclude.includes('cuina')&&c)a=a.filter(r=>(r.cuines||[]).map(x=>x.toUpperCase()).includes(c));if(!exclude.includes('categoria')&&cat)a=a.filter(r=>(r.especialitats||[]).map(x=>x.toUpperCase()).includes(cat));if(!exclude.includes('preu')&&preu)a=a.filter(r=>String(r.rang||r.preuMitja||'')===preu);if(!exclude.includes('recomanador')&&rec)a=a.filter(r=>String(r.recomanatPer||'')===rec);if(!exclude.includes('diaObert')&&dia)a=a.filter(r=>isOpenOnDay(r,dia));for(const f of selectedFeatures)if(!exclude.includes('feature:'+f))a=a.filter(r=>truthyFeature(r[f]));return a}
+const PRICE_VALUES=['Menys de 20€','Entre 20 i 35€','Entre 35 i 50€','Entre 50 i 100€','Més de 100€'];
+function splitControlledValues(value,allowed){
+  const allowedMap=new Map(allowed.map(v=>[v.toUpperCase().replace(/\s+/g,' ').trim(),v]));
+  return String(value||'').split(',').map(v=>v.replace(/\s+/g,' ').trim()).map(v=>allowedMap.get(v.toUpperCase())).filter(Boolean);
+}
+function restaurantPriceValues(r){return splitControlledValues(r.rang,PRICE_VALUES)}
+function baseRestaurantPool(exclude=[]){let a=[...restaurants],q=$('#search').value.trim().toLowerCase();if(q)a=a.filter(r=>JSON.stringify(r).toLowerCase().includes(q));if(favOnly)a=a.filter(r=>favorites.has(r.id));if(activeOnly)a=a.filter(r=>!r.tancat);const v=$('#vegueria').value,z=$('#zona').value,c=$('#cuina').value,cat=$('#categoria').value,preu=$('#preu').value,rec=$('#recomanador').value,dia=$('#diaObert')?.value||'';if(!exclude.includes('vegueria')&&v)a=a.filter(r=>r.vegueria===v);if(!exclude.includes('zona')&&z)a=a.filter(r=>r.zona===z);if(!exclude.includes('cuina')&&c)a=a.filter(r=>(r.cuines||[]).map(x=>String(x).toUpperCase()).includes(c));if(!exclude.includes('categoria')&&cat)a=a.filter(r=>(r.especialitats||[]).map(x=>String(x).toUpperCase()).includes(cat));if(!exclude.includes('preu')&&preu)a=a.filter(r=>restaurantPriceValues(r).includes(preu));if(!exclude.includes('recomanador')&&rec)a=a.filter(r=>String(r.recomanatPer||'')===rec);if(!exclude.includes('diaObert')&&dia)a=a.filter(r=>isOpenOnDay(r,dia));for(const f of selectedFeatures)if(!exclude.includes('feature:'+f))a=a.filter(r=>truthyFeature(r[f]));return a}
 function countsFor(items,getValues){const m=new Map();for(const item of items)for(const v of getValues(item).filter(Boolean))m.set(v,(m.get(v)||0)+1);return m}
-function setSelectCountOptions(id,values,label,counts){const el=$('#'+id),current=el.value;el.innerHTML=`<option value="">${label} (${[...counts.values()].reduce((a,b)=>a+b,0)||baseRestaurantPool([]).length})</option>`+values.filter(Boolean).sort((a,b)=>a.localeCompare(b,'ca')).map(v=>`<option value="${esc(v)}">${esc(v)} (${counts.get(v)||0})</option>`).join('');if(values.includes(current))el.value=current}
-function fillFilters(){const vPool=baseRestaurantPool(['vegueria','zona','cuina','categoria','preu','recomanador']);const vegCounts=countsFor(vPool,r=>[r.vegueria]);const vegs=uniq([...vegCounts.keys(),...(tax.customVegueries||[])]);setSelectCountOptions('vegueria',vegs,'Totes les vegueries',vegCounts);fillZones();fillCuisines();fillCategories();fillPrices();fillRecommenders();fillOpenDays();updateFeatureCounts()}
-function fillZones(){const veg=$('#vegueria').value;let pool=baseRestaurantPool(['zona','cuina','categoria']);if(veg)pool=pool.filter(r=>r.vegueria===veg);const counts=countsFor(pool,r=>[r.zona]);const custom=(tax.customZones||[]).filter(z=>!veg||z.vegueria===veg).map(z=>z.nom);setSelectCountOptions('zona',uniq([...counts.keys(),...custom]),veg?'Totes les zones de '+veg:'Totes les zones',counts)}
-function fillCuisines(){let pool=baseRestaurantPool(['cuina','categoria']);const counts=countsFor(pool,r=>(r.cuines||[]).map(x=>x.toUpperCase()));const vals=uniq([...counts.keys(),...(tax.customCuines||[]).map(x=>x.toUpperCase())]);setSelectCountOptions('cuina',vals,'Totes les cuines',counts)}
-function fillCategories(){let pool=baseRestaurantPool(['categoria']);const counts=countsFor(pool,r=>(r.especialitats||[]).map(x=>x.toUpperCase()));const vals=uniq([...counts.keys(),...(tax.customCategories||[]).map(x=>x.toUpperCase())]);setSelectCountOptions('categoria',vals,'Totes les categories',counts)}
-function fillPrices(){const pool=baseRestaurantPool(['preu']);const counts=countsFor(pool,r=>[String(r.rang||r.preuMitja||'')]);setSelectCountOptions('preu',uniq([...counts.keys()]),'Tots els preus',counts)}
+function setSelectCountOptions(id,values,label,counts,total,preserveOrder=false){const el=$('#'+id),current=el.value;const ordered=values.filter(Boolean);if(!preserveOrder)ordered.sort((a,b)=>a.localeCompare(b,'ca'));el.innerHTML=`<option value="">${label} (${total})</option>`+ordered.map(v=>`<option value="${esc(v)}">${esc(v)} (${counts.get(v)||0})</option>`).join('');if(ordered.includes(current))el.value=current}
+function fillFilters(){
+  const pool=baseRestaurantPool(['vegueria','zona','cuina','categoria','preu','recomanador']);
+  const allowed=masterValues('vegueria');
+  const counts=countsFor(pool,r=>allowed.includes(r.vegueria)?[r.vegueria]:[]);
+  setSelectCountOptions('vegueria',allowed,'Totes les vegueries',counts,pool.length);
+  fillZones();fillCuisines();fillCategories();fillPrices();fillRecommenders();fillOpenDays();updateFeatureCounts()
+}
+function fillZones(){
+  const veg=$('#vegueria').value;
+  let pool=baseRestaurantPool(['zona','cuina','categoria']);
+  if(veg)pool=pool.filter(r=>r.vegueria===veg);
+  const allowed=masterValues('zona').filter(z=>!veg||z.vegueria===veg).map(z=>z.nom);
+  const counts=countsFor(pool,r=>allowed.includes(r.zona)?[r.zona]:[]);
+  setSelectCountOptions('zona',allowed,veg?'Totes les zones de '+veg:'Totes les zones',counts,pool.length)
+}
+function fillCuisines(){
+  const pool=baseRestaurantPool(['cuina','categoria']);
+  const allowed=masterValues('cuinaRestaurant').map(v=>v.toUpperCase());
+  const counts=countsFor(pool,r=>(r.cuines||[]).map(x=>String(x).toUpperCase()).filter(v=>allowed.includes(v)));
+  setSelectCountOptions('cuina',allowed,'Totes les cuines',counts,pool.length)
+}
+function fillCategories(){
+  const pool=baseRestaurantPool(['categoria']);
+  const allowed=masterValues('especialitat').map(v=>v.toUpperCase());
+  const counts=countsFor(pool,r=>(r.especialitats||[]).map(x=>String(x).toUpperCase()).filter(v=>allowed.includes(v)));
+  setSelectCountOptions('categoria',allowed,'Totes les categories',counts,pool.length)
+}
+function fillPrices(){
+  const pool=baseRestaurantPool(['preu']);
+  const counts=countsFor(pool,r=>restaurantPriceValues(r));
+  setSelectCountOptions('preu',PRICE_VALUES,'Tots els preus',counts,pool.length,true)
+}
 
 function fillOpenDays(){
   const pool=baseRestaurantPool(['diaObert']);
@@ -1804,7 +1837,7 @@ function fillOpenDays(){
   if([...sel.options].some(o=>o.value===cur))sel.value=cur;
 }
 
-function fillRecommenders(){const pool=baseRestaurantPool(['recomanador']);const counts=countsFor(pool,r=>[String(r.recomanatPer||'')]);setSelectCountOptions('recomanador',uniq([...counts.keys()]),'Tothom qui recomana',counts)}
+function fillRecommenders(){const pool=baseRestaurantPool(['recomanador']);const allowed=masterValues('persona');const counts=countsFor(pool,r=>allowed.includes(String(r.recomanatPer||''))?[String(r.recomanatPer)]:[]);setSelectCountOptions('recomanador',allowed,'Tothom qui recomana',counts,pool.length)}
 function updateFeatureCounts(){document.querySelectorAll('.feature-chip').forEach(btn=>{const f=btn.dataset.feature;const pool=baseRestaurantPool(['feature:'+f]);const count=pool.filter(r=>truthyFeature(r[f])).length;btn.querySelector('b').textContent=count;btn.classList.toggle('active',selectedFeatures.has(f));btn.disabled=count===0&&!selectedFeatures.has(f)})}
 function toggleFeatureFilter(feature){selectedFeatures.has(feature)?selectedFeatures.delete(feature):selectedFeatures.add(feature);fillFilters();renderCurrent();updateClearFiltersButton()}
 function updateCascadingFilters(from){if(from==='vegueria'){$('#zona').value='';$('#cuina').value='';$('#categoria').value='';$('#preu').value='';$('#recomanador').value=''}else if(from==='zona'){$('#cuina').value='';$('#categoria').value='';$('#preu').value='';$('#recomanador').value=''}else if(from==='cuina'){$('#categoria').value='';$('#preu').value='';$('#recomanador').value=''}fillFilters();renderCurrent()}
