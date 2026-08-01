@@ -1437,6 +1437,175 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
   display: none !important;
 }
 
+
+/* Preferits: només el cor, sense cercle */
+.heart,
+.detail-heart {
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 2px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #fff !important;
+  font-size: 30px !important;
+  line-height: 1 !important;
+  text-shadow:
+    0 1px 3px rgba(45,25,18,.65),
+    0 0 2px rgba(45,25,18,.5) !important;
+}
+.heart.on,
+.detail-heart.on {
+  color: #e84f5f !important;
+}
+.card .heart {
+  top: 12px !important;
+  right: 14px !important;
+}
+.detail-heart {
+  left: auto !important;
+  right: 18px !important;
+  top: 17px !important;
+  position: absolute !important;
+}
+.recommender {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.recommender-icon {
+  color: #b06f32;
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+/* No deixa espai si no hi ha cap botó d'acció */
+.action-row:empty {
+  display: none !important;
+}
+
+
+/* Filtres més compactes per a mòbil */
+@media(max-width:650px){
+  .filter-row select,
+  .filters select,
+  .filter-select {
+    font-size: .88rem !important;
+    padding-left: 12px !important;
+    padding-right: 30px !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+  }
+}
+
+
+/* Auditoria de qualitat de dades */
+.data-issues-modal-card{
+  max-width:920px !important;
+}
+.audit-summary{
+  display:grid;
+  grid-template-columns:170px 1fr;
+  gap:18px;
+  padding:18px;
+  margin:16px 0 22px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:linear-gradient(135deg,#fff8f2,#f7fbf7);
+}
+.audit-score{
+  display:grid;
+  place-items:center;
+  align-content:center;
+  min-height:125px;
+  border-radius:20px;
+  background:white;
+  box-shadow:0 8px 24px rgba(79,54,43,.08);
+}
+.audit-score strong{
+  font-family:Georgia,serif;
+  font-size:2.65rem;
+  color:#4f7c59;
+}
+.audit-score span{font-size:.8rem;color:var(--muted)}
+.audit-summary-stats{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  align-content:center;
+}
+.audit-summary-stats span{
+  padding:12px 14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.8);
+}
+.audit-summary-stats b{display:block;font-size:1.25rem}
+.audit-section{margin-top:22px}
+.audit-section-title{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--line);
+}
+.audit-section-title h3{margin:0;flex:1;font-family:Georgia,serif;font-size:1.35rem}
+.audit-section-title b{
+  min-width:32px;
+  padding:4px 9px;
+  border-radius:999px;
+  text-align:center;
+  background:#fff;
+  border:1px solid var(--line);
+}
+.audit-errors .data-issue-item{border-left:4px solid #c94d48}
+.audit-warnings .data-issue-item{border-left:4px solid #d88b33}
+.audit-incomplete .data-issue-item{border-left:4px solid #d4b23e}
+.audit-admin-card{margin-top:14px !important;background:linear-gradient(135deg,#f8fbf7,#fff8f3) !important}
+
+@media(max-width:650px){
+  .audit-summary{grid-template-columns:1fr;padding:13px}
+  .audit-score{min-height:105px}
+  .audit-summary-stats{grid-template-columns:1fr 1fr}
+  .data-issue-item{align-items:flex-start !important}
+  .issue-open{font-size:.74rem}
+}
+
+
+.audit-filter-bar{
+  display:flex;
+  gap:10px;
+  align-items:flex-end;
+  margin:0 0 18px;
+  padding:13px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#fffaf6;
+}
+.audit-filter-bar label{
+  display:grid;
+  gap:6px;
+  flex:1;
+  font-weight:750;
+  color:#514239;
+}
+.audit-filter-bar select{
+  width:100%;
+  padding:11px 13px;
+  border:1px solid #dfcec2;
+  border-radius:12px;
+  background:white;
+  font:inherit;
+}
+@media(max-width:650px){
+  .audit-filter-bar{
+    align-items:stretch;
+    flex-direction:column;
+  }
+}
+
 </style>
 
 <script>
@@ -1497,13 +1666,13 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
 <section id="listView" class="hidden"><div class="section-head"><div><div class="eyebrow" id="listEyebrow">Biblioteca</div><h1 id="listTitle">Restaurants</h1></div><p id="resultCount"></p></div><div id="restaurantTools">
 <div class="toolbar">
 <label class="field searchfield">🔎<input id="search" placeholder="Busca un lloc, un plat o una zona"></label>
-<label class="field"><select id="vegueria"><option value="">Totes les vegueries</option></select></label>
-<label class="field"><select id="zona"><option value="">Totes les zones</option></select></label>
-<label class="field"><select id="cuina"><option value="">Totes les cuines</option></select></label>
-<label class="field"><select id="categoria"><option value="">Totes les especialitats</option></select></label>
-<label class="field"><select id="preu"><option value="">Tots els preus</option></select></label>
-<label class="field"><select id="recomanador"><option value="">Tothom qui recomana</option></select></label>
-<label class="field"><select id="diaObert"><option value="">Obert qualsevol dia</option></select></label>
+<label class="field"><select id="vegueria"><option value="">Vegueries</option></select></label>
+<label class="field"><select id="zona"><option value="">Zones</option></select></label>
+<label class="field"><select id="cuina"><option value="">Cuines</option></select></label>
+<label class="field"><select id="categoria"><option value="">Especialitats</option></select></label>
+<label class="field"><select id="preu"><option value="">Preus</option></select></label>
+<label class="field"><select id="recomanador"><option value="">Recomanadors</option></select></label>
+<label class="field"><select id="diaObert"><option value="">Dies oberts</option></select></label>
 </div>
 <div class="feature-filters" id="featureFilters">
 <button class="feature-chip" data-feature="terrassa"><span class="filter-emoji">☀️</span><span>Terrassa</span><b></b></button>
@@ -1741,6 +1910,8 @@ window.SaliveraDB=(()=>{
       serveis:Array.isArray(item.serveis)?item.serveis:[],
       rang_preu:item.rang||null,
       preu_mitja:item.preuMitja||null,
+      font_preu:item.fontPreu||null,
+      detall_font_preu:item.detallFontPreu||null,
       horari_text:item.horari||null,
       tancament_text:item.tancament||null,
       observacions_horari:item.observacionsHorari||null,
@@ -1980,14 +2151,20 @@ function splitControlledValues(value,allowed){
   return String(value||'').split(',').map(v=>v.replace(/\s+/g,' ').trim()).map(v=>allowedMap.get(v.toUpperCase())).filter(Boolean);
 }
 function restaurantPriceValues(r){return splitControlledValues(r.rang,PRICE_VALUES)}
-function baseRestaurantPool(exclude=[]){let a=[...restaurants],q=$('#search').value.trim().toLowerCase();if(q)a=a.filter(r=>JSON.stringify(r).toLowerCase().includes(q));if(favOnly)a=a.filter(r=>favorites.has(r.id));if(activeOnly)a=a.filter(r=>!r.tancat);const v=$('#vegueria').value,z=$('#zona').value,c=$('#cuina').value,cat=$('#categoria').value,preu=$('#preu').value,rec=$('#recomanador').value,dia=$('#diaObert')?.value||'';if(!exclude.includes('vegueria')&&v)a=a.filter(r=>r.vegueria===v);if(!exclude.includes('zona')&&z)a=a.filter(r=>r.zona===z);if(!exclude.includes('cuina')&&c)a=a.filter(r=>(r.cuines||[]).map(x=>String(x).toUpperCase()).includes(c));if(!exclude.includes('categoria')&&cat)a=a.filter(r=>(r.especialitats||[]).map(x=>String(x).toUpperCase()).includes(cat));if(!exclude.includes('preu')&&preu)a=a.filter(r=>restaurantPriceValues(r).includes(preu));if(!exclude.includes('recomanador')&&rec)a=a.filter(r=>String(r.recomanatPer||'')===rec);if(!exclude.includes('diaObert')&&dia)a=a.filter(r=>isOpenOnDay(r,dia));for(const f of selectedFeatures)if(!exclude.includes('feature:'+f))a=a.filter(r=>truthyFeature(r[f]));return a}
-function countsFor(items,getValues){const m=new Map();for(const item of items)for(const v of getValues(item).filter(Boolean))m.set(v,(m.get(v)||0)+1);return m}
-function setSelectCountOptions(id,values,label,counts,total,preserveOrder=false){const el=$('#'+id),current=el.value;const ordered=values.filter(Boolean);if(!preserveOrder)ordered.sort((a,b)=>a.localeCompare(b,'ca'));el.innerHTML=`<option value="">${label} (${total})</option>`+ordered.map(v=>`<option value="${esc(v)}">${esc(v)} (${counts.get(v)||0})</option>`).join('');if(ordered.includes(current))el.value=current}
+function splitMultiValues(value){
+  const raw=Array.isArray(value)?value:[value];
+  return [...new Set(raw.flatMap(v=>String(v||'').split(',')).map(v=>v.replace(/\s+/g,' ').trim()).filter(Boolean))];
+}
+function upperMultiValues(value){return splitMultiValues(value).map(v=>v.toUpperCase())}
+function recommenderValues(r){return splitMultiValues(r.recomanatPer)}
+function baseRestaurantPool(exclude=[]){let a=[...restaurants],q=$('#search').value.trim().toLowerCase();if(q)a=a.filter(r=>JSON.stringify(r).toLowerCase().includes(q));if(favOnly)a=a.filter(r=>favorites.has(r.id));if(activeOnly)a=a.filter(r=>!r.tancat);const v=$('#vegueria').value,z=$('#zona').value,c=$('#cuina').value,cat=$('#categoria').value,preu=$('#preu').value,rec=$('#recomanador').value,dia=$('#diaObert')?.value||'';if(!exclude.includes('vegueria')&&v)a=a.filter(r=>r.vegueria===v);if(!exclude.includes('zona')&&z)a=a.filter(r=>r.zona===z);if(!exclude.includes('cuina')&&c)a=a.filter(r=>upperMultiValues(r.cuines).includes(c));if(!exclude.includes('categoria')&&cat)a=a.filter(r=>upperMultiValues(r.especialitats).includes(cat));if(!exclude.includes('preu')&&preu)a=a.filter(r=>restaurantPriceValues(r).includes(preu));if(!exclude.includes('recomanador')&&rec)a=a.filter(r=>recommenderValues(r).includes(rec));if(!exclude.includes('diaObert')&&dia)a=a.filter(r=>isOpenOnDay(r,dia));for(const f of selectedFeatures)if(!exclude.includes('feature:'+f))a=a.filter(r=>truthyFeature(r[f]));return a}
+function countsFor(items,getValues){const m=new Map();for(const item of items){const unique=[...new Set(getValues(item).filter(Boolean))];for(const v of unique)m.set(v,(m.get(v)||0)+1)}return m}
+function setSelectCountOptions(id,values,label,counts,total=null,preserveOrder=false){const el=$('#'+id),current=el.value;const ordered=[...new Set(values.filter(Boolean))];if(!preserveOrder)ordered.sort((a,b)=>a.localeCompare(b,'ca'));const header=total===null?label:`${label} (${total})`;el.innerHTML=`<option value="">${header}</option>`+ordered.map(v=>`<option value="${esc(v)}">${esc(v)} (${counts.get(v)||0})</option>`).join('');if(ordered.includes(current))el.value=current}
 function fillFilters(){
   const pool=baseRestaurantPool(['vegueria','zona','cuina','categoria','preu','recomanador']);
   const allowed=masterValues('vegueria');
   const counts=countsFor(pool,r=>allowed.includes(r.vegueria)?[r.vegueria]:[]);
-  setSelectCountOptions('vegueria',allowed,'Totes les vegueries',counts,pool.length);
+  setSelectCountOptions('vegueria',allowed,'Vegueries',counts,null);
   fillZones();fillCuisines();fillCategories();fillPrices();fillRecommenders();fillOpenDays();updateFeatureCounts()
 }
 function fillZones(){
@@ -1996,24 +2173,24 @@ function fillZones(){
   if(veg)pool=pool.filter(r=>r.vegueria===veg);
   const allowed=masterValues('zona').filter(z=>!veg||z.vegueria===veg).map(z=>z.nom);
   const counts=countsFor(pool,r=>allowed.includes(r.zona)?[r.zona]:[]);
-  setSelectCountOptions('zona',allowed,veg?'Totes les zones de '+veg:'Totes les zones',counts,pool.length)
+  setSelectCountOptions('zona',allowed,'Zones',counts,null)
 }
 function fillCuisines(){
   const pool=baseRestaurantPool(['cuina','categoria']);
   const allowed=masterValues('cuinaRestaurant').map(v=>v.toUpperCase());
-  const counts=countsFor(pool,r=>(r.cuines||[]).map(x=>String(x).toUpperCase()).filter(v=>allowed.includes(v)));
-  setSelectCountOptions('cuina',allowed,'Totes les cuines',counts,pool.length)
+  const counts=countsFor(pool,r=>upperMultiValues(r.cuines).filter(v=>allowed.includes(v)));
+  setSelectCountOptions('cuina',allowed,'Cuines',counts,null)
 }
 function fillCategories(){
   const pool=baseRestaurantPool(['categoria']);
   const allowed=masterValues('especialitat').map(v=>v.toUpperCase());
-  const counts=countsFor(pool,r=>(r.especialitats||[]).map(x=>String(x).toUpperCase()).filter(v=>allowed.includes(v)));
-  setSelectCountOptions('categoria',allowed,'Totes les especialitats',counts,pool.length)
+  const counts=countsFor(pool,r=>upperMultiValues(r.especialitats).filter(v=>allowed.includes(v)));
+  setSelectCountOptions('categoria',allowed,'Especialitats',counts,null)
 }
 function fillPrices(){
   const pool=baseRestaurantPool(['preu']);
   const counts=countsFor(pool,r=>restaurantPriceValues(r));
-  setSelectCountOptions('preu',PRICE_VALUES,'Tots els preus',counts,pool.length,true)
+  setSelectCountOptions('preu',PRICE_VALUES,'Preus',counts,null,true)
 }
 
 function fillOpenDays(){
@@ -2022,68 +2199,283 @@ function fillOpenDays(){
   const counts=new Map(WEEKDAYS.map(d=>[d.key,pool.filter(r=>isOpenOnDay(r,d.key)).length]));
   const sel=$('#diaObert'),cur=sel?.value||'';
   if(!sel)return;
-  sel.innerHTML=`<option value="">Obert qualsevol dia (${pool.length})</option>`+WEEKDAYS.map(d=>`<option value="${d.key}">${labels[d.key]} (${counts.get(d.key)||0})</option>`).join('');
+  sel.innerHTML=`<option value="">Dies oberts</option>`+WEEKDAYS.map(d=>`<option value="${d.key}">${labels[d.key]} (${counts.get(d.key)||0})</option>`).join('');
   if([...sel.options].some(o=>o.value===cur))sel.value=cur;
 }
 
 function fillRecommenders(){
   const pool=baseRestaurantPool(['recomanador']);
-  const counts=countsFor(pool,r=>{
-    const value=String(r.recomanatPer||'').trim();
-    return value?[value]:[];
-  });
+  const counts=countsFor(pool,r=>recommenderValues(r));
   const values=[...counts.keys()].filter(v=>(counts.get(v)||0)>0);
-  setSelectCountOptions('recomanador',values,'Tothom qui recomana',counts,pool.length);
+  setSelectCountOptions('recomanador',values,'Recomanadors',counts,null);
 }
 function updateFeatureCounts(){document.querySelectorAll('.feature-chip').forEach(btn=>{const f=btn.dataset.feature;const pool=baseRestaurantPool(['feature:'+f]);const count=pool.filter(r=>truthyFeature(r[f])).length;btn.querySelector('b').textContent=count;btn.classList.toggle('active',selectedFeatures.has(f));btn.disabled=count===0&&!selectedFeatures.has(f)})}
 function toggleFeatureFilter(feature){selectedFeatures.has(feature)?selectedFeatures.delete(feature):selectedFeatures.add(feature);fillFilters();renderCurrent();updateClearFiltersButton()}
 function updateCascadingFilters(from){if(from==='vegueria'){$('#zona').value='';$('#cuina').value='';$('#categoria').value='';$('#preu').value='';$('#recomanador').value=''}else if(from==='zona'){$('#cuina').value='';$('#categoria').value='';$('#preu').value='';$('#recomanador').value=''}else if(from==='cuina'){$('#categoria').value='';$('#preu').value='';$('#recomanador').value=''}fillFilters();renderCurrent()}
 function filteredRestaurants(){return baseRestaurantPool([])}
 function renderCurrent(){if(currentType==='restaurant'){const a=filteredRestaurants();$('#resultCount').textContent=`${a.length} restaurants`;$('#cards').innerHTML=a.length?a.map(cardRestaurant).join(''):`<div class="empty" style="grid-column:1/-1">No hi ha restaurants que coincideixin amb aquests filtres.</div>`}else{let a=byType(currentType);if(favOnly)a=a.filter(x=>favorites.has(x.id));$('#resultCount').textContent=`${a.length} elements`;$('#cards').innerHTML=a.length?a.map(cardGeneric).join(''):`<div class="empty" style="grid-column:1/-1">Encara no hi ha cap preferit en aquest apartat.</div>`}}
-function cardRestaurant(r){const tags=(r.cuines||[]).slice(0,2).map(x=>`<span class="tag">${esc(x.toUpperCase())}</span>`).join('');const states=[truthyFeature(r.top)?'🏆 TOP':'',truthyFeature(r.novetat)?'✨ NOVETAT':'',truthyFeature(r.perAnarHi)?'📍 PER ANAR-HI':'',truthyFeature(r.pendent)?'⏳ PENDENT':''].filter(Boolean).map(x=>`<span class="status-tag">${x}</span>`).join('');return `<article class="card" tabindex="0" onclick="openDetail('${r.id}')" onkeydown="if(event.key==='Enter')openDetail('${r.id}')"><button class="heart ${favorites.has(r.id)?'on':''}" onclick="toggleFav('${r.id}',event)">${favorites.has(r.id)?'♥':'♡'}</button><div class="card-media">${imageHtml(r)}</div><div class="card-body"><h3>${esc(r.nom).toUpperCase()}</h3><div class="meta">${esc([r.zona,r.vegueria].filter(Boolean).join(' · '))}</div>${r.recomanatPer?`<div class="meta" style="margin-top:6px">👤 ${esc(r.recomanatPer)}</div>`:''}<div class="tags">${tags}</div>${states?`<div class="status-tags">${states}</div>`:''}</div></article>`}
+function cardRestaurant(r){const tags=(r.cuines||[]).slice(0,2).map(x=>`<span class="tag">${esc(x.toUpperCase())}</span>`).join('');const states=[truthyFeature(r.top)?'🏆 TOP':'',truthyFeature(r.novetat)?'✨ NOVETAT':'',truthyFeature(r.perAnarHi)?'📍 PER ANAR-HI':'',truthyFeature(r.pendent)?'⏳ PENDENT':''].filter(Boolean).map(x=>`<span class="status-tag">${x}</span>`).join('');return `<article class="card" tabindex="0" onclick="openDetail('${r.id}')" onkeydown="if(event.key==='Enter')openDetail('${r.id}')"><button class="heart ${favorites.has(r.id)?'on':''}" onclick="toggleFav('${r.id}',event)">${favorites.has(r.id)?'♥':'♡'}</button><div class="card-media">${imageHtml(r)}</div><div class="card-body"><h3>${esc(r.nom).toUpperCase()}</h3><div class="meta">${esc([r.zona,r.vegueria].filter(Boolean).join(' · '))}</div>${r.recomanatPer?`<div class="meta recommender" style="margin-top:6px"><span class="recommender-icon">✦</span> ${esc(r.recomanatPer)}</div>`:''}<div class="tags">${tags}</div>${states?`<div class="status-tags">${states}</div>`:''}</div></article>`}
 function cardGeneric(x){return `<article class="card" tabindex="0" onclick="openDetail('${x.id}')" onkeydown="if(event.key==='Enter')openDetail('${x.id}')"><button class="heart ${favorites.has(x.id)?'on':''}" onclick="toggleFav('${x.id}',event)">${favorites.has(x.id)?'♥':'♡'}</button><div class="card-media">${imageHtml(x)}</div><div class="card-body"><h3>${esc(x.nom).toUpperCase()}</h3><div class="meta">${esc(x.categoria||x.zona||'')}</div></div></article>`}
-function action(label,url){return url?`<a class="action" href="${esc(url)}" target="_blank" rel="noopener">${label}</a>`:''}
+function cleanDataValue(value){
+  const v=String(value||'').trim();
+  return v && !['-','?','null','undefined','n/a','no'].includes(v.toLowerCase()) ? v : '';
+}
+function validPhone(value){
+  const digits=cleanPhone(cleanDataValue(value));
+  return digits.length>=8 && digits.length<=15 ? digits : '';
+}
+function validWhatsapp(value){
+  const digits=validPhone(value);
+  return digits ? digits : '';
+}
+function validExternalUrl(value){
+  let v=cleanDataValue(value);
+  if(!v)return '';
+  if(/^www\./i.test(v))v='https://'+v;
+  if(!/^https?:\/\//i.test(v))return '';
+  try{
+    const u=new URL(v);
+    return ['http:','https:'].includes(u.protocol) && u.hostname.includes('.') ? u.href : '';
+  }catch(_){
+    return '';
+  }
+}
+function action(label,url){
+  return url?`<a class="action" href="${esc(url)}" target="_blank" rel="noopener">${label}</a>`:'';
+}
 function val(v){return v&&v!=='?'?v:''}
 function info(label,value,wide=false){return value?`<div class="info ${wide?'wide':''}"><small>${label}</small>${esc(value).replace(/\n/g,'<br>')}</div>`:''}
 function formatScaledNumber(n){if(Math.abs(n-Math.round(n))<.001)return String(Math.round(n));return String(Math.round(n*100)/100).replace('.',',')}
 function parseAmount(raw){const t=raw.trim().replace(',','.');if(/^\d+\/\d+$/.test(t)){const [a,b]=t.split('/').map(Number);return b?a/b:null}if(/^\d+\s+\d+\/\d+$/.test(t)){const [w,f]=t.split(/\s+/);const [a,b]=f.split('/').map(Number);return Number(w)+a/b}const n=Number(t);return Number.isFinite(n)?n:null}
 function scaleIngredients(text,factor){return String(text||'').split('\n').map(line=>line.replace(/(^|[\s(])((?:\d+\s+)?\d+\/\d+|\d+(?:[.,]\d+)?)/g,(all,prefix,num)=>{const n=parseAmount(num);return n===null?all:prefix+formatScaledNumber(n*factor)})).join('\n')}
 function updateRecipeServings(id){const x=DATA.find(y=>y.id===id),input=$('#servings-'+id),box=$('#scaled-'+id);if(!x||!input||!box)return;const base=parseFloat(String(x.comensals||'1').replace(',','.'))||1;const target=Math.max(.5,parseFloat(input.value)||base);box.textContent=scaleIngredients(x.ingredients,target/base)}
-function openDetail(id){const x=DATA.find(y=>y.id===id);if(!x)return;const isR=x.tipus==='restaurant',isRecipe=x.tipus==='recepta';const phone=cleanPhone(x.telefon1);const wa=cleanPhone(x.whatsapp||x.telefon1);let acts=isR?[action('📞 Trucar',phone?`tel:${phone}`:''),action('💬 WhatsApp',wa?`https://wa.me/${wa}`:''),action('🌐 Web',x.web),action('📷 Instagram',x.instagram),action('📄 Carta',x.carta),action('📅 Reserva',x.reserva),action('▶ Vídeo',x.video)].join(''):action('🔗 Obrir enllaç',x.enllac);let body='';if(isR){const galleries=uniq([x.imatge,...(x.galeria||[])]);body=`<div class="tags">${(x.cuines||[]).map(c=>`<span class="tag">${esc(c.toUpperCase())}</span>`).join('')}</div><div class="action-row">${acts}</div><div class="info-grid">${info('Ubicació',[x.adreca,x.zona,x.vegueria].filter(Boolean).join(' · '),true)}${info('Horari',val(x.horari))}${info('Tancament',val(x.tancament))}${info('Rang de preu',x.rang||x.preuMitja)}${info('Recomanat per',x.recomanatPer)}${info('Especialitats',(x.especialitats||[]).join(', '))}${info('Serveis',[...(x.serveis||[]),truthyFeature(x.terrassa)?'Terrassa':'',truthyFeature(x.vegetaria)?'Opcions vegetarianes':'',truthyFeature(x.senseGluten)?'Sense gluten':''].filter(Boolean).join(', '))}${info('Estat',[truthyFeature(x.top)?'TOP':'',truthyFeature(x.novetat)?'Novetat':'',truthyFeature(x.perAnarHi)?'Per anar-hi':'',truthyFeature(x.pendent)?'Pendent':''].filter(Boolean).join(' · '))}${info('Menús',[x.menu,x.menu2,x.preuMenu2?x.preuMenu2+' €':''].filter(Boolean).join(' · '),true)}${info('Observacions',x.observacionsHorari||x.notes,true)}</div>${ratingsDetailHtml(x)}${galleries.length>1?`<h3>Galeria</h3><div class="gallery">${galleries.map(u=>`<img src="${esc(u)}" loading="lazy" referrerpolicy="no-referrer">`).join('')}</div>`:''}`}else if(isRecipe){const base=parseFloat(String(x.comensals||'4').replace(',','.'))||4;body=`<div class="action-row">${acts}</div><div class="recipe-calculator"><h3>Calculadora de comensals</h3><div class="servings-row"><span>Recepta original: <b>${base}</b></span><label>Vull cuinar per <input id="servings-${x.id}" type="number" min="0.5" step="0.5" value="${base}" oninput="updateRecipeServings('${x.id}')"> persones</label></div><div id="scaled-${x.id}" class="scaled-ingredients">${esc(x.ingredients||'')}</div></div><div class="info-grid">${info('Especialitat',x.categoria)}${info('Cuiner/a',x.cuiner)}${info('Temps',x.temps?x.temps+' min':'')}${info('Dificultat',x.dificultat)}${info('Preparació',x.preparacio,true)}${info('Variacions',x.variacions,true)}${info('Notes',x.notes||x.observacions,true)}</div>`}else{body=`<div class="action-row">${acts}</div><div class="info-grid">${info('Especialitat',x.categoria)}${info('Zona',x.zona)}${info('Descripció',x.notes||x.observacions||x.narracio,true)}</div>`}const logo=isR&&x.logo?`<img class="detail-logo" src="${esc(x.logo)}" alt="Logotip de ${esc(x.nom)}" onerror="this.style.display='none'">`:'';$('#sheet').innerHTML=`<div class="detail-cover">${imageHtml({...x,logo:''})}<button class="close" onclick="closeModal()">×</button><button class="close detail-heart" onclick="toggleFav('${x.id}',event)">${favorites.has(x.id)?'♥':'♡'}</button></div><div class="detail"><div class="detail-title-row">${logo}<div><h2>${esc(x.nom).toUpperCase()}</h2><div class="meta">${esc([x.zona,x.vegueria].filter(Boolean).join(' · '))}</div></div></div>${body}${adminMode?`<div class="admin-actions"><button class="primary-btn" onclick="editItem('${x.id}')">✎ Modificar</button><button class="danger-btn" onclick="deleteItem('${x.id}')">Desactivar</button></div>`:''}</div>`;$('#modal').classList.remove('hidden');document.body.style.overflow='hidden'}
+function openDetail(id){const x=DATA.find(y=>y.id===id);if(!x)return;const isR=x.tipus==='restaurant',isRecipe=x.tipus==='recepta';const phone=validPhone(x.telefon1);const wa=validWhatsapp(x.whatsapp);let acts=isR?[action('📞 Trucar',phone?`tel:${phone}`:''),action('💬 WhatsApp',wa?`https://wa.me/${wa}`:''),action('🌐 Web',validExternalUrl(x.web)),action('📷 Instagram',validExternalUrl(x.instagram)),action('📄 Carta',validExternalUrl(x.carta)),action('📅 Reserva',validExternalUrl(x.reserva)),action('▶ Vídeo',validExternalUrl(x.video))].filter(Boolean).join(''):action('🔗 Obrir enllaç',validExternalUrl(x.enllac));let body='';if(isR){const galleries=uniq([x.imatge,...(x.galeria||[])]);body=`<div class="tags">${(x.cuines||[]).map(c=>`<span class="tag">${esc(c.toUpperCase())}</span>`).join('')}</div>${acts?`<div class="action-row">${acts}</div>`:''}<div class="info-grid">${info('Ubicació',[x.adreca,x.zona,x.vegueria].filter(Boolean).join(' · '),true)}${info('Horari',val(x.horari))}${info('Tancament',val(x.tancament))}${info('Rang de preu',x.rang||x.preuMitja)}${info('Recomanat per',x.recomanatPer)}${info('Especialitats',(x.especialitats||[]).join(', '))}${info('Serveis',[...(x.serveis||[]),truthyFeature(x.terrassa)?'Terrassa':'',truthyFeature(x.vegetaria)?'Opcions vegetarianes':'',truthyFeature(x.senseGluten)?'Sense gluten':''].filter(Boolean).join(', '))}${info('Estat',[truthyFeature(x.top)?'TOP':'',truthyFeature(x.novetat)?'Novetat':'',truthyFeature(x.perAnarHi)?'Per anar-hi':'',truthyFeature(x.pendent)?'Pendent':''].filter(Boolean).join(' · '))}${info('Menús',[x.menu,x.menu2,x.preuMenu2?x.preuMenu2+' €':''].filter(Boolean).join(' · '),true)}${info('Observacions',x.observacionsHorari||x.notes,true)}</div>${ratingsDetailHtml(x)}${galleries.length>1?`<h3>Galeria</h3><div class="gallery">${galleries.map(u=>`<img src="${esc(u)}" loading="lazy" referrerpolicy="no-referrer">`).join('')}</div>`:''}`}else if(isRecipe){const base=parseFloat(String(x.comensals||'4').replace(',','.'))||4;body=`${acts?`<div class="action-row">${acts}</div>`:''}<div class="recipe-calculator"><h3>Calculadora de comensals</h3><div class="servings-row"><span>Recepta original: <b>${base}</b></span><label>Vull cuinar per <input id="servings-${x.id}" type="number" min="0.5" step="0.5" value="${base}" oninput="updateRecipeServings('${x.id}')"> persones</label></div><div id="scaled-${x.id}" class="scaled-ingredients">${esc(x.ingredients||'')}</div></div><div class="info-grid">${info('Especialitat',x.categoria)}${info('Cuiner/a',x.cuiner)}${info('Temps',x.temps?x.temps+' min':'')}${info('Dificultat',x.dificultat)}${info('Preparació',x.preparacio,true)}${info('Variacions',x.variacions,true)}${info('Notes',x.notes||x.observacions,true)}</div>`}else{body=`${acts?`<div class="action-row">${acts}</div>`:''}<div class="info-grid">${info('Especialitat',x.categoria)}${info('Zona',x.zona)}${info('Descripció',x.notes||x.observacions||x.narracio,true)}</div>`}const logo=isR&&x.logo?`<img class="detail-logo" src="${esc(x.logo)}" alt="Logotip de ${esc(x.nom)}" onerror="this.style.display='none'">`:'';$('#sheet').innerHTML=`<div class="detail-cover">${imageHtml({...x,logo:''})}<button class="close" onclick="closeModal()">×</button><button class="close detail-heart ${favorites.has(x.id)?'on':''}" onclick="toggleFav('${x.id}',event)">${favorites.has(x.id)?'♥':'♡'}</button></div><div class="detail"><div class="detail-title-row">${logo}<div><h2>${esc(x.nom).toUpperCase()}</h2><div class="meta">${esc([x.zona,x.vegueria].filter(Boolean).join(' · '))}</div></div></div>${body}${adminMode?`<div class="admin-actions"><button class="primary-btn" onclick="editItem('${x.id}')">✎ Modificar</button><button class="danger-btn" onclick="deleteItem('${x.id}')">Desactivar</button></div>`:''}</div>`;$('#modal').classList.remove('hidden');document.body.style.overflow='hidden'}
 function closeModal(){$('#modal').classList.add('hidden');document.body.style.overflow=''}
 function parseCoords(s){if(!s)return null;const p=String(s).split(',').map(Number);return p.length===2&&p.every(Number.isFinite)?p:null}
 
-function restaurantDataIssues(r){
-  const issues=[];
-  if(!String(r.nom||'').trim())issues.push('Nom');
-  if(r.territori==='ppcc'&&!String(r.vegueria||'').trim())issues.push('Vegueria');
-  if(!String(r.zona||'').trim())issues.push('Zona');
-  if(!String(r.adreca||'').trim())issues.push('Adreça');
-  if(!parseCoords(r.coordenades))issues.push('Coordenades');
-  return issues;
+function isBlankValue(value){
+  const v=String(value??'').trim();
+  return !v || ['-','?','null','undefined','n/a'].includes(v.toLowerCase());
 }
-function restaurantsWithDataIssues(){
-  return restaurants
-    .filter(r=>r.territori==='ppcc')
-    .map(r=>({restaurant:r,issues:restaurantDataIssues(r)}))
-    .filter(x=>x.issues.length);
+function normalizedList(value){
+  const source=Array.isArray(value)?value:String(value||'').split(',');
+  return [...new Set(source.map(v=>String(v).trim()).filter(Boolean))];
+}
+function validCoordsValue(value){
+  const c=parseCoords(value);
+  return Boolean(c && c[0]>=-90 && c[0]<=90 && c[1]>=-180 && c[1]<=180 && !(c[0]===0&&c[1]===0));
+}
+function auditUrl(value,type='url'){
+  if(isBlankValue(value))return true;
+  if(type==='phone'){
+    const digits=cleanPhone(value);
+    return digits.length>=8&&digits.length<=15;
+  }
+  return Boolean(validExternalUrl(value));
+}
+function controlledValuesForAudit(){
+  return {
+    vegueria:new Set(masterValues('vegueria').map(v=>String(v).toUpperCase())),
+    zona:new Set(masterValues('zona').map(v=>String(v.nom||v).toUpperCase())),
+    cuina:new Set(masterValues('cuinaRestaurant').map(v=>String(v).toUpperCase())),
+    especialitat:new Set(masterValues('especialitat').map(v=>String(v).toUpperCase())),
+    preu:new Set(PRICE_VALUES.map(v=>String(v).toUpperCase()))
+  };
+}
+function restaurantAudit(r){
+  const errors=[],warnings=[],incomplete=[];
+  const allowed=controlledValuesForAudit();
+
+  const isOnline=
+    String(r.territori||'').toLowerCase()==='online' ||
+    String(r.tipusZona||'').toLowerCase()==='online';
+
+  const isAltres=
+    String(r.territori||'').toLowerCase()==='altres';
+
+  const isPPCC=
+    String(r.territori||'').toLowerCase()==='ppcc';
+
+  /* Camps realment obligatoris */
+  if(isBlankValue(r.nom))errors.push('Falta el nom');
+
+  if(isBlankValue(r.rang)&&isBlankValue(r.preuMitja)){
+    errors.push('Falta el rang de preu');
+  }else{
+    if(isBlankValue(r.fontPreu)){
+      warnings.push('Falta la font del preu');
+    }else if(['google','web_restaurant','carta'].includes(String(r.fontPreu))&&isBlankValue(r.detallFontPreu)){
+      warnings.push('Falta el detall de la font del preu');
+    }
+  }
+
+  /* Ubicació: només quan té sentit exigir-la */
+  if(!isOnline){
+    if(isBlankValue(r.adreca))errors.push('Falta l’adreça');
+    if(!validCoordsValue(r.coordenades))errors.push('Coordenades inexistents o no vàlides');
+  }
+
+  /* Vegueria i zona només per als Països Catalans */
+  if(isPPCC){
+    if(isBlankValue(r.vegueria))errors.push('Falta la vegueria');
+    if(isBlankValue(r.zona))errors.push('Falta la zona');
+  }
+
+  /* Inconsistències: només si hi ha una dada escrita */
+  if(isPPCC&&!isBlankValue(r.vegueria)&&!allowed.vegueria.has(String(r.vegueria).toUpperCase())){
+    warnings.push(`Vegueria no reconeguda: ${r.vegueria}`);
+  }
+
+  if(isPPCC&&!isBlankValue(r.zona)&&!allowed.zona.has(String(r.zona).toUpperCase())){
+    warnings.push(`Zona no reconeguda: ${r.zona}`);
+  }
+
+  const unknownCuisines=normalizedList(r.cuines).filter(v=>!allowed.cuina.has(v.toUpperCase()));
+  if(unknownCuisines.length){
+    warnings.push(`Cuines no reconegudes: ${unknownCuisines.join(', ')}`);
+  }
+
+  const unknownSpecialties=normalizedList(r.especialitats).filter(v=>!allowed.especialitat.has(v.toUpperCase()));
+  if(unknownSpecialties.length){
+    warnings.push(`Especialitats no reconegudes: ${unknownSpecialties.join(', ')}`);
+  }
+
+  const unknownPrices=normalizedList(r.rang).filter(v=>!allowed.preu.has(v.toUpperCase()));
+  if(!isBlankValue(r.rang)&&unknownPrices.length){
+    warnings.push(`Rang de preu no reconegut: ${unknownPrices.join(', ')}`);
+  }
+
+  if(!auditUrl(r.telefon1,'phone'))warnings.push('Telèfon no vàlid');
+  if(!auditUrl(r.whatsapp,'phone'))warnings.push('WhatsApp no vàlid');
+  if(!auditUrl(r.web))warnings.push('Web no vàlida');
+  if(!auditUrl(r.instagram))warnings.push('Instagram no vàlid');
+  if(!auditUrl(r.carta))warnings.push('Enllaç de carta no vàlid');
+  if(!auditUrl(r.reserva))warnings.push('Enllaç de reserva no vàlid');
+
+  /* Cap d’aquests camps és obligatori:
+     recomanador, observacions, especialitat, fotografia o horari. */
+
+  /* La puntuació només valora requisits reals i formats vàlids */
+  let possible=2; // nom + preu
+  let score=0;
+
+  if(!isBlankValue(r.nom))score++;
+  if(!isBlankValue(r.rang)||!isBlankValue(r.preuMitja))score++;
+
+  if(!isOnline){
+    possible+=2; // adreça + coordenades
+    if(!isBlankValue(r.adreca))score++;
+    if(validCoordsValue(r.coordenades))score++;
+  }
+
+  if(isPPCC){
+    possible+=2; // vegueria + zona
+    if(!isBlankValue(r.vegueria))score++;
+    if(!isBlankValue(r.zona))score++;
+  }
+
+  const providedLinks=[
+    ['phone',r.telefon1],
+    ['phone',r.whatsapp],
+    ['url',r.web],
+    ['url',r.instagram],
+    ['url',r.carta],
+    ['url',r.reserva]
+  ].filter(([,value])=>!isBlankValue(value));
+
+  possible+=providedLinks.length;
+  for(const [type,value] of providedLinks){
+    if(auditUrl(value,type))score++;
+  }
+
+  return {
+    errors,
+    warnings,
+    incomplete,
+    score:possible?Math.round(score/possible*100):100
+  };
+}
+function auditRestaurants(){
+  return restaurants.map(restaurant=>({restaurant,...restaurantAudit(restaurant)}));
 }
 function openRestaurantFromIssue(id){
   closeDataIssues();
   openDetail(id);
 }
-function openDataIssues(){
-  const list=restaurantsWithDataIssues();
-  $('#dataIssuesContent').innerHTML=list.length
-    ?list.map(({restaurant,issues})=>`
-      <button class="data-issue-item" onclick="openRestaurantFromIssue('${restaurant.id}')">
+let currentAuditIssue='';
+
+function auditIssueCatalog(audit){
+  const counts=new Map();
+  for(const item of audit){
+    for(const type of ['errors','warnings']){
+      for(const message of item[type]||[]){
+        counts.set(message,(counts.get(message)||0)+1);
+      }
+    }
+  }
+  return [...counts.entries()].sort((a,b)=>a[0].localeCompare(b[0],'ca'));
+}
+
+function auditSection(title,icon,items,type,issue=''){
+  const filtered=issue
+    ? items.filter(x=>(x[type]||[]).includes(issue))
+    : items;
+  if(!filtered.length)return '';
+
+  return `<section class="audit-section audit-${type}">
+    <div class="audit-section-title"><span>${icon}</span><h3>${title}</h3><b>${filtered.length}</b></div>
+    <div class="data-issues-list">${filtered.map(x=>{
+      const messages=(x[type]||[]).filter(m=>!issue||m===issue);
+      return `<button class="data-issue-item" onclick="openRestaurantFromIssue('${x.restaurant.id}')">
         <span>
-          <strong>${esc(restaurant.nom||'Restaurant sense nom')}</strong>
-          <small>Falta: ${issues.map(esc).join(' · ')}</small>
+          <strong>${esc((x.restaurant.nom||'Restaurant sense nom').toUpperCase())}</strong>
+          <small>${messages.map(esc).join(' · ')}</small>
         </span>
-        <span class="issue-open">Obrir fitxa →</span>
-      </button>`).join('')
-    :'<div class="empty-state">No hi ha restaurants amb dades obligatòries pendents.</div>';
+        <span class="issue-open">Editar →</span>
+      </button>`;
+    }).join('')}</div>
+  </section>`;
+}
+
+function renderDataAudit(issue=''){
+  currentAuditIssue=issue;
+  const audit=auditRestaurants();
+  const errors=audit.filter(x=>x.errors.length);
+  const warnings=audit.filter(x=>x.warnings.length);
+  const average=audit.length?Math.round(audit.reduce((sum,x)=>sum+x.score,0)/audit.length):100;
+  const complete=audit.filter(x=>!x.errors.length&&!x.warnings.length).length;
+  const catalog=auditIssueCatalog(audit);
+
+  $('#dataIssuesContent').innerHTML=`
+    <div class="audit-summary">
+      <div class="audit-score"><strong>${average}%</strong><span>Qualitat global</span></div>
+      <div class="audit-summary-stats">
+        <span><b>${restaurants.length}</b> restaurants revisats</span>
+        <span><b>${complete}</b> fitxes completes</span>
+        <span><b>${errors.length}</b> amb errors</span>
+        <span><b>${warnings.length}</b> amb inconsistències</span>
+      </div>
+    </div>
+
+    <div class="audit-filter-bar">
+      <label>Filtrar per tipus d’incidència
+        <select id="auditIssueFilter" onchange="renderDataAudit(this.value)">
+          <option value="">Totes les incidències</option>
+          ${catalog.map(([name,count])=>`<option value="${esc(name)}" ${issue===name?'selected':''}>${esc(name)} (${count})</option>`).join('')}
+        </select>
+      </label>
+      ${issue?`<button type="button" class="secondary-btn" onclick="renderDataAudit('')">Esborrar filtre</button>`:''}
+    </div>
+
+    ${auditSection('Errors que cal corregir','🔴',errors,'errors',issue)}
+    ${auditSection('Inconsistències','🟠',warnings,'warnings',issue)}
+    ${!errors.length&&!warnings.length?'<div class="empty-state">Tot correcte. No s’han detectat incidències.</div>':''}
+    ${issue&&!errors.some(x=>x.errors.includes(issue))&&!warnings.some(x=>x.warnings.includes(issue))?'<div class="empty-state">No hi ha restaurants amb aquesta incidència.</div>':''}
+  `;
+}
+
+function openDataIssues(){
+  renderDataAudit('');
   $('#dataIssuesModal').classList.remove('hidden');
   document.body.style.overflow='hidden';
 }
@@ -2150,7 +2542,8 @@ function adminCard(type,title){
  <div class="admin-list">${vals.map(v=>`<span class="admin-pill">${esc(v)}</span>`).join('')}</div></section>`;
 }
 function renderAdmin(){
- const create=`<section class="admin-create"><h3>Crear contingut nou</h3><p>Pots afegir elements nous i quedaran desats en aquest navegador.</p><div class="admin-create-buttons">${[['restaurant','Restaurant'],['recepta','Recepta'],['vi','Vi'],['botiga','Botiga'],['experiencia','Experiència']].map(([t,n])=>`<button onclick="closeAdmin();openCreate('${t}')">＋ ${n}</button>`).join('')}</div></section>`;
+ const create=`<section class="admin-create"><h3>Crear contingut nou</h3><p>Pots afegir elements nous i quedaran desats en aquest navegador.</p><div class="admin-create-buttons">${[['restaurant','Restaurant'],['recepta','Recepta'],['vi','Vi'],['botiga','Botiga'],['experiencia','Experiència']].map(([t,n])=>`<button onclick="closeAdmin();openCreate('${t}')">＋ ${n}</button>`).join('')}</div></section>
+<section class="admin-create audit-admin-card"><h3>Qualitat de les dades</h3><p>Revisa errors, inconsistències i informació incompleta dels restaurants.</p><div class="admin-create-buttons"><button onclick="closeAdmin();openDataIssues()">🩺 Auditar restaurants</button></div></section>`;
  $('#adminContent').innerHTML=create+ADMIN_GROUPS.map(g=>`<section class="admin-group"><div class="admin-group-title"><h2>${g.title}</h2></div><div class="admin-grid">${g.items.map(([t,n])=>adminCard(t,n)).join('')}</div></section>`).join('');
 }
 function prepareTaxEdit(type){const old=$('#admin-old-'+type)?.value||'';if($('#admin-new-'+type))$('#admin-new-'+type).value=old}
@@ -2405,6 +2798,21 @@ function createFields(type){
     </div>
     <label>Rang de preus<select id="new-rang"><option value="">Selecciona...</option>${formOptions(masterValues('rangPreu'))}</select></label>
     <label>Preu mitjà (€)<input id="new-preu-mitja" type="number" min="0" step="0.01"></label>
+    <label>Font del preu
+      <select id="new-font-preu">
+        <option value="">Selecciona...</option>
+        <option value="google">Google / Internet</option>
+        <option value="web_restaurant">Web del restaurant</option>
+        <option value="carta">Carta o menú</option>
+        <option value="visita_propia">Visita pròpia</option>
+        <option value="recomanacio">Recomanació</option>
+        <option value="altra">Altra font</option>
+        <option value="pendent">Pendent de verificar</option>
+      </select>
+    </label>
+    <label class="wide">Detall de la font del preu
+      <input id="new-detall-font-preu" placeholder="URL, data de consulta o nota breu">
+    </label>
     <label>Nom del menú 1<input id="new-menu"></label>
     <label>Preu menú 1 (€)<input id="new-preu-menu" type="number" min="0" step="0.01"></label>
     <label>Nom del menú 2<input id="new-menu2"></label>
@@ -2473,6 +2881,7 @@ function buildItemFromForm(type,existing={}){
     telefon1:field('new-telefon'),telefon2:field('new-telefon2'),whatsapp:field('new-whatsapp'),
     web:field('new-web'),instagram:field('new-instagram'),carta:field('new-carta'),reserva:field('new-reserva'),
     recomanatPer:field('new-recomanat'),valoracions:readRatings(),rang:field('new-rang'),preuMitja:field('new-preu-mitja'),
+    fontPreu:field('new-font-preu'),detallFontPreu:field('new-detall-font-preu'),
     menu:field('new-menu'),preuMenu:field('new-preu-menu'),menu2:field('new-menu2'),preuMenu2:field('new-preu-menu2'),
     horarisStructured:readSchedule(),horari:scheduleSummary(readSchedule()),observacionsHorari:field('new-observacions-horari'),
     terrassa:!!$('#new-terrassa')?.checked,vegetaria:!!$('#new-vegetaria')?.checked,senseGluten:!!$('#new-gluten')?.checked,
@@ -2586,7 +2995,7 @@ function editItem(id){
     setFormValue('new-adreca',x.adreca);setFormValue('new-coords',x.coordenades);
     setFormValue('new-telefon',x.telefon1);setFormValue('new-telefon2',x.telefon2);setFormValue('new-whatsapp',x.whatsapp);
     setFormValue('new-web',x.web);setFormValue('new-instagram',x.instagram);setFormValue('new-carta',x.carta);setFormValue('new-reserva',x.reserva);
-    setFormValue('new-recomanat',x.recomanatPer);setRatings(x.valoracions||[]);setFormValue('new-rang',x.rang);setFormValue('new-preu-mitja',x.preuMitja);
+    setFormValue('new-recomanat',x.recomanatPer);setRatings(x.valoracions||[]);setFormValue('new-rang',x.rang);setFormValue('new-preu-mitja',x.preuMitja);setFormValue('new-font-preu',x.fontPreu);setFormValue('new-detall-font-preu',x.detallFontPreu);
     setFormValue('new-menu',x.menu);setFormValue('new-preu-menu',x.preuMenu);setFormValue('new-menu2',x.menu2);setFormValue('new-preu-menu2',x.preuMenu2);
     setSchedule(x.horarisStructured||{});setFormValue('new-observacions-horari',x.observacionsHorari);
     setFormChecked('new-terrassa',x.terrassa);setFormChecked('new-vegetaria',x.vegetaria);setFormChecked('new-gluten',x.senseGluten);
@@ -2738,6 +3147,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
       especialitats: list(row.especialitats),
       rang: text(row.rang_preu),
       preuMitja: text(row.preu_mitja),
+      fontPreu: text(row.font_preu),
+      detallFontPreu: text(row.detall_font_preu),
       adreca: text(row.adreca),
       coordenades: coordinates(row),
       telefon1: text(row.telefon_principal),
@@ -2845,13 +3256,13 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
   <div class="modal-card data-issues-modal-card">
     <button class="modal-close" onclick="closeDataIssues()">×</button>
     <span class="eyebrow">Administració</span>
-    <h2>Dades pendents dels restaurants</h2>
-    <p class="modal-intro">Clica un restaurant per obrir-ne directament la fitxa i completar les dades obligatòries.</p>
+    <h2>Qualitat de les dades</h2>
+    <p class="modal-intro">SALIVERA revisa només els camps obligatoris i les dades que tenen un format incorrecte. Els camps opcionals no es consideren incidències.</p>
     <div id="dataIssuesContent" class="data-issues-list"></div>
   </div>
 </div>
 
 <script>
-document.documentElement.dataset.saliveraVersion='2026.08.01.5-dies-obertura';
+document.documentElement.dataset.saliveraVersion='2026.08.01.8-audit-rules';
 </script>
 </body></html>
