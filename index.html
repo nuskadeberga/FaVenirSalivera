@@ -1121,9 +1121,7 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
 }
 
 .module-go,
-.module-arrow {
-  color: #fff !important;
-}
+.module-arrow { display:none !important; }
 
 .module-card.botiga .module-go,
 .module.botiga .module-arrow {
@@ -1200,9 +1198,7 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
 
 /* Fletxes sempre blanques */
 .module-go,
-.module-arrow {
-  color: #fff !important;
-}
+.module-arrow { display:none !important; }
 .module-card.botiga .module-go,
 .module.botiga .module-arrow {
   background: #a66b08 !important;
@@ -1606,6 +1602,211 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
   }
 }
 
+
+/* Administració i auditoria amb fons completament opac */
+.modal,
+.admin-modal,
+.data-issues-modal,
+.create-modal {
+  background: rgba(44, 34, 29, .58) !important;
+  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: blur(5px) !important;
+}
+
+.modal-card,
+.admin-modal-card,
+.data-issues-modal-card,
+.create-modal-card,
+.auth-box {
+  background: #fffaf6 !important;
+  opacity: 1 !important;
+  isolation: isolate !important;
+  box-shadow: 0 24px 70px rgba(42, 28, 21, .34) !important;
+}
+
+#dataIssuesContent,
+#adminContent,
+#createContent {
+  position: relative !important;
+  z-index: 2 !important;
+  background: #fffaf6 !important;
+}
+
+.audit-summary,
+.audit-filter-bar,
+.audit-section,
+.data-issues-list,
+.data-issue-item,
+.admin-create,
+.admin-section {
+  opacity: 1 !important;
+}
+
+.data-issue-item {
+  background: #ffffff !important;
+}
+
+@media (max-width:650px) {
+  .modal-card,
+  .admin-modal-card,
+  .data-issues-modal-card,
+  .create-modal-card {
+    background: #fffaf6 !important;
+  }
+}
+
+
+.wine-toolbar{
+  display:grid;
+  grid-template-columns:minmax(220px,1fr) minmax(180px,.7fr) auto;
+  gap:12px;
+  margin-bottom:14px;
+}
+.wine-origin-intro{
+  margin:0 0 22px;
+  padding:22px 24px;
+  border-radius:22px;
+  background:linear-gradient(135deg,#f7f1e8,#fffaf6);
+  border:1px solid var(--line);
+}
+.wine-origin-intro h2{
+  margin:.25rem 0 .5rem;
+  font-family:Georgia,serif;
+  font-size:2rem;
+}
+.wine-origin-intro p{margin:0;max-width:900px;line-height:1.55;color:var(--muted)}
+.wine-card .card-media img{object-fit:contain;background:#faf7f2}
+.wine-origin-label{
+  font-size:.72rem;
+  font-weight:850;
+  letter-spacing:.08em;
+  color:#8b5f39;
+  text-transform:uppercase;
+  margin-bottom:5px;
+}
+.wine-detail-layout{
+  display:grid;
+  grid-template-columns:minmax(180px,260px) 1fr;
+  gap:24px;
+  align-items:start;
+  margin-top:12px;
+}
+.wine-bottle-panel{
+  display:grid;
+  justify-items:center;
+  gap:14px;
+  padding:18px;
+  border-radius:20px;
+  background:#f8f5f0;
+}
+.wine-bottle-image{width:100%;max-height:360px;object-fit:contain}
+.wine-producer-logo{max-width:160px;max-height:70px;object-fit:contain}
+.wine-tasting{display:grid;gap:10px;margin-top:18px}
+.wine-tasting .info{background:#fffaf6}
+.wine-label-wrap{margin-top:20px;padding:18px;border-radius:18px;background:#f8f5f0}
+.wine-label-wrap img{max-width:100%;max-height:320px;object-fit:contain}
+@media(max-width:650px){
+  .wine-toolbar{grid-template-columns:1fr}
+  .wine-detail-layout{grid-template-columns:1fr}
+  .wine-origin-intro{padding:17px}
+}
+
+
+/* ===== VINS CUQUI · PORTADA GENERAL INTACTA ===== */
+.wine-cute-hero{
+  position:relative;
+  min-height:310px;
+  margin-bottom:16px;
+  padding:34px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:30px;
+  background:linear-gradient(135deg,#fff5ee 0%,#faf0ef 52%,#eef6ed 100%);
+  box-shadow:0 16px 38px rgba(83,47,35,.08);
+}
+.wine-cute-copy{position:relative;z-index:2;max-width:650px}
+.wine-cute-copy h2{
+  margin:12px 0 10px;
+  max-width:620px;
+  font-family:Georgia,serif;
+  font-size:clamp(2.7rem,5vw,4.8rem);
+  line-height:.98;
+  letter-spacing:-.045em;
+}
+.wine-cute-copy p{max-width:590px;color:var(--muted);font-size:1rem;line-height:1.5}
+.wine-cute-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+.wine-cute-art{position:absolute;inset:0 0 0 57%;overflow:hidden}
+.wine-sun{position:absolute;right:70px;top:34px;width:92px;height:92px;border-radius:50%;background:#f6c77c;opacity:.75}
+.wine-hill{position:absolute;left:-10%;right:-15%;bottom:-80px;height:210px;border-radius:50% 50% 0 0}
+.hill-one{background:#adc49c;transform:rotate(-5deg)}
+.hill-two{left:28%;bottom:-105px;background:#d6b28b;transform:rotate(6deg)}
+.wine-bottle-shape{position:absolute;right:138px;bottom:30px;width:55px;height:188px;border-radius:16px 16px 22px 22px;background:#7b3542;box-shadow:inset 0 0 0 8px rgba(255,255,255,.08)}
+.wine-bottle-shape:before{content:"";position:absolute;width:23px;height:52px;left:16px;top:-42px;border-radius:7px 7px 2px 2px;background:#6c2e38}
+.wine-bottle-shape:after{content:"SALIVERA";position:absolute;left:7px;right:7px;top:82px;padding:12px 2px;background:#f7eadb;color:#7b3542;text-align:center;font-size:.54rem;font-weight:900;letter-spacing:.08em}
+.wine-glass-shape{position:absolute;right:48px;bottom:40px;width:66px;height:84px;border:3px solid rgba(91,54,44,.55);border-radius:10px 10px 34px 34px}
+.wine-glass-shape:before{content:"";position:absolute;left:9px;right:9px;bottom:8px;height:43px;border-radius:5px 5px 26px 26px;background:#a84858}
+.wine-glass-shape:after{content:"";position:absolute;left:29px;bottom:-55px;width:3px;height:55px;background:#765a4e;box-shadow:-21px 55px 0 -1px #765a4e,21px 55px 0 -1px #765a4e}
+.wine-grapes{position:absolute;right:236px;bottom:42px;color:#81415a;font-size:31px;line-height:.6}
+.wine-grapes span,.wine-grapes i,.wine-grapes b,.wine-grapes em{position:absolute;font-style:normal}
+.wine-grapes span{left:22px;top:8px}.wine-grapes i{left:10px;top:27px}.wine-grapes b{left:35px;top:31px}.wine-grapes em{left:23px;top:50px}
+
+.wine-map-and-origins{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(370px,.92fr);gap:14px;margin-bottom:16px}
+.wine-map-preview,.wine-origins-panel{border:1px solid var(--line);border-radius:25px;background:#fffaf6;padding:18px}
+.wine-map-title,.wine-origins-heading{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:12px}
+.wine-map-title h3,.wine-origins-heading h3{margin:4px 0 0;font-family:Georgia,serif;font-size:1.55rem}
+.wine-map-preview img{display:block;width:100%;height:330px;object-fit:cover;object-position:center;border-radius:18px;background:#eee8df}
+.wine-map-notes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.wine-map-notes span{padding:9px 11px;border-radius:12px;background:#f7f1ea;color:var(--muted);font-size:.73rem;line-height:1.35}
+.wine-do-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:397px;overflow:auto;padding-right:3px}
+.wine-do-card{
+  min-height:82px;padding:12px;border:1px solid var(--line);border-radius:17px;
+  background:linear-gradient(145deg,#fff,#fbf4ed);text-align:left;cursor:pointer;
+  transition:transform .16s,box-shadow .16s,border-color .16s;
+}
+.wine-do-card:hover{transform:translateY(-2px);box-shadow:0 9px 20px rgba(77,46,35,.08)}
+.wine-do-card.active{border-color:#9c5360;box-shadow:0 0 0 3px rgba(125,49,64,.12);background:#fff6f6}
+.wine-do-motif{float:right;font-size:1.25rem}
+.wine-do-card strong{display:block;padding-right:20px;font-family:Georgia,serif;font-size:.9rem;line-height:1.12}
+.wine-do-card small{display:block;margin-top:8px;color:var(--muted);font-size:.7rem}
+.wine-toolbar{grid-template-columns:minmax(230px,1fr) minmax(170px,.7fr) auto!important}
+.wine-toolbar select:disabled{opacity:1;color:#49372e;background:#f2ece6;cursor:not-allowed}
+.wine-origin-intro{background:linear-gradient(135deg,#fff7f1,#f5f8f0)!important}
+.wine-selected-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.wine-selected-count{padding:7px 11px;border-radius:999px;background:white;border:1px solid var(--line);font-weight:800;font-size:.75rem}
+.wine-origin-intro small{display:block;margin-top:12px;color:#958178;font-size:.72rem}
+.wine-map-lightbox-card{width:min(96vw,1160px)!important;max-width:1160px!important;background:#fffaf6!important}
+.wine-map-full{margin-top:15px;padding:10px;border-radius:18px;background:#ede7df;overflow:auto}
+.wine-map-full img{display:block;width:100%;min-width:760px;border-radius:12px}
+.wine-map-special-notes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.wine-map-special-notes article{padding:14px;border:1px solid var(--line);border-radius:15px;background:white}
+.wine-map-special-notes p{margin:5px 0 0;color:var(--muted);font-size:.82rem;line-height:1.4}
+
+@media(max-width:960px){
+  .wine-map-and-origins{grid-template-columns:1fr}
+  .wine-do-grid{grid-template-columns:repeat(3,minmax(0,1fr));max-height:none}
+}
+@media(max-width:650px){
+  .wine-cute-hero{min-height:410px;padding:22px 18px}
+  .wine-cute-copy h2{font-size:2.65rem;max-width:100%}
+  .wine-cute-copy p{max-width:100%;font-size:.9rem}
+  .wine-cute-art{inset:48% 0 0 0}
+  .wine-sun{right:30px;top:18px;width:67px;height:67px}
+  .wine-bottle-shape{right:116px;bottom:20px;width:43px;height:145px}
+  .wine-bottle-shape:before{width:19px;height:40px;left:12px;top:-33px}
+  .wine-bottle-shape:after{top:62px;font-size:.42rem;padding:9px 1px}
+  .wine-glass-shape{right:39px;bottom:25px;width:52px;height:66px}
+  .wine-grapes{right:181px;bottom:31px;transform:scale(.78)}
+  .wine-map-preview,.wine-origins-panel{padding:13px}
+  .wine-map-preview img{height:260px}
+  .wine-map-title{align-items:stretch;flex-direction:column}
+  .wine-map-title .secondary-btn{align-self:flex-start}
+  .wine-map-notes{grid-template-columns:1fr}
+  .wine-do-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .wine-toolbar{grid-template-columns:1fr!important}
+  .wine-map-special-notes{grid-template-columns:1fr}
+  .wine-map-full img{min-width:680px}
+}
+
 </style>
 
 <script>
@@ -1689,6 +1890,85 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
 <button class="chip" onclick="showMap()">🗺 Mapa de restaurants</button>
 <button class="chip clear-filters hidden" id="clearFiltersBtn" onclick="clearAllFilters()">✕ Esborrar tots els filtres</button>
 </div></div>
+
+<div id="wineTools" class="hidden">
+  <section class="wine-cute-hero">
+    <div class="wine-cute-copy">
+      <div class="eyebrow">Vins de Catalunya</div>
+      <h2>El territori dins d’una ampolla</h2>
+      <p>Descobreix les denominacions d’origen, coneix-ne el paisatge i guarda els vins que val la pena recordar.</p>
+      <div class="wine-cute-actions">
+        <button type="button" class="primary-btn" onclick="scrollToWineOrigins()">Descobrir les D.O.</button>
+        <button type="button" class="secondary-btn" onclick="showAllWines()">Veure tots els vins</button>
+      </div>
+    </div>
+    <div class="wine-cute-art" aria-hidden="true">
+      <div class="wine-sun"></div>
+      <div class="wine-hill hill-one"></div>
+      <div class="wine-hill hill-two"></div>
+      <div class="wine-bottle-shape"></div>
+      <div class="wine-glass-shape"></div>
+      <div class="wine-grapes">●<span>●</span><i>●</i><b>●</b><em>●</em></div>
+    </div>
+  </section>
+
+  <section class="wine-map-and-origins" id="wineOriginsSection">
+    <div class="wine-map-preview">
+      <div class="wine-map-title">
+        <div>
+          <div class="eyebrow">Catalunya, terra de vi</div>
+          <h3>Mapa de les denominacions d’origen</h3>
+        </div>
+        <button type="button" class="secondary-btn" onclick="openWineMapLightbox()">Ampliar mapa</button>
+      </div>
+      <img src="mapa-do-incavi.webp" alt="Mapa de les denominacions d’origen catalanes publicat per l’INCAVI">
+      <div class="wine-map-notes">
+        <span><b>DO Catalunya</b> se superposa amb altres denominacions.</span>
+        <span><b>DO Cava</b> té una implantació territorial discontínua.</span>
+      </div>
+    </div>
+
+    <div class="wine-origins-panel">
+      <div class="wine-origins-heading">
+        <div>
+          <div class="eyebrow">Tria un territori</div>
+          <h3>Denominacions d’origen</h3>
+        </div>
+      </div>
+      <div id="wineDoGrid" class="wine-do-grid"></div>
+    </div>
+  </section>
+
+  <div class="wine-toolbar">
+    <label class="field">
+      <select id="wineOrigin" onchange="handleWineOriginChange()">
+        <option value="">DENOMINACIÓ D’ORIGEN</option>
+      </select>
+    </label>
+    <label class="field">
+      <select id="wineType" onchange="renderCurrent()">
+        <option value="">TIPOLOGIES</option>
+      </select>
+    </label>
+    <button class="chip" id="wineFavChip" onclick="toggleGenericFavs()">♡ Només preferits</button>
+  </div>
+
+  <section id="wineOriginIntro" class="wine-origin-intro hidden"></section>
+</div>
+
+<div id="wineMapLightbox" class="modal hidden" role="dialog" aria-modal="true">
+  <div class="modal-card wine-map-lightbox-card">
+    <button class="close" type="button" onclick="closeWineMapLightbox()">×</button>
+    <div class="eyebrow">INCAVI · Catalunya, terra de vi</div>
+    <h2>Mapa de les denominacions d’origen</h2>
+    <div class="wine-map-full"><img src="mapa-do-incavi.webp" alt="Mapa ampliat de les denominacions d’origen catalanes"></div>
+    <div class="wine-map-special-notes">
+      <article><b>DO Catalunya</b><p>És transversal i pot coincidir territorialment amb altres denominacions catalanes.</p></article>
+      <article><b>DO Cava</b><p>La seva zona de producció és discontínua i no es pot representar com una única àrea compacta.</p></article>
+    </div>
+  </div>
+</div>
+
 <div id="genericTools" class="filters-extra hidden">
 <button class="chip" id="genericFavChip">♡ Només preferits</button>
 </div><div class="cards" id="cards"></div></section>
@@ -1980,7 +2260,137 @@ window.SaliveraDB=(()=>{
     return await parseResponse(response);
   }
 
-  return {insertRestaurant,updateRestaurant,deactivateRestaurant};
+  
+  function shopToRow(item){
+    return {
+      id:String(item.id),
+      nom:String(item.nom||'').trim(),
+      territori:item.territori||'ppcc',
+      pais:item.pais||null,
+      vegueria:item.vegueria||null,
+      zona:item.zona||null,
+      tipus_zona:item.tipusZona||null,
+      tipus_botiga:item.categoria||(item.especialitats||[])[0]||null,
+      adreca:item.adreca||null,
+      coordenades_originals:item.coordenades||null,
+      telefon_principal:item.telefon1||null,
+      telefon_secundari:item.telefon2||null,
+      whatsapp:item.whatsapp||null,
+      web:item.web||null,
+      instagram:item.instagram||null,
+      imatge_url:item.imatge||null,
+      logo_url:item.logo||null,
+      recomanat_per:item.recomanatPer||null,
+      notes:item.notes||null,
+      top:Boolean(item.top),
+      novetat:Boolean(item.novetat),
+      pendent:Boolean(item.pendent),
+      per_anar_hi:Boolean(item.perAnarHi),
+      tancat:Boolean(item.tancat),
+      estat:item.tancat?'tancat':'actiu',
+      updated_at:new Date().toISOString()
+    };
+  }
+
+  async function insertShop(item){
+    const response=await fetch(`${URL}/rest/v1/botigues`,{
+      method:'POST',headers:await authHeaders(),body:JSON.stringify(shopToRow(item))
+    });
+    return await parseResponse(response);
+  }
+  async function updateShop(item){
+    const response=await fetch(`${URL}/rest/v1/botigues?id=eq.${encodeURIComponent(String(item.id))}`,{
+      method:'PATCH',headers:await authHeaders(),body:JSON.stringify(shopToRow(item))
+    });
+    return await parseResponse(response);
+  }
+  async function deactivateShop(id){
+    const response=await fetch(`${URL}/rest/v1/botigues?id=eq.${encodeURIComponent(String(id))}`,{
+      method:'PATCH',headers:await authHeaders(),
+      body:JSON.stringify({estat:'tancat',tancat:true,updated_at:new Date().toISOString()})
+    });
+    return await parseResponse(response);
+  }
+
+  
+  function experienceToRow(item){
+    return {
+      id:String(item.id),nom:String(item.nom||'').trim(),
+      territori:item.territori||'ppcc',pais:item.pais||null,
+      vegueria:item.vegueria||null,zona:item.zona||null,tipus_zona:item.tipusZona||null,
+      tipus_experiencia:item.categoria||(item.especialitats||[])[0]||null,
+      adreca:item.adreca||null,coordenades_originals:item.coordenades||null,
+      telefon_principal:item.telefon1||null,telefon_secundari:item.telefon2||null,
+      whatsapp:item.whatsapp||null,web:item.web||null,instagram:item.instagram||null,
+      reserva_url:item.reserva||null,imatge_url:item.imatge||null,logo_url:item.logo||null,
+      recomanat_per:item.recomanatPer||null,horari_text:item.horari||null,
+      observacions_horari:item.observacionsHorari||null,notes:item.notes||null,
+      top:Boolean(item.top),novetat:Boolean(item.novetat),pendent:Boolean(item.pendent),
+      per_anar_hi:Boolean(item.perAnarHi),tancat:Boolean(item.tancat),
+      estat:item.tancat?'tancat':'actiu',updated_at:new Date().toISOString()
+    };
+  }
+  async function insertExperience(item){
+    const response=await fetch(`${URL}/rest/v1/experiencies`,{
+      method:'POST',headers:await authHeaders(),body:JSON.stringify(experienceToRow(item))
+    });
+    return await parseResponse(response);
+  }
+  async function updateExperience(item){
+    const response=await fetch(`${URL}/rest/v1/experiencies?id=eq.${encodeURIComponent(String(item.id))}`,{
+      method:'PATCH',headers:await authHeaders(),body:JSON.stringify(experienceToRow(item))
+    });
+    return await parseResponse(response);
+  }
+  async function deactivateExperience(id){
+    const response=await fetch(`${URL}/rest/v1/experiencies?id=eq.${encodeURIComponent(String(id))}`,{
+      method:'PATCH',headers:await authHeaders(),
+      body:JSON.stringify({estat:'tancat',tancat:true,updated_at:new Date().toISOString()})
+    });
+    return await parseResponse(response);
+  }
+
+  
+  function wineToRow(item){
+    return {
+      id:String(item.id),nom:String(item.nom||'').trim(),
+      origen:item.origen||null,tipus_vi:item.tipusVi||null,
+      productor:item.productor||null,elaborador:item.elaborador||null,
+      varietats:Array.isArray(item.varietats)?item.varietats:[],
+      crianca:item.crianca||null,color_vi:item.colorVi||null,
+      temperatura_servei:item.temperatura||null,graduacio:item.graduacio||null,
+      preu:item.preu?Number(item.preu):null,web:item.web||null,instagram:item.instagram||null,
+      imatge_ampolla:item.imatgeAmpolla||item.imatge||null,
+      imatge_etiqueta:item.imatgeEtiqueta||null,logo_productor:item.logoProductor||null,
+      nota_visual:item.notaVisual||null,nota_olfactiva:item.notaOlfactiva||null,
+      nota_gustativa:item.notaGustativa||null,elaboracio:item.elaboracio||null,
+      observacions:item.notes||null,top:Boolean(item.top),novetat:Boolean(item.novetat),
+      pendent:Boolean(item.pendent),per_tastar:Boolean(item.perTastar),
+      tancat:Boolean(item.tancat),estat:item.tancat?'tancat':'actiu',
+      updated_at:new Date().toISOString()
+    };
+  }
+  async function insertWine(item){
+    const response=await fetch(`${URL}/rest/v1/vins`,{
+      method:'POST',headers:await authHeaders(),body:JSON.stringify(wineToRow(item))
+    });
+    return await parseResponse(response);
+  }
+  async function updateWine(item){
+    const response=await fetch(`${URL}/rest/v1/vins?id=eq.${encodeURIComponent(String(item.id))}`,{
+      method:'PATCH',headers:await authHeaders(),body:JSON.stringify(wineToRow(item))
+    });
+    return await parseResponse(response);
+  }
+  async function deactivateWine(id){
+    const response=await fetch(`${URL}/rest/v1/vins?id=eq.${encodeURIComponent(String(id))}`,{
+      method:'PATCH',headers:await authHeaders(),
+      body:JSON.stringify({estat:'tancat',tancat:true,updated_at:new Date().toISOString()})
+    });
+    return await parseResponse(response);
+  }
+
+  return {insertRestaurant,updateRestaurant,deactivateRestaurant,insertShop,updateShop,deactivateShop,insertExperience,updateExperience,deactivateExperience,insertWine,updateWine,deactivateWine};
 })();
 </script>
 
@@ -2029,7 +2439,7 @@ customItems=customItems
 
 const DATA=[...BASE_DATA,...customItems];const byType=t=>DATA.filter(x=>x.tipus===t);const restaurants=byType('restaurant');let currentType='restaurant',favOnly=false,activeOnly=false,selectedFeatures=new Set(),map=null,mapLayer=null,showOutside=false,currentEditingId=null;let adminMode=false;let favorites=new Set(JSON.parse(localStorage.getItem('salivera-favs')||'[]'));function saveItems(){localStorage.setItem(ITEMS_KEY,JSON.stringify(customItems))}function saveEdits(){localStorage.setItem(EDITS_KEY,JSON.stringify(savedEdits));localStorage.setItem(DELETED_KEY,JSON.stringify([...deletedIds]))}
 const TAX_KEY='salivera-taxonomies-v214';
-const TAX_TYPES=['vegueria','zona','cuinaRestaurant','especialitat','rangPreu','persona','categoriaRecepta','cuinaRecepta','tipusAliment','allergen','cuiner'];
+const TAX_TYPES=['vegueria','zona','cuinaRestaurant','especialitat','tipusBotiga','tipusExperiencia','origenVi','tipusVi','rangPreu','persona','categoriaRecepta','cuinaRecepta','tipusAliment','allergen','cuiner'];
 function blankTax(){const custom={},renames={},deleted={};TAX_TYPES.forEach(t=>{custom[t]=[];renames[t]={};deleted[t]=[]});return{custom,renames,deleted}}
 function loadTax(){
   try{const v=JSON.parse(localStorage.getItem(TAX_KEY)||'null');if(v)return v}catch(e){}
@@ -2054,6 +2464,10 @@ function baseMaster(type){
   zona:FORM_TAXONOMY.zones,
   cuinaRestaurant:FORM_TAXONOMY.cuines,
   especialitat:FORM_TAXONOMY.especialitats,
+  tipusBotiga:['CARNISSERIA','CANSALADERIA','PASTISSERIA','FORN DE PA','GELATERIA','FORMATGERIA','CELLER','BOTIGA GURMET','MERCAT','ALTRES'],
+  tipusExperiencia:['VINÍCOLA','GASTRONÒMICA','VISITA GUIADA','TALLER','TAST','ACTIVITAT CULTURAL','ALTRES'],
+  origenVi:['DO ALELLA','DO CATALUNYA','DO CONCA DE BARBERÀ','DO COSTERS DEL SEGRE','DO EMPORDÀ','DO MONTSANT','DO PENEDÈS','DO PLA DE BAGES','DOQ PRIORAT','DO TARRAGONA','DO TERRA ALTA','DO CAVA','CORPINNAT','ALTRES'],
+  tipusVi:['CAVA','BLANC','ROSAT','NEGRE','DOLÇ'],
   rangPreu:FORM_TAXONOMY.rangsPreu,
   persona:FORM_TAXONOMY.recomanadors,
   categoriaRecepta:FORM_TAXONOMY.categoriesRecepta,
@@ -2115,6 +2529,32 @@ function showGlobalFavorites(){
 }
 
 function goHome(){currentType='home';$('#homeView').classList.remove('hidden');$('#listView').classList.add('hidden');$('#mapView').classList.add('hidden');$('#globalFavoritesView').classList.add('hidden');setNav('home');scrollTo(0,0)}
+
+const WINE_ORIGINS=[
+  'DO ALELLA','DO CATALUNYA','DO CONCA DE BARBERÀ','DO COSTERS DEL SEGRE',
+  'DO EMPORDÀ','DO MONTSANT','DO PENEDÈS','DO PLA DE BAGES','DOQ PRIORAT',
+  'DO TARRAGONA','DO TERRA ALTA','DO CAVA','CORPINNAT','ALTRES'
+];
+const WINE_TYPES=['CAVA','BLANC','ROSAT','NEGRE','DOLÇ'];
+const WINE_ORIGIN_INFO={
+  'DO ALELLA':`És la DO més petita de Catalunya i una de les més antigues. Es va crear el 1953 amb gairebé 1500 hectàrees de vinya, quasi cinc vegades més de les que té actualment.
+
+És coneguda pels vins blancs, elaborats principalment amb pansa blanca. Darrerament, es van recuperant també les negres mataró (monastrell) i garnatxa, així com les blanques picapoll i garnatxa blanca.`,
+  'DO CATALUNYA':`Creada el 1999, s’estén per les zones catalanes on tradicionalment s’ha conreat la vinya. La seva amplitud territorial permet reunir una gran diversitat de sòls, climes, varietats i estils de vi.`,
+  'DO CONCA DE BARBERÀ':`La Conca de Barberà combina història, cooperativisme i paisatge. El trepat és la seva varietat més emblemàtica i dona vins frescos, delicats i amb una identitat molt marcada.`,
+  'DO COSTERS DEL SEGRE':`Un mosaic de territoris de Ponent i del Pirineu, amb grans contrastos d’altitud, clima i sòls. Aquesta diversitat permet elaborar vins de perfils molt diferents.`,
+  'DO EMPORDÀ':`La tramuntana, la proximitat del mar i una llarga tradició vitivinícola defineixen els vins de l’Empordà. Garnatxes i carinyenes són algunes de les seves varietats més representatives.`,
+  'DO MONTSANT':`Les vinyes velles, els contrastos climàtics, l’orografia accidentada i la diversitat de sòls originen vins singulars, amb caràcter i una identitat pròpia.`,
+  'DO PENEDÈS':`Una de les zones vitivinícoles més diverses de Catalunya. Del mar a les zones altes, els seus sòls i microclimes afavoreixen una gran varietat d’estils, amb el xarel·lo com a protagonista.`,
+  'DO PLA DE BAGES':`Situada al centre de Catalunya i als peus de Montserrat. La picapoll, les barraques de pedra seca i les tines a peu de vinya formen part de la seva personalitat.`,
+  'DOQ PRIORAT':`L’orografia exigent i els sòls de llicorella donen vins intensos, minerals i concentrats. És l’única denominació catalana qualificada.`,
+  'DO TARRAGONA':`Una denominació històrica, marcada pel clima mediterrani i per una llarga tradició en vins blancs, negres, rosats, escumosos i vins dolços o de licor.`,
+  'DO TERRA ALTA':`La zona vinícola catalana més meridional, profundament vinculada a la garnatxa blanca, varietat emblemàtica del territori.`,
+  'DO CAVA':`Empara vins escumosos elaborats pel mètode tradicional, amb una segona fermentació en ampolla i criança sobre les mares. La seva zona de producció és territorialment discontínua.`,
+  'CORPINNAT':`Marca col·lectiva europea d’escumosos elaborats al cor del Penedès, amb raïm ecològic, verema manual i elaboració íntegra a la propietat. No és una denominació d’origen.`,
+  'ALTRES':`Vins procedents d’altres denominacions, indicacions geogràfiques o territoris que no formen part de la selecció principal de SALIVERA.`
+};
+
 const moduleMeta={
   restaurant:['Restaurants','Llocs per descobrir i recordar'],
   recepta:['Receptes','Què cuinar'],
@@ -2138,12 +2578,30 @@ function renderModules(){
       <span class="module-count">${c}</span>
       <div class="module-illustration"><img src="${moduleImages[t]}" alt=""></div>
       <div class="module-info"><strong>${n}</strong><span>${d}</span></div>
-      <span class="module-go" aria-hidden="true">→</span>
+      
     </button>`;
   }).join('');
 }
 function openRestaurants(favs=false){favOnly=!!favs;currentType='restaurant';openType('restaurant');$('#favChip').classList.toggle('active',favOnly)}
-function openType(t){currentType=t;$('#homeView').classList.add('hidden');$('#mapView').classList.add('hidden');$('#globalFavoritesView').classList.add('hidden');$('#listView').classList.remove('hidden');const m=moduleMeta[t]||['','Biblioteca',''];$('#listTitle').textContent=m[1];$('#listEyebrow').textContent=m[2];$('#restaurantTools').classList.toggle('hidden',t!=='restaurant');$('#genericTools').classList.toggle('hidden',t==='restaurant');if($('#genericFavChip'))$('#genericFavChip').classList.toggle('active',favOnly);setNav(t==='restaurant'?(favOnly?'favorites':'restaurants'):'home');renderCurrent();scrollTo(0,0)}
+function openType(t){
+  currentType=t;
+  $('#homeView').classList.add('hidden');
+  $('#mapView').classList.add('hidden');
+  $('#globalFavoritesView').classList.add('hidden');
+  $('#listView').classList.remove('hidden');
+  const m=moduleMeta[t]||['','Biblioteca',''];
+  $('#listTitle').textContent=m[1];
+  $('#listEyebrow').textContent=m[2];
+  $('#restaurantTools').classList.toggle('hidden',t!=='restaurant');
+  $('#wineTools').classList.toggle('hidden',t!=='vi');
+  $('#genericTools').classList.toggle('hidden',t==='restaurant'||t==='vi');
+  if(t==='vi')fillWineFilters();
+  if($('#genericFavChip'))$('#genericFavChip').classList.toggle('active',favOnly);
+  if($('#wineFavChip'))$('#wineFavChip').classList.toggle('active',favOnly);
+  setNav(t==='restaurant'?(favOnly?'favorites':'restaurants'):'home');
+  renderCurrent();
+  scrollTo(0,0);
+}
 function truthyFeature(v){return v===true||v===1||String(v||'').toLowerCase()==='sí'||String(v||'').toLowerCase()==='si'||String(v||'').toLowerCase()==='true'||String(v||'').toLowerCase()==='x'}
 const PRICE_VALUES=['Menys de 20€','Entre 20 i 35€','Entre 35 i 50€','Entre 50 i 100€','Més de 100€'];
 function splitControlledValues(value,allowed){
@@ -2213,7 +2671,133 @@ function updateFeatureCounts(){document.querySelectorAll('.feature-chip').forEac
 function toggleFeatureFilter(feature){selectedFeatures.has(feature)?selectedFeatures.delete(feature):selectedFeatures.add(feature);fillFilters();renderCurrent();updateClearFiltersButton()}
 function updateCascadingFilters(from){if(from==='vegueria'){$('#zona').value='';$('#cuina').value='';$('#categoria').value='';$('#preu').value='';$('#recomanador').value=''}else if(from==='zona'){$('#cuina').value='';$('#categoria').value='';$('#preu').value='';$('#recomanador').value=''}else if(from==='cuina'){$('#categoria').value='';$('#preu').value='';$('#recomanador').value=''}fillFilters();renderCurrent()}
 function filteredRestaurants(){return baseRestaurantPool([])}
-function renderCurrent(){if(currentType==='restaurant'){const a=filteredRestaurants();$('#resultCount').textContent=`${a.length} restaurants`;$('#cards').innerHTML=a.length?a.map(cardRestaurant).join(''):`<div class="empty" style="grid-column:1/-1">No hi ha restaurants que coincideixin amb aquests filtres.</div>`}else{let a=byType(currentType);if(favOnly)a=a.filter(x=>favorites.has(x.id));$('#resultCount').textContent=`${a.length} elements`;$('#cards').innerHTML=a.length?a.map(cardGeneric).join(''):`<div class="empty" style="grid-column:1/-1">Encara no hi ha cap preferit en aquest apartat.</div>`}}
+function wineOriginPlaceholder(){
+  return window.matchMedia('(max-width:650px)').matches?'D.O.':'DENOMINACIÓ D’ORIGEN';
+}
+function fillWineFilters(){
+  const origin=$('#wineOrigin'),type=$('#wineType');
+  if(!origin||!type)return;
+  const currentOrigin=origin.value,currentTypeValue=type.value;
+  origin.innerHTML=`<option value="">${wineOriginPlaceholder()}</option>`+
+    WINE_ORIGINS.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
+  type.innerHTML='<option value="">TIPOLOGIES</option>'+
+    WINE_TYPES.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
+  if(WINE_ORIGINS.includes(currentOrigin))origin.value=currentOrigin;
+  if(WINE_TYPES.includes(currentTypeValue))type.value=currentTypeValue;
+  renderWineDoGrid();
+  applyWineOriginRules(false);
+}
+function wineCountForOrigin(origin){
+  return byType('vi').filter(x=>x.origen===origin).length;
+}
+function renderWineDoGrid(){
+  const grid=$('#wineDoGrid');
+  if(!grid)return;
+  const selected=$('#wineOrigin')?.value||'';
+  grid.innerHTML=WINE_ORIGINS.map((origin,index)=>{
+    const count=wineCountForOrigin(origin);
+    const motifs=['🍇','🌿','🍷','🏺','☀️'];
+    return `<button type="button" class="wine-do-card ${selected===origin?'active':''}" onclick="selectWineOrigin('${esc(origin)}')">
+      <span class="wine-do-motif">${motifs[index%motifs.length]}</span>
+      <strong>${esc(origin)}</strong>
+      <small>${count} ${count===1?'vi':'vins'}</small>
+    </button>`;
+  }).join('');
+}
+function applyWineOriginRules(render=true){
+  const origin=$('#wineOrigin')?.value||'';
+  const type=$('#wineType');
+  if(!type)return;
+  if(['DO CAVA','CORPINNAT'].includes(origin)){
+    type.value='CAVA';
+    type.disabled=true;
+  }else{
+    type.disabled=false;
+  }
+  renderWineDoGrid();
+  if(render)renderCurrent();
+}
+function handleWineOriginChange(){applyWineOriginRules(true)}
+function selectWineOrigin(origin){
+  $('#wineOrigin').value=origin;
+  applyWineOriginRules(true);
+  setTimeout(()=>$('#wineOriginIntro')?.scrollIntoView({behavior:'smooth',block:'start'}),40);
+}
+function showAllWines(){
+  $('#wineOrigin').value='';
+  $('#wineType').disabled=false;
+  $('#wineType').value='';
+  renderWineDoGrid();
+  renderCurrent();
+  setTimeout(()=>$('#wineOriginIntro')?.scrollIntoView({behavior:'smooth',block:'start'}),40);
+}
+function scrollToWineOrigins(){
+  $('#wineOriginsSection')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function openWineMapLightbox(){
+  $('#wineMapLightbox').classList.remove('hidden');
+  document.body.style.overflow='hidden';
+}
+function closeWineMapLightbox(){
+  $('#wineMapLightbox').classList.add('hidden');
+  document.body.style.overflow='';
+}
+window.addEventListener('resize',()=>{
+  const option=$('#wineOrigin')?.querySelector('option[value=""]');
+  if(option)option.textContent=wineOriginPlaceholder();
+});
+function filteredWines(){
+  let wines=byType('vi');
+  const origin=$('#wineOrigin')?.value||'';
+  const type=$('#wineType')?.value||'';
+  if(origin)wines=wines.filter(x=>x.origen===origin);
+  if(type)wines=wines.filter(x=>x.tipusVi===type);
+  if(favOnly)wines=wines.filter(x=>favorites.has(x.id));
+  return wines;
+}
+function renderWineOriginIntro(origin){
+  const box=$('#wineOriginIntro');
+  if(!box)return;
+  if(!origin){box.classList.add('hidden');box.innerHTML='';return}
+  const official=!['CORPINNAT','ALTRES'].includes(origin);
+  box.innerHTML=`<div class="wine-selected-head">
+    <div><div class="eyebrow">${official?'Denominació seleccionada':'Origen seleccionat'}</div><h2>${esc(origin)}</h2></div>
+    <span class="wine-selected-count">${wineCountForOrigin(origin)} vins</span>
+  </div>
+  <p>${esc(WINE_ORIGIN_INFO[origin]||'').replace(/\n/g,'<br>')}</p>
+  <small>${official?'Text resumit a partir de la informació de l’INCAVI.':'Informació contextual de SALIVERA.'}</small>`;
+  box.classList.remove('hidden');
+}
+function wineCard(x){
+  const details=[x.productor,x.tipusVi,x.preu?x.preu+' €':''].filter(Boolean).join(' · ');
+  return `<article class="card wine-card" tabindex="0" onclick="openDetail('${x.id}')" onkeydown="if(event.key==='Enter')openDetail('${x.id}')">
+    <button class="heart ${favorites.has(x.id)?'on':''}" onclick="toggleFav('${x.id}',event)">${favorites.has(x.id)?'♥':'♡'}</button>
+    <div class="card-media">${imageHtml({...x,imatge:x.imatgeAmpolla||x.imatge})}</div>
+    <div class="card-body">
+      <div class="wine-origin-label">${esc(x.origen||'')}</div>
+      <h3>${esc(x.nom).toUpperCase()}</h3>
+      <div class="meta">${esc(details)}</div>
+    </div>
+  </article>`;
+}
+function renderCurrent(){
+  if(currentType==='restaurant'){
+    const a=filteredRestaurants();
+    $('#resultCount').textContent=`${a.length} restaurants`;
+    $('#cards').innerHTML=a.length?a.map(cardRestaurant).join(''):`<div class="empty" style="grid-column:1/-1">No hi ha restaurants que coincideixin amb aquests filtres.</div>`;
+  }else if(currentType==='vi'){
+    const origin=$('#wineOrigin')?.value||'';
+    const a=filteredWines();
+    renderWineOriginIntro(origin);
+    $('#resultCount').textContent=`${a.length} vins`;
+    $('#cards').innerHTML=a.length?a.map(wineCard).join(''):`<div class="empty" style="grid-column:1/-1">Encara no hi ha vins amb aquests filtres.</div>`;
+  }else{
+    let a=byType(currentType);
+    if(favOnly)a=a.filter(x=>favorites.has(x.id));
+    $('#resultCount').textContent=`${a.length} elements`;
+    $('#cards').innerHTML=a.length?a.map(cardGeneric).join(''):`<div class="empty" style="grid-column:1/-1">Encara no hi ha cap preferit en aquest apartat.</div>`;
+  }
+}
 function cardRestaurant(r){const tags=(r.cuines||[]).slice(0,2).map(x=>`<span class="tag">${esc(x.toUpperCase())}</span>`).join('');const states=[truthyFeature(r.top)?'🏆 TOP':'',truthyFeature(r.novetat)?'✨ NOVETAT':'',truthyFeature(r.perAnarHi)?'📍 PER ANAR-HI':'',truthyFeature(r.pendent)?'⏳ PENDENT':''].filter(Boolean).map(x=>`<span class="status-tag">${x}</span>`).join('');return `<article class="card" tabindex="0" onclick="openDetail('${r.id}')" onkeydown="if(event.key==='Enter')openDetail('${r.id}')"><button class="heart ${favorites.has(r.id)?'on':''}" onclick="toggleFav('${r.id}',event)">${favorites.has(r.id)?'♥':'♡'}</button><div class="card-media">${imageHtml(r)}</div><div class="card-body"><h3>${esc(r.nom).toUpperCase()}</h3><div class="meta">${esc([r.zona,r.vegueria].filter(Boolean).join(' · '))}</div>${r.recomanatPer?`<div class="meta recommender" style="margin-top:6px"><span class="recommender-icon">✦</span> ${esc(r.recomanatPer)}</div>`:''}<div class="tags">${tags}</div>${states?`<div class="status-tags">${states}</div>`:''}</div></article>`}
 function cardGeneric(x){return `<article class="card" tabindex="0" onclick="openDetail('${x.id}')" onkeydown="if(event.key==='Enter')openDetail('${x.id}')"><button class="heart ${favorites.has(x.id)?'on':''}" onclick="toggleFav('${x.id}',event)">${favorites.has(x.id)?'♥':'♡'}</button><div class="card-media">${imageHtml(x)}</div><div class="card-body"><h3>${esc(x.nom).toUpperCase()}</h3><div class="meta">${esc(x.categoria||x.zona||'')}</div></div></article>`}
 function cleanDataValue(value){
@@ -2249,7 +2833,71 @@ function formatScaledNumber(n){if(Math.abs(n-Math.round(n))<.001)return String(M
 function parseAmount(raw){const t=raw.trim().replace(',','.');if(/^\d+\/\d+$/.test(t)){const [a,b]=t.split('/').map(Number);return b?a/b:null}if(/^\d+\s+\d+\/\d+$/.test(t)){const [w,f]=t.split(/\s+/);const [a,b]=f.split('/').map(Number);return Number(w)+a/b}const n=Number(t);return Number.isFinite(n)?n:null}
 function scaleIngredients(text,factor){return String(text||'').split('\n').map(line=>line.replace(/(^|[\s(])((?:\d+\s+)?\d+\/\d+|\d+(?:[.,]\d+)?)/g,(all,prefix,num)=>{const n=parseAmount(num);return n===null?all:prefix+formatScaledNumber(n*factor)})).join('\n')}
 function updateRecipeServings(id){const x=DATA.find(y=>y.id===id),input=$('#servings-'+id),box=$('#scaled-'+id);if(!x||!input||!box)return;const base=parseFloat(String(x.comensals||'1').replace(',','.'))||1;const target=Math.max(.5,parseFloat(input.value)||base);box.textContent=scaleIngredients(x.ingredients,target/base)}
-function openDetail(id){const x=DATA.find(y=>y.id===id);if(!x)return;const isR=x.tipus==='restaurant',isRecipe=x.tipus==='recepta';const phone=validPhone(x.telefon1);const wa=validWhatsapp(x.whatsapp);let acts=isR?[action('📞 Trucar',phone?`tel:${phone}`:''),action('💬 WhatsApp',wa?`https://wa.me/${wa}`:''),action('🌐 Web',validExternalUrl(x.web)),action('📷 Instagram',validExternalUrl(x.instagram)),action('📄 Carta',validExternalUrl(x.carta)),action('📅 Reserva',validExternalUrl(x.reserva)),action('▶ Vídeo',validExternalUrl(x.video))].filter(Boolean).join(''):action('🔗 Obrir enllaç',validExternalUrl(x.enllac));let body='';if(isR){const galleries=uniq([x.imatge,...(x.galeria||[])]);body=`<div class="tags">${(x.cuines||[]).map(c=>`<span class="tag">${esc(c.toUpperCase())}</span>`).join('')}</div>${acts?`<div class="action-row">${acts}</div>`:''}<div class="info-grid">${info('Ubicació',[x.adreca,x.zona,x.vegueria].filter(Boolean).join(' · '),true)}${info('Horari',val(x.horari))}${info('Tancament',val(x.tancament))}${info('Rang de preu',x.rang||x.preuMitja)}${info('Recomanat per',x.recomanatPer)}${info('Especialitats',(x.especialitats||[]).join(', '))}${info('Serveis',[...(x.serveis||[]),truthyFeature(x.terrassa)?'Terrassa':'',truthyFeature(x.vegetaria)?'Opcions vegetarianes':'',truthyFeature(x.senseGluten)?'Sense gluten':''].filter(Boolean).join(', '))}${info('Estat',[truthyFeature(x.top)?'TOP':'',truthyFeature(x.novetat)?'Novetat':'',truthyFeature(x.perAnarHi)?'Per anar-hi':'',truthyFeature(x.pendent)?'Pendent':''].filter(Boolean).join(' · '))}${info('Menús',[x.menu,x.menu2,x.preuMenu2?x.preuMenu2+' €':''].filter(Boolean).join(' · '),true)}${info('Observacions',x.observacionsHorari||x.notes,true)}</div>${ratingsDetailHtml(x)}${galleries.length>1?`<h3>Galeria</h3><div class="gallery">${galleries.map(u=>`<img src="${esc(u)}" loading="lazy" referrerpolicy="no-referrer">`).join('')}</div>`:''}`}else if(isRecipe){const base=parseFloat(String(x.comensals||'4').replace(',','.'))||4;body=`${acts?`<div class="action-row">${acts}</div>`:''}<div class="recipe-calculator"><h3>Calculadora de comensals</h3><div class="servings-row"><span>Recepta original: <b>${base}</b></span><label>Vull cuinar per <input id="servings-${x.id}" type="number" min="0.5" step="0.5" value="${base}" oninput="updateRecipeServings('${x.id}')"> persones</label></div><div id="scaled-${x.id}" class="scaled-ingredients">${esc(x.ingredients||'')}</div></div><div class="info-grid">${info('Especialitat',x.categoria)}${info('Cuiner/a',x.cuiner)}${info('Temps',x.temps?x.temps+' min':'')}${info('Dificultat',x.dificultat)}${info('Preparació',x.preparacio,true)}${info('Variacions',x.variacions,true)}${info('Notes',x.notes||x.observacions,true)}</div>`}else{body=`${acts?`<div class="action-row">${acts}</div>`:''}<div class="info-grid">${info('Especialitat',x.categoria)}${info('Zona',x.zona)}${info('Descripció',x.notes||x.observacions||x.narracio,true)}</div>`}const logo=isR&&x.logo?`<img class="detail-logo" src="${esc(x.logo)}" alt="Logotip de ${esc(x.nom)}" onerror="this.style.display='none'">`:'';$('#sheet').innerHTML=`<div class="detail-cover">${imageHtml({...x,logo:''})}<button class="close" onclick="closeModal()">×</button><button class="close detail-heart ${favorites.has(x.id)?'on':''}" onclick="toggleFav('${x.id}',event)">${favorites.has(x.id)?'♥':'♡'}</button></div><div class="detail"><div class="detail-title-row">${logo}<div><h2>${esc(x.nom).toUpperCase()}</h2><div class="meta">${esc([x.zona,x.vegueria].filter(Boolean).join(' · '))}</div></div></div>${body}${adminMode?`<div class="admin-actions"><button class="primary-btn" onclick="editItem('${x.id}')">✎ Modificar</button><button class="danger-btn" onclick="deleteItem('${x.id}')">Desactivar</button></div>`:''}</div>`;$('#modal').classList.remove('hidden');document.body.style.overflow='hidden'}
+function openDetail(id){const x=DATA.find(y=>y.id===id);if(!x)return;const isR=x.tipus==='restaurant',isRecipe=x.tipus==='recepta';const phone=validPhone(x.telefon1);const wa=validWhatsapp(x.whatsapp);let acts=isR?[action('📞 Trucar',phone?`tel:${phone}`:''),action('💬 WhatsApp',wa?`https://wa.me/${wa}`:''),action('🌐 Web',validExternalUrl(x.web)),action('📷 Instagram',validExternalUrl(x.instagram)),action('📄 Carta',validExternalUrl(x.carta)),action('📅 Reserva',validExternalUrl(x.reserva)),action('▶ Vídeo',validExternalUrl(x.video))].filter(Boolean).join(''):action('🔗 Obrir enllaç',validExternalUrl(x.enllac));let body='';if(isR){const galleries=uniq([x.imatge,...(x.galeria||[])]);body=`<div class="tags">${(x.cuines||[]).map(c=>`<span class="tag">${esc(c.toUpperCase())}</span>`).join('')}</div>${acts?`<div class="action-row">${acts}</div>`:''}<div class="info-grid">${info('Ubicació',[x.adreca,x.zona,x.vegueria].filter(Boolean).join(' · '),true)}${info('Horari',val(x.horari))}${info('Tancament',val(x.tancament))}${info('Rang de preu',x.rang||x.preuMitja)}${info('Recomanat per',x.recomanatPer)}${info('Especialitats',(x.especialitats||[]).join(', '))}${info('Serveis',[...(x.serveis||[]),truthyFeature(x.terrassa)?'Terrassa':'',truthyFeature(x.vegetaria)?'Opcions vegetarianes':'',truthyFeature(x.senseGluten)?'Sense gluten':''].filter(Boolean).join(', '))}${info('Estat',[truthyFeature(x.top)?'TOP':'',truthyFeature(x.novetat)?'Novetat':'',truthyFeature(x.perAnarHi)?'Per anar-hi':'',truthyFeature(x.pendent)?'Pendent':''].filter(Boolean).join(' · '))}${info('Menús',[x.menu,x.menu2,x.preuMenu2?x.preuMenu2+' €':''].filter(Boolean).join(' · '),true)}${info('Observacions',x.observacionsHorari||x.notes,true)}</div>${ratingsDetailHtml(x)}${galleries.length>1?`<h3>Galeria</h3><div class="gallery">${galleries.map(u=>`<img src="${esc(u)}" loading="lazy" referrerpolicy="no-referrer">`).join('')}</div>`:''}`}else if(isRecipe){const base=parseFloat(String(x.comensals||'4').replace(',','.'))||4;body=`${acts?`<div class="action-row">${acts}</div>`:''}<div class="recipe-calculator"><h3>Calculadora de comensals</h3><div class="servings-row"><span>Recepta original: <b>${base}</b></span><label>Vull cuinar per <input id="servings-${x.id}" type="number" min="0.5" step="0.5" value="${base}" oninput="updateRecipeServings('${x.id}')"> persones</label></div><div id="scaled-${x.id}" class="scaled-ingredients">${esc(x.ingredients||'')}</div></div><div class="info-grid">${info('Especialitat',x.categoria)}${info('Cuiner/a',x.cuiner)}${info('Temps',x.temps?x.temps+' min':'')}${info('Dificultat',x.dificultat)}${info('Preparació',x.preparacio,true)}${info('Variacions',x.variacions,true)}${info('Notes',x.notes||x.observacions,true)}</div>`}else if(x.tipus==='vi'){
+  const wineActs=[
+    action('🌐 Web',validExternalUrl(x.web)),
+    action('📷 Instagram',validExternalUrl(x.instagram))
+  ].filter(Boolean).join('');
+  body=`${wineActs?`<div class="action-row">${wineActs}</div>`:''}
+    <div class="wine-detail-layout">
+      <div class="wine-bottle-panel">
+        ${x.logoProductor?`<img class="wine-producer-logo" src="${esc(x.logoProductor)}" alt="">`:''}
+        ${x.imatgeAmpolla?`<img class="wine-bottle-image" src="${esc(x.imatgeAmpolla)}" alt="${esc(x.nom)}">`:''}
+      </div>
+      <div class="info-grid">
+        ${info('Origen / DO',x.origen)}
+        ${info('Tipus de vi',x.tipusVi)}
+        ${info('Productor',x.productor)}
+        ${info('Elaborador',x.elaborador)}
+        ${info('Varietats',(x.varietats||[]).join(', '))}
+        ${info('Criança',x.crianca)}
+        ${info('Color',x.colorVi)}
+        ${info('Temperatura de servei',x.temperatura)}
+        ${info('Graduació',x.graduacio)}
+        ${info('Preu',x.preu?x.preu+' €':'')}
+        ${info('Elaboració',x.elaboracio,true)}
+      </div>
+    </div>
+    <div class="wine-tasting">
+      ${info('Visual',x.notaVisual,true)}
+      ${info('Nas',x.notaOlfactiva,true)}
+      ${info('Boca',x.notaGustativa,true)}
+      ${info('Observacions',x.notes,true)}
+    </div>
+    ${x.imatgeEtiqueta?`<div class="wine-label-wrap"><img src="${esc(x.imatgeEtiqueta)}" alt="Etiqueta de ${esc(x.nom)}"></div>`:''}`;
+}else if(x.tipus==='experiencia'){
+  const expPhone=validPhone(x.telefon1);
+  const expWa=validWhatsapp(x.whatsapp);
+  const expActs=[
+    action('📞 Trucar',expPhone?`tel:${expPhone}`:''),
+    action('💬 WhatsApp',expWa?`https://wa.me/${expWa}`:''),
+    action('🌐 Web',validExternalUrl(x.web)),
+    action('📷 Instagram',validExternalUrl(x.instagram)),
+    action('📅 Reserva',validExternalUrl(x.reserva))
+  ].filter(Boolean).join('');
+  body=`${expActs?`<div class="action-row">${expActs}</div>`:''}<div class="info-grid">
+    ${info('Tipus d’experiència',x.categoria||(x.especialitats||[]).join(', '))}
+    ${info('Ubicació',[x.adreca,x.zona,x.vegueria].filter(Boolean).join(' · '),true)}
+    ${info('Horari',x.horari)}
+    ${info('Recomanat per',x.recomanatPer)}
+    ${info('Observacions',x.observacionsHorari||x.notes,true)}
+  </div>`;
+}else if(x.tipus==='botiga'){
+  const shopPhone=validPhone(x.telefon1);
+  const shopWa=validWhatsapp(x.whatsapp);
+  const shopActs=[
+    action('📞 Trucar',shopPhone?`tel:${shopPhone}`:''),
+    action('💬 WhatsApp',shopWa?`https://wa.me/${shopWa}`:''),
+    action('🌐 Web',validExternalUrl(x.web)),
+    action('📷 Instagram',validExternalUrl(x.instagram))
+  ].filter(Boolean).join('');
+  body=`${shopActs?`<div class="action-row">${shopActs}</div>`:''}<div class="info-grid">
+    ${info('Tipus de botiga',x.categoria||(x.especialitats||[]).join(', '))}
+    ${info('Ubicació',[x.adreca,x.zona,x.vegueria].filter(Boolean).join(' · '),true)}
+    ${info('Recomanat per',x.recomanatPer)}
+    ${info('Descripció',x.notes||x.observacions,true)}
+  </div>`;
+}else{body=`${acts?`<div class="action-row">${acts}</div>`:''}<div class="info-grid">${info('Especialitat',x.categoria)}${info('Zona',x.zona)}${info('Descripció',x.notes||x.observacions||x.narracio,true)}</div>`}const logo=(isR&&x.logo)?`<img class="detail-logo" src="${esc(x.logo)}" alt="Logotip de ${esc(x.nom)}" onerror="this.style.display='none'">`:'';$('#sheet').innerHTML=`<div class="detail-cover">${imageHtml({...x,logo:''})}<button class="close" onclick="closeModal()">×</button><button class="close detail-heart ${favorites.has(x.id)?'on':''}" onclick="toggleFav('${x.id}',event)">${favorites.has(x.id)?'♥':'♡'}</button></div><div class="detail"><div class="detail-title-row">${logo}<div><h2>${esc(x.nom).toUpperCase()}</h2><div class="meta">${esc([x.zona,x.vegueria].filter(Boolean).join(' · '))}</div></div></div>${body}${adminMode?`<div class="admin-actions"><button class="primary-btn" onclick="editItem('${x.id}')">✎ Modificar</button><button class="danger-btn" onclick="deleteItem('${x.id}')">Desactivar</button></div>`:''}</div>`;$('#modal').classList.remove('hidden');document.body.style.overflow='hidden'}
 function closeModal(){$('#modal').classList.add('hidden');document.body.style.overflow=''}
 function parseCoords(s){if(!s)return null;const p=String(s).split(',').map(Number);return p.length===2&&p.every(Number.isFinite)?p:null}
 
@@ -2301,13 +2949,9 @@ function restaurantAudit(r){
 
   if(isBlankValue(r.rang)&&isBlankValue(r.preuMitja)){
     errors.push('Falta el rang de preu');
-  }else{
-    if(isBlankValue(r.fontPreu)){
-      warnings.push('Falta la font del preu');
-    }else if(['google','web_restaurant','carta'].includes(String(r.fontPreu))&&isBlankValue(r.detallFontPreu)){
-      warnings.push('Falta el detall de la font del preu');
-    }
   }
+  /* La font del preu és útil per a la traçabilitat, però és opcional
+     i no genera cap incidència si encara no s'ha informat. */
 
   /* Ubicació: només quan té sentit exigir-la */
   if(!isOnline){
@@ -2528,6 +3172,9 @@ function openAdmin(){if(!adminMode)return;renderAdmin();$('#adminModal').classLi
 function closeAdmin(){$('#adminModal').classList.add('hidden');document.body.style.overflow='';setNav(currentType==='restaurant'?'restaurants':'home')}
 const ADMIN_GROUPS=[
  {title:'Restaurants',items:[['vegueria','Vegueries'],['zona','Zones'],['cuinaRestaurant','Tipus de cuina'],['especialitat','Especialitats'],['rangPreu','Rangs de preu'],['persona','Persones / recomanadors']]},
+ {title:'Botigues',items:[['tipusBotiga','Tipus de botiga']]},
+ {title:'Experiències',items:[['tipusExperiencia','Tipus d’experiència']]},
+ {title:'Vins',items:[['origenVi','Origen / DO'],['tipusVi','Tipus de vi']]},
  {title:'Receptes',items:[['categoriaRecepta','Categories'],['cuinaRecepta','Tipus de cuina'],['tipusAliment','Tipus d’aliment'],['allergen','Al·lèrgens'],['cuiner','Cuiners/es']]}
 ];
 function adminValues(type){return type==='zona'?masterValues('zona').map(z=>z.nom):masterValues(type)}
@@ -2618,17 +3265,37 @@ function restaurantTerritoryZone(){
   return isOutsideTerritory()?field('new-zona-outside'):field('new-zona');
 }
 
-function refreshRestaurantZoneOptions(selected=''){
-  const veg=$('#new-vegueria')?.value||'';
-  const zones=masterValues('zona').filter(z=>!veg||z.vegueria===veg).map(z=>z.nom);
-  const select=$('#new-zona');
+function refreshLinkedZoneOptions(vegueriaId,zonaId,selected=''){
+  const veg=$('#'+vegueriaId)?.value||'';
+  const select=$('#'+zonaId);
   if(!select)return;
-  select.innerHTML=`<option value="">Selecciona...</option>${formOptions(zones,selected)}`;
+  const zones=masterValues('zona')
+    .filter(z=>veg&&z.vegueria===veg)
+    .map(z=>z.nom);
+  select.innerHTML=veg
+    ? `<option value="">Selecciona...</option>${formOptions(zones,selected)}`
+    : '<option value="">Selecciona primer una vegueria</option>';
   if(selected&&zones.includes(selected))select.value=selected;
 }
+function refreshRestaurantZoneOptions(selected=''){
+  refreshLinkedZoneOptions('new-vegueria','new-zona',selected);
+}
+function refreshShopZoneOptions(selected=''){
+  refreshLinkedZoneOptions('new-botiga-vegueria','new-botiga-zona',selected);
+}
+function refreshExperienceZoneOptions(selected=''){
+  refreshLinkedZoneOptions('new-experiencia-vegueria','new-experiencia-zona',selected);
+}
 function bindCreateDependencies(){
-  const veg=$('#new-vegueria');
-  if(veg)veg.addEventListener('change',()=>refreshRestaurantZoneOptions(''));
+  const links=[
+    ['new-vegueria',()=>refreshRestaurantZoneOptions('')],
+    ['new-botiga-vegueria',()=>refreshShopZoneOptions('')],
+    ['new-experiencia-vegueria',()=>refreshExperienceZoneOptions('')]
+  ];
+  links.forEach(([id,fn])=>{
+    const el=$('#'+id);
+    if(el)el.addEventListener('change',fn);
+  });
 }
 
 const WEEKDAYS=[
@@ -2865,9 +3532,63 @@ function createFields(type){
     <label class="wide">Preparació<textarea id="new-preparacio"></textarea></label>
     <label class="wide">Variacions<textarea id="new-variacions"></textarea></label>
     <label class="wide">Observacions<textarea id="new-observacions"></textarea></label>`;
+  if(type==='botiga')return common+`
+    <label>Vegueria<select id="new-botiga-vegueria"><option value="">Selecciona...</option>${formOptions(masterValues('vegueria'))}</select></label>
+    <label>Zona<select id="new-botiga-zona"><option value="">Selecciona primer una vegueria</option></select></label>
+    <label>Tipus de botiga<select id="new-tipus-botiga"><option value="">Selecciona...</option>${formOptions(masterValues('tipusBotiga'))}</select></label>
+    <label>Adreça<input id="new-botiga-adreca"></label>
+    <label>Coordenades<input id="new-botiga-coords" placeholder="41.0000, 2.0000"></label>
+    <label>Telèfon<input id="new-botiga-telefon"></label>
+    <label>WhatsApp<input id="new-botiga-whatsapp"></label>
+    <label>Web<input id="new-botiga-web" placeholder="https://..."></label>
+    <label>Instagram<input id="new-botiga-instagram" placeholder="https://..."></label>
+    <label>Recomanat per<input id="new-botiga-recomanat"></label>
+    <label class="wide">Notes<textarea id="new-notes"></textarea></label>`;
+  if(type==='experiencia')return common+`
+    <label>Vegueria<select id="new-experiencia-vegueria"><option value="">Selecciona...</option>${formOptions(masterValues('vegueria'))}</select></label>
+    <label>Zona<select id="new-experiencia-zona"><option value="">Selecciona primer una vegueria</option></select></label>
+    <label>Tipus d’experiència<select id="new-tipus-experiencia"><option value="">Selecciona...</option>${formOptions(masterValues('tipusExperiencia'))}</select></label>
+    <label>Adreça<input id="new-experiencia-adreca"></label>
+    <label>Coordenades<input id="new-experiencia-coords" placeholder="41.0000, 2.0000"></label>
+    <label>Telèfon<input id="new-experiencia-telefon"></label>
+    <label>WhatsApp<input id="new-experiencia-whatsapp"></label>
+    <label>Web<input id="new-experiencia-web" placeholder="https://..."></label>
+    <label>Instagram<input id="new-experiencia-instagram" placeholder="https://..."></label>
+    <label>Reserva<input id="new-experiencia-reserva" placeholder="https://..."></label>
+    <label>Recomanat per<input id="new-experiencia-recomanat"></label>
+    <label>Horari<input id="new-experiencia-horari"></label>
+    <label class="wide">Observacions d’horari<textarea id="new-experiencia-observacions-horari"></textarea></label>
+    <label class="wide">Notes<textarea id="new-notes"></textarea></label>`;
+  if(type==='vi')return common+`
+    <label>Origen / DO<select id="new-wine-origin"><option value="">Selecciona...</option>${formOptions(masterValues('origenVi'))}</select></label>
+    <label>Tipus de vi<select id="new-wine-type"><option value="">Selecciona...</option>${formOptions(masterValues('tipusVi'))}</select></label>
+    <label>Productor<input id="new-wine-producer"></label>
+    <label>Elaborador / Enòleg<input id="new-wine-maker"></label>
+    <label class="wide">Varietats<input id="new-wine-varieties" placeholder="Garnatxa, Samsó..."></label>
+    <label>Criança<input id="new-wine-aging" placeholder="14 mesos en roure..."></label>
+    <label>Color<input id="new-wine-color" placeholder="Negre, robí..."></label>
+    <label>Temperatura de servei<input id="new-wine-temperature" placeholder="15-16 ºC"></label>
+    <label>Graduació<input id="new-wine-alcohol" placeholder="14% vol"></label>
+    <label>Preu (€)<input id="new-wine-price" type="number" min="0" step="0.01"></label>
+    <label>Web<input id="new-wine-web" placeholder="https://..."></label>
+    <label>Instagram<input id="new-wine-instagram" placeholder="https://..."></label>
+    <label>Imatge de l’ampolla<input id="new-wine-bottle-image" placeholder="https://..."></label>
+    <label>Imatge de l’etiqueta<input id="new-wine-label-image" placeholder="https://..."></label>
+    <label>Logo del productor<input id="new-wine-logo" placeholder="https://..."></label>
+    <label class="wide">Elaboració<textarea id="new-wine-production"></textarea></label>
+    <label class="wide">Nota visual<textarea id="new-wine-visual"></textarea></label>
+    <label class="wide">Nota olfactiva<textarea id="new-wine-nose"></textarea></label>
+    <label class="wide">Nota gustativa<textarea id="new-wine-mouth"></textarea></label>
+    <fieldset class="wide admin-checks personal-tags"><legend>Les meves etiquetes</legend>
+      <label><input id="new-wine-top" type="checkbox"> TOP</label>
+      <label><input id="new-wine-novetat" type="checkbox"> Novetat</label>
+      <label><input id="new-wine-pertastar" type="checkbox"> Per tastar</label>
+      <label><input id="new-wine-pendent" type="checkbox"> Pendent</label>
+    </fieldset>
+    <label class="wide">Observacions<textarea id="new-notes"></textarea></label>`;
   return common+`<label>Categoria<input id="new-categoria"></label><label>Zona<input id="new-zona-text"></label><label>Enllaç<input id="new-enllac"></label><label class="wide">Descripció<textarea id="new-notes"></textarea></label>`;
 }
-function openCreate(type){if(!adminMode)return;currentEditingId=null;type=type||({restaurant:'restaurant',recepta:'recepta',vi:'vi',botiga:'botiga',experiencia:'experiencia'}[currentType]||'restaurant');const names={restaurant:'restaurant',recepta:'recepta',vi:'vi',botiga:'botiga',experiencia:'experiència'};$('#createTitle').textContent='Afegir '+names[type];$('#createContent').innerHTML=`<div class="create-grid" data-type="${type}">${createFields(type)}</div><div class="create-actions"><button class="secondary-btn" onclick="closeCreate();openAdmin()">⚙ Administrar llistes</button><button class="secondary-btn" onclick="closeCreate()">Cancel·lar</button><button class="primary-btn" onclick="saveItem('${type}')">Desar</button></div>`;$('#createModal').classList.remove('hidden');document.body.style.overflow='hidden';bindCreateDependencies();toggleOutsideTerritory(false);refreshRestaurantZoneOptions('');setSchedule({});setRatings([]);setTxoco('no');setNav('create')}
+function openCreate(type){if(!adminMode)return;currentEditingId=null;type=type||({restaurant:'restaurant',recepta:'recepta',vi:'vi',botiga:'botiga',experiencia:'experiencia'}[currentType]||'restaurant');const names={restaurant:'restaurant',recepta:'recepta',vi:'vi',botiga:'botiga',experiencia:'experiència'};$('#createTitle').textContent='Afegir '+names[type];$('#createContent').innerHTML=`<div class="create-grid" data-type="${type}">${createFields(type)}</div><div class="create-actions"><button class="secondary-btn" onclick="closeCreate();openAdmin()">⚙ Administrar llistes</button><button class="secondary-btn" onclick="closeCreate()">Cancel·lar</button><button class="primary-btn" onclick="saveItem('${type}')">Desar</button></div>`;$('#createModal').classList.remove('hidden');document.body.style.overflow='hidden';bindCreateDependencies();toggleOutsideTerritory(false);refreshRestaurantZoneOptions('');refreshShopZoneOptions('');refreshExperienceZoneOptions('');setSchedule({});setRatings([]);setTxoco('no');setNav('create')}
 function closeCreate(){$('#createModal').classList.add('hidden');document.body.style.overflow='';currentEditingId=null;setNav(currentType==='restaurant'?'restaurants':'home')}
 function field(id){return $('#'+id)?.value?.trim()||''}
 function csvArray(v){return v.split(',').map(x=>x.trim()).filter(Boolean)}
@@ -2887,6 +3608,65 @@ function buildItemFromForm(type,existing={}){
     terrassa:!!$('#new-terrassa')?.checked,vegetaria:!!$('#new-vegetaria')?.checked,senseGluten:!!$('#new-gluten')?.checked,
     top:!!$('#new-top')?.checked,novetat:!!$('#new-novetat')?.checked,perAnarHi:!!$('#new-peranar')?.checked,
     pendent:!!$('#new-pendent')?.checked,tancat:existing.tancat||false
+  });
+  if(type==='vi')Object.assign(item,{
+    origen:field('new-wine-origin'),
+    tipusVi:field('new-wine-type'),
+    productor:field('new-wine-producer'),
+    elaborador:field('new-wine-maker'),
+    varietats:csvArray(field('new-wine-varieties')),
+    crianca:field('new-wine-aging'),
+    colorVi:field('new-wine-color'),
+    temperatura:field('new-wine-temperature'),
+    graduacio:field('new-wine-alcohol'),
+    preu:field('new-wine-price'),
+    web:field('new-wine-web'),
+    instagram:field('new-wine-instagram'),
+    imatgeAmpolla:field('new-wine-bottle-image'),
+    imatgeEtiqueta:field('new-wine-label-image'),
+    logoProductor:field('new-wine-logo'),
+    elaboracio:field('new-wine-production'),
+    notaVisual:field('new-wine-visual'),
+    notaOlfactiva:field('new-wine-nose'),
+    notaGustativa:field('new-wine-mouth'),
+    top:!!$('#new-wine-top')?.checked,
+    novetat:!!$('#new-wine-novetat')?.checked,
+    perTastar:!!$('#new-wine-pertastar')?.checked,
+    pendent:!!$('#new-wine-pendent')?.checked,
+    tancat:existing.tancat||false
+  });
+  if(type==='botiga')Object.assign(item,{
+    vegueria:field('new-botiga-vegueria'),
+    zona:field('new-botiga-zona'),
+    territori:'ppcc',
+    categoria:field('new-tipus-botiga'),
+    especialitats:field('new-tipus-botiga')?[field('new-tipus-botiga')]:[],
+    adreca:field('new-botiga-adreca'),
+    coordenades:field('new-botiga-coords'),
+    telefon1:field('new-botiga-telefon'),
+    whatsapp:field('new-botiga-whatsapp'),
+    web:field('new-botiga-web'),
+    instagram:field('new-botiga-instagram'),
+    recomanatPer:field('new-botiga-recomanat'),
+    tancat:existing.tancat||false
+  });
+  if(type==='experiencia')Object.assign(item,{
+    vegueria:field('new-experiencia-vegueria'),
+    zona:field('new-experiencia-zona'),
+    territori:'ppcc',
+    categoria:field('new-tipus-experiencia'),
+    especialitats:field('new-tipus-experiencia')?[field('new-tipus-experiencia')]:[],
+    adreca:field('new-experiencia-adreca'),
+    coordenades:field('new-experiencia-coords'),
+    telefon1:field('new-experiencia-telefon'),
+    whatsapp:field('new-experiencia-whatsapp'),
+    web:field('new-experiencia-web'),
+    instagram:field('new-experiencia-instagram'),
+    reserva:field('new-experiencia-reserva'),
+    recomanatPer:field('new-experiencia-recomanat'),
+    horari:field('new-experiencia-horari'),
+    observacionsHorari:field('new-experiencia-observacions-horari'),
+    tancat:existing.tancat||false
   });
   if(type==='recepta')Object.assign(item,{
     categoria:field('new-categoria'),cuina:field('new-cuina-recepta'),tipusAliment:field('new-tipus-aliment'),
@@ -2945,6 +3725,65 @@ async function saveItem(type){
       return;
     }
 
+    if(type==='vi'){
+      if(currentEditingId){
+        const idx=DATA.findIndex(x=>x.id===currentEditingId);
+        if(idx<0)throw new Error('No s’ha trobat el vi.');
+        const updated=buildItemFromForm(type,DATA[idx]);updated.id=currentEditingId;
+        await window.SaliveraDB.updateWine(updated);
+        DATA[idx]=updated;closeCreate();renderModules();renderCurrent();
+        alert('Vi actualitzat. El canvi ja és visible a tots els dispositius.');
+        setTimeout(()=>openDetail(updated.id),40);return;
+      }
+      const id=globalThis.crypto?.randomUUID?.()||('vi-'+Date.now());
+      const item=buildItemFromForm(type,{id});item.id=id;
+      await window.SaliveraDB.insertWine(item);
+      DATA.push(item);renderModules();closeCreate();openType(type);
+      alert('Vi afegit a Supabase.');
+      setTimeout(()=>openDetail(item.id),50);return;
+    }
+
+    if(type==='botiga'){
+      if(currentEditingId){
+        const idx=DATA.findIndex(x=>x.id===currentEditingId);
+        if(idx<0)throw new Error('No s’ha trobat la botiga.');
+        const updated=buildItemFromForm(type,DATA[idx]);
+        updated.id=currentEditingId;
+        await window.SaliveraDB.updateShop(updated);
+        DATA[idx]=updated;
+        closeCreate();renderModules();renderCurrent();
+        alert('Botiga actualitzada. El canvi ja és visible a tots els dispositius.');
+        setTimeout(()=>openDetail(updated.id),40);
+        return;
+      }
+      const id=globalThis.crypto?.randomUUID?.()||('botiga-'+Date.now());
+      const item=buildItemFromForm(type,{id});item.id=id;
+      await window.SaliveraDB.insertShop(item);
+      DATA.push(item);
+      renderModules();closeCreate();openType(type);
+      alert('Botiga afegida a Supabase.');
+      setTimeout(()=>openDetail(item.id),50);
+      return;
+    }
+
+    if(type==='experiencia'){
+      if(currentEditingId){
+        const idx=DATA.findIndex(x=>x.id===currentEditingId);
+        if(idx<0)throw new Error('No s’ha trobat l’experiència.');
+        const updated=buildItemFromForm(type,DATA[idx]);updated.id=currentEditingId;
+        await window.SaliveraDB.updateExperience(updated);
+        DATA[idx]=updated;closeCreate();renderModules();renderCurrent();
+        alert('Experiència actualitzada. El canvi ja és visible a tots els dispositius.');
+        setTimeout(()=>openDetail(updated.id),40);return;
+      }
+      const id=globalThis.crypto?.randomUUID?.()||('experiencia-'+Date.now());
+      const item=buildItemFromForm(type,{id});item.id=id;
+      await window.SaliveraDB.insertExperience(item);
+      DATA.push(item);renderModules();closeCreate();openType(type);
+      alert('Experiència afegida a Supabase.');
+      setTimeout(()=>openDetail(item.id),50);return;
+    }
+
     if(currentEditingId){
       const idx=DATA.findIndex(x=>x.id===currentEditingId);
       if(idx<0)return;
@@ -3001,6 +3840,60 @@ function editItem(id){
     setFormChecked('new-terrassa',x.terrassa);setFormChecked('new-vegetaria',x.vegetaria);setFormChecked('new-gluten',x.senseGluten);
     setFormChecked('new-top',x.top);setFormChecked('new-novetat',x.novetat);setFormChecked('new-peranar',x.perAnarHi);setFormChecked('new-pendent',x.pendent);
   }
+  if(x.tipus==='vi'){
+    setFormValue('new-wine-origin',x.origen);
+    setFormValue('new-wine-type',x.tipusVi);
+    setFormValue('new-wine-producer',x.productor);
+    setFormValue('new-wine-maker',x.elaborador);
+    setFormValue('new-wine-varieties',(x.varietats||[]).join(', '));
+    setFormValue('new-wine-aging',x.crianca);
+    setFormValue('new-wine-color',x.colorVi);
+    setFormValue('new-wine-temperature',x.temperatura);
+    setFormValue('new-wine-alcohol',x.graduacio);
+    setFormValue('new-wine-price',x.preu);
+    setFormValue('new-wine-web',x.web);
+    setFormValue('new-wine-instagram',x.instagram);
+    setFormValue('new-wine-bottle-image',x.imatgeAmpolla);
+    setFormValue('new-wine-label-image',x.imatgeEtiqueta);
+    setFormValue('new-wine-logo',x.logoProductor);
+    setFormValue('new-wine-production',x.elaboracio);
+    setFormValue('new-wine-visual',x.notaVisual);
+    setFormValue('new-wine-nose',x.notaOlfactiva);
+    setFormValue('new-wine-mouth',x.notaGustativa);
+    $('#new-wine-top').checked=!!x.top;
+    $('#new-wine-novetat').checked=!!x.novetat;
+    $('#new-wine-pertastar').checked=!!x.perTastar;
+    $('#new-wine-pendent').checked=!!x.pendent;
+  }
+  if(x.tipus==='botiga'){
+    setFormValue('new-botiga-vegueria',x.vegueria);
+    refreshShopZoneOptions(x.zona);
+    setFormValue('new-botiga-zona',x.zona);
+    setFormValue('new-tipus-botiga',x.categoria||(x.especialitats||[])[0]);
+    setFormValue('new-botiga-adreca',x.adreca);
+    setFormValue('new-botiga-coords',x.coordenades);
+    setFormValue('new-botiga-telefon',x.telefon1);
+    setFormValue('new-botiga-whatsapp',x.whatsapp);
+    setFormValue('new-botiga-web',x.web);
+    setFormValue('new-botiga-instagram',x.instagram);
+    setFormValue('new-botiga-recomanat',x.recomanatPer);
+  }
+  if(x.tipus==='experiencia'){
+    setFormValue('new-experiencia-vegueria',x.vegueria);
+    refreshExperienceZoneOptions(x.zona);
+    setFormValue('new-experiencia-zona',x.zona);
+    setFormValue('new-tipus-experiencia',x.categoria||(x.especialitats||[])[0]);
+    setFormValue('new-experiencia-adreca',x.adreca);
+    setFormValue('new-experiencia-coords',x.coordenades);
+    setFormValue('new-experiencia-telefon',x.telefon1);
+    setFormValue('new-experiencia-whatsapp',x.whatsapp);
+    setFormValue('new-experiencia-web',x.web);
+    setFormValue('new-experiencia-instagram',x.instagram);
+    setFormValue('new-experiencia-reserva',x.reserva);
+    setFormValue('new-experiencia-recomanat',x.recomanatPer);
+    setFormValue('new-experiencia-horari',x.horari);
+    setFormValue('new-experiencia-observacions-horari',x.observacionsHorari);
+  }
   if(x.tipus==='recepta'){
     setFormValue('new-categoria',x.categoria);setFormValue('new-cuina-recepta',x.cuina||(x.cuines||[])[0]);
     setFormValue('new-tipus-aliment',x.tipusAliment);setFormValue('new-cuiner',x.cuiner);
@@ -3017,15 +3910,18 @@ async function deleteItem(id){
   const x=DATA.find(i=>i.id===id);
   if(!x)return;
 
-  if(x.tipus!=='restaurant'){
-    alert('La desactivació online encara està disponible només per als restaurants.');
+  if(!['restaurant','botiga','experiencia','vi'].includes(x.tipus)){
+    alert('La desactivació online està disponible per a restaurants, botigues, experiències i vins.');
     return;
   }
 
   if(!confirm(`Vols desactivar «${x.nom}»? No s’esborrarà i es podrà recuperar més endavant.`))return;
 
   try{
-    await window.SaliveraDB.deactivateRestaurant(id);
+    if(x.tipus==='restaurant') await window.SaliveraDB.deactivateRestaurant(id);
+    else if(x.tipus==='botiga') await window.SaliveraDB.deactivateShop(id);
+    else if(x.tipus==='experiencia') await window.SaliveraDB.deactivateExperience(id);
+    else await window.SaliveraDB.deactivateWine(id);
     x.tancat=true;
     x.estat='tancat';
 
@@ -3034,7 +3930,7 @@ async function deleteItem(id){
 
     closeModal();
     renderModules();fillFilters();renderCurrent();
-    alert('Restaurant desactivat.');
+    alert(x.tipus==='restaurant'?'Restaurant desactivat.':x.tipus==='botiga'?'Botiga desactivada.':'Experiència desactivada.');
   }catch(error){
     console.error(error);
     alert('No s’ha pogut desactivar: '+(error.message||error));
@@ -3191,6 +4087,65 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
     };
   }
 
+  function fromSupabaseShop(row) {
+    return {
+      id:text(row.id),nom:text(row.nom),tipus:'botiga',
+      vegueria:text(row.vegueria),zona:text(row.zona),tipusZona:text(row.tipus_zona),
+      territori:text(row.territori||'ppcc'),pais:text(row.pais),
+      categoria:text(row.tipus_botiga),
+      especialitats:row.tipus_botiga?[text(row.tipus_botiga)]:[],
+      adreca:text(row.adreca),coordenades:text(row.coordenades_originals),
+      telefon1:text(row.telefon_principal),telefon2:text(row.telefon_secundari),
+      whatsapp:text(row.whatsapp),web:text(row.web),instagram:text(row.instagram),
+      imatge:text(row.imatge_url),logo:text(row.logo_url),
+      recomanatPer:text(row.recomanat_per),notes:text(row.notes),
+      top:Boolean(row.top),novetat:Boolean(row.novetat),pendent:Boolean(row.pendent),
+      perAnarHi:Boolean(row.per_anar_hi),
+      tancat:Boolean(row.tancat||['tancat','eliminat'].includes(row.estat)),
+      origenDades:'supabase'
+    };
+  }
+
+  function fromSupabaseExperience(row){
+    return {
+      id:text(row.id),nom:text(row.nom),tipus:'experiencia',
+      vegueria:text(row.vegueria),zona:text(row.zona),tipusZona:text(row.tipus_zona),
+      territori:text(row.territori||'ppcc'),pais:text(row.pais),
+      categoria:text(row.tipus_experiencia),
+      especialitats:row.tipus_experiencia?[text(row.tipus_experiencia)]:[],
+      adreca:text(row.adreca),coordenades:text(row.coordenades_originals),
+      telefon1:text(row.telefon_principal),telefon2:text(row.telefon_secundari),
+      whatsapp:text(row.whatsapp),web:text(row.web),instagram:text(row.instagram),
+      reserva:text(row.reserva_url),imatge:text(row.imatge_url),logo:text(row.logo_url),
+      recomanatPer:text(row.recomanat_per),horari:text(row.horari_text),
+      observacionsHorari:text(row.observacions_horari),notes:text(row.notes),
+      top:Boolean(row.top),novetat:Boolean(row.novetat),pendent:Boolean(row.pendent),
+      perAnarHi:Boolean(row.per_anar_hi),
+      tancat:Boolean(row.tancat||['tancat','eliminat'].includes(row.estat)),
+      origenDades:'supabase'
+    };
+  }
+
+  function fromSupabaseWine(row){
+    return {
+      id:text(row.id),nom:text(row.nom),tipus:'vi',
+      origen:text(row.origen),tipusVi:text(row.tipus_vi),
+      productor:text(row.productor),elaborador:text(row.elaborador),
+      varietats:Array.isArray(row.varietats)?row.varietats:[],
+      crianca:text(row.crianca),colorVi:text(row.color_vi),
+      temperatura:text(row.temperatura_servei),graduacio:text(row.graduacio),
+      preu:row.preu??'',web:text(row.web),instagram:text(row.instagram),
+      imatgeAmpolla:text(row.imatge_ampolla),imatge:text(row.imatge_ampolla),
+      imatgeEtiqueta:text(row.imatge_etiqueta),logoProductor:text(row.logo_productor),
+      notaVisual:text(row.nota_visual),notaOlfactiva:text(row.nota_olfactiva),
+      notaGustativa:text(row.nota_gustativa),elaboracio:text(row.elaboracio),
+      notes:text(row.observacions),top:Boolean(row.top),novetat:Boolean(row.novetat),
+      pendent:Boolean(row.pendent),perTastar:Boolean(row.per_tastar),
+      tancat:Boolean(row.tancat||['tancat','eliminat'].includes(row.estat)),
+      origenDades:'supabase'
+    };
+  }
+
   function executeSalivera() {
     const source = document.getElementById('saliveraMain');
     if (!source) throw new Error('No s’ha trobat el codi principal de SALIVERA.');
@@ -3205,7 +4160,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
     if (!appData) throw new Error('No s’ha trobat el bloc de dades de SALIVERA.');
 
     const fallback = JSON.parse(appData.textContent);
-    const nonRestaurants = fallback.filter(item => item.tipus !== 'restaurant');
+    const nonRemote = fallback.filter(item => !['restaurant','botiga','experiencia','vi'].includes(item.tipus));
 
     try {
       const response = await fetch(
@@ -3230,10 +4185,34 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
         throw new Error('Supabase no ha retornat cap restaurant.');
       }
 
+      const shopResponse=await fetch(
+        `${SUPABASE_URL}/rest/v1/botigues?select=*&order=nom.asc&limit=1000`,
+        {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,Accept:'application/json'},cache:'no-store'}
+      );
+      if(!shopResponse.ok)throw new Error(`No s’han pogut carregar les botigues: ${shopResponse.status}`);
+      const shopRows=await shopResponse.json();
+
+      const experienceResponse=await fetch(
+        `${SUPABASE_URL}/rest/v1/experiencies?select=*&order=nom.asc&limit=1000`,
+        {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,Accept:'application/json'},cache:'no-store'}
+      );
+      if(!experienceResponse.ok)throw new Error(`No s’han pogut carregar les experiències: ${experienceResponse.status}`);
+      const experienceRows=await experienceResponse.json();
+
+      const wineResponse=await fetch(
+        `${SUPABASE_URL}/rest/v1/vins?select=*&order=nom.asc&limit=1000`,
+        {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,Accept:'application/json'},cache:'no-store'}
+      );
+      if(!wineResponse.ok)throw new Error(`No s’han pogut carregar els vins: ${wineResponse.status}`);
+      const wineRows=await wineResponse.json();
+
       const remoteRestaurants = rows.map(fromSupabase);
-      appData.textContent = JSON.stringify([...remoteRestaurants, ...nonRestaurants]);
+      const remoteShops = Array.isArray(shopRows)?shopRows.map(fromSupabaseShop):[];
+      const remoteExperiences = Array.isArray(experienceRows)?experienceRows.map(fromSupabaseExperience):[];
+      const remoteWines = Array.isArray(wineRows)?wineRows.map(fromSupabaseWine):[];
+      appData.textContent = JSON.stringify([...remoteRestaurants, ...remoteShops, ...remoteExperiences, ...remoteWines, ...nonRemote]);
       executeSalivera();
-      showDataStatus(`${remoteRestaurants.length} restaurants carregats de Supabase`, 'ok');
+      showDataStatus(`${remoteRestaurants.length} restaurants, ${remoteShops.length} botigues, ${remoteExperiences.length} experiències i ${remoteWines.length} vins carregats`, 'ok');
       document.documentElement.dataset.dataSource = 'supabase';
     } catch (error) {
       console.error('Error carregant Supabase:', error);
@@ -3263,6 +4242,16 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
 </div>
 
 <script>
-document.documentElement.dataset.saliveraVersion='2026.08.01.8-audit-rules';
+document.documentElement.dataset.saliveraVersion='2026.08.02.1-opaque-admin';
 </script>
 </body></html>
+<style>.module-go,.module-arrow{display:none!important}</style>
+
+<style>
+.module-card .module-info span{max-width:100%!important}
+.module-card{cursor:pointer!important}
+</style>
+
+<script>document.documentElement.dataset.saliveraVersion='2026.08.02.2-linked-zones-experiences';</script>
+
+<script>document.documentElement.dataset.saliveraVersion='2026.08.02.3-wines';</script>
