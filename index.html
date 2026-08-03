@@ -2401,7 +2401,7 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
 <button class="feature-chip" data-feature="pendent"><span class="filter-emoji">⏳</span><span>Pendent</span><b></b></button>
 </div>
 <div class="filters-extra">
-<button class="chip" id="favChip">♡ Només preferits</button>
+<button class="chip admin-only hidden" id="favChip">♡ Només preferits</button>
 <button class="chip" id="activeChip">Només oberts</button>
 <button class="chip" onclick="showMap()">🗺 Mapa de restaurants</button>
 <button class="chip clear-filters hidden" id="clearFiltersBtn" onclick="clearAllFilters()">✕ Esborrar tots els filtres</button>
@@ -2419,7 +2419,7 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
         <option value="">TIPOLOGIES</option>
       </select>
     </label>
-    <button class="chip" id="wineFavChip" onclick="toggleGenericFavs()">♡ Només preferits</button>
+    <button class="chip admin-only hidden" id="wineFavChip" onclick="toggleGenericFavs()">♡ Només preferits</button>
     <button class="chip wine-map-open" type="button" onclick="openWineMapLightbox()">🗺️ Mapa de les D.O.</button>
   </div>
 
@@ -2470,7 +2470,7 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
     <option value="">Evitar al·lèrgens</option>
   </select>
   <button class="chip" id="recipeHealthyChip" onclick="toggleRecipeHealthy()">♡ Saludables</button>
-  <button class="chip" id="recipeFavChip" onclick="toggleRecipeFavs()">♡ Només preferides</button>
+  <button class="chip admin-only hidden" id="recipeFavChip" onclick="toggleRecipeFavs()">♡ Només preferides</button>
   <button class="chip recipe-clear" id="recipeClearBtn" onclick="clearRecipeFilters()">× Esborrar filtres</button>
 </div>
 <div id="genericTools" class="filters-extra generic-filter-panel hidden">
@@ -2486,7 +2486,7 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
   <select id="genericRecomanador" onchange="handleGenericFilterChange('recomanador')">
     <option value="">Recomanadors</option>
   </select>
-  <button class="chip" id="genericFavChip" onclick="toggleGenericFavs()">♡ Només preferits</button>
+  <button class="chip admin-only hidden" id="genericFavChip" onclick="toggleGenericFavs()">♡ Només preferits</button>
   <button class="chip generic-clear" id="genericClearBtn" onclick="clearGenericFilters()">× Esborrar filtres</button>
 </div><div class="cards" id="cards"></div></section>
 <section id="mapView" class="hidden"><div class="section-head"><div><div class="eyebrow">Restaurants</div><h1>Mapa de restaurants</h1></div><p id="mapCount"></p></div><div id="mapWarning" class="map-note hidden">Per veure el mapa cal connexió a internet. La resta de l’aplicació funciona igualment.</div><div id="map" class="map-wrap"></div><div class="map-actions">
@@ -2494,7 +2494,7 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
   <button class="chip data-issues-btn" onclick="openDataIssues()">Revisar dades pendents</button>
 </div></section>
 </main>
-<nav class="bottom"><div class="bottom-inner"><button class="navbtn active" data-nav="home" onclick="goHome()"><b>⌂</b>Inici</button><button class="navbtn hidden" id="restaurantsNav" data-nav="restaurants" onclick="openRestaurants()"><b>🍴</b>Restaurants</button><button class="navbtn hidden" id="mapNav" data-nav="map" onclick="showMap()"><b>🗺</b>Mapa</button><button class="navbtn" data-nav="favorites" onclick="showGlobalFavorites()"><b>♥</b>Preferits</button><button class="navbtn admin-only hidden" data-nav="create" onclick="openCreate()"><b>＋</b>Afegir</button><button class="navbtn admin-only hidden" data-nav="admin" onclick="openAdmin()"><b>⚙</b>Administrar</button></div></nav>
+<nav class="bottom"><div class="bottom-inner"><button class="navbtn active" data-nav="home" onclick="goHome()"><b>⌂</b>Inici</button><button class="navbtn hidden" id="restaurantsNav" data-nav="restaurants" onclick="openRestaurants()"><b>🍴</b>Restaurants</button><button class="navbtn hidden" id="mapNav" data-nav="map" onclick="showMap()"><b>🗺</b>Mapa</button><button class="navbtn admin-only hidden" data-nav="favorites" onclick="showGlobalFavorites()"><b>♥</b>Preferits</button><button class="navbtn admin-only hidden" data-nav="create" onclick="openCreate()"><b>＋</b>Afegir</button><button class="navbtn admin-only hidden" data-nav="admin" onclick="openAdmin()"><b>⚙</b>Administrar</button></div></nav>
 <div id="modal" class="modal hidden" onclick="if(event.target===this)closeModal()"><article class="sheet" id="sheet"></article></div><div id="createModal" class="modal hidden"><div class="sheet" style="max-width:860px"><div class="detail" style="padding-top:24px"><button class="close" onclick="closeCreate()">×</button><div class="eyebrow">Nou element</div><h2 id="createTitle">Afegir</h2><div id="createContent"></div></div></div></div><div id="adminModal" class="modal hidden" onclick="if(event.target===this)closeAdmin()"><article class="sheet"><div class="detail"><button class="close" style="position:sticky;float:right" onclick="closeAdmin()">×</button><div class="eyebrow">Configuració</div><h2 style="font-family:Georgia,serif;font-size:2.2rem;margin:.3rem 0 1rem">Administrar llistes</h2><p class="meta">Pots afegir opcions noves o canviar el nom de les existents. Les modificacions queden desades en aquest navegador.</p><div class="admin-grid" id="adminContent"></div></div></article></div>
 
 <div id="authModal" class="auth-modal hidden" role="dialog" aria-modal="true" aria-labelledby="authTitle">
@@ -3917,7 +3917,7 @@ function renderWineOriginIntro(origin){
 function wineCard(x){
   const details=[x.productor,x.tipusVi,x.preu?x.preu+' €':''].filter(Boolean).join(' · ');
   return `<article class="card wine-card" tabindex="0" onclick="openDetail('${x.id}')" onkeydown="if(event.key==='Enter')openDetail('${x.id}')">
-    <button class="heart ${favorites.has(x.id)?'on':''}" onclick="toggleFav('${x.id}',event)">${favorites.has(x.id)?'♥':'♡'}</button>
+    ${adminMode?`<button class="heart ${favorites.has(x.id)?'on':''}" onclick="toggleFav('${x.id}',event)">${favorites.has(x.id)?'♥':'♡'}</button>`:''}
     <div class="card-media">${imageHtml({...x,imatge:x.imatgeAmpolla||x.imatge})}</div>
     <div class="card-body">
       <div class="wine-origin-label">${esc(x.origen||'')}</div>
@@ -3959,8 +3959,8 @@ function renderCurrent(){
     $('#cards').innerHTML=a.length?a.map(cardGeneric).join(''):`<div class="empty" style="grid-column:1/-1">Encara no hi ha cap preferit en aquest apartat.</div>`;
   }
 }
-function cardRestaurant(r){const tags=(r.cuines||[]).slice(0,2).map(x=>`<span class="tag">${esc(x.toUpperCase())}</span>`).join('');const states=[truthyFeature(r.top)?'🏆 TOP':'',truthyFeature(r.novetat)?'✨ NOVETAT':'',truthyFeature(r.perAnarHi)?'📍 PER ANAR-HI':'',truthyFeature(r.pendent)?'⏳ PENDENT':''].filter(Boolean).map(x=>`<span class="status-tag">${x}</span>`).join('');return `<article class="card" tabindex="0" onclick="openDetail('${r.id}')" onkeydown="if(event.key==='Enter')openDetail('${r.id}')"><button class="heart ${favorites.has(r.id)?'on':''}" onclick="toggleFav('${r.id}',event)">${favorites.has(r.id)?'♥':'♡'}</button><div class="card-media">${imageHtml(r)}</div><div class="card-body"><h3>${esc(r.nom).toUpperCase()}</h3><div class="meta">${esc([r.zona,r.vegueria].filter(Boolean).join(' · '))}</div>${r.recomanatPer?`<div class="meta recommender" style="margin-top:6px"><span class="recommender-icon">✦</span> ${esc(r.recomanatPer)}</div>`:''}<div class="tags">${tags}</div>${states?`<div class="status-tags">${states}</div>`:''}</div></article>`}
-function cardGeneric(x){return `<article class="card" tabindex="0" onclick="openDetail('${x.id}')" onkeydown="if(event.key==='Enter')openDetail('${x.id}')"><button class="heart ${favorites.has(x.id)?'on':''}" onclick="toggleFav('${x.id}',event)">${favorites.has(x.id)?'♥':'♡'}</button><div class="card-media">${imageHtml(x)}</div><div class="card-body"><h3>${esc(x.nom).toUpperCase()}</h3><div class="meta">${esc(x.categoria||x.zona||'')}</div></div></article>`}
+function cardRestaurant(r){const tags=(r.cuines||[]).slice(0,2).map(x=>`<span class="tag">${esc(x.toUpperCase())}</span>`).join('');const states=[truthyFeature(r.top)?'🏆 TOP':'',truthyFeature(r.novetat)?'✨ NOVETAT':'',truthyFeature(r.perAnarHi)?'📍 PER ANAR-HI':'',truthyFeature(r.pendent)?'⏳ PENDENT':''].filter(Boolean).map(x=>`<span class="status-tag">${x}</span>`).join('');return `<article class="card" tabindex="0" onclick="openDetail('${r.id}')" onkeydown="if(event.key==='Enter')openDetail('${r.id}')">${adminMode?`<button class="heart ${favorites.has(r.id)?'on':''}" onclick="toggleFav('${r.id}',event)">${favorites.has(r.id)?'♥':'♡'}</button>`:''}<div class="card-media">${imageHtml(r)}</div><div class="card-body"><h3>${esc(r.nom).toUpperCase()}</h3><div class="meta">${esc([r.zona,r.vegueria].filter(Boolean).join(' · '))}</div>${r.recomanatPer?`<div class="meta recommender" style="margin-top:6px"><span class="recommender-icon">✦</span> ${esc(r.recomanatPer)}</div>`:''}<div class="tags">${tags}</div>${states?`<div class="status-tags">${states}</div>`:''}</div></article>`}
+function cardGeneric(x){return `<article class="card" tabindex="0" onclick="openDetail('${x.id}')" onkeydown="if(event.key==='Enter')openDetail('${x.id}')">${adminMode?`<button class="heart ${favorites.has(x.id)?'on':''}" onclick="toggleFav('${x.id}',event)">${favorites.has(x.id)?'♥':'♡'}</button>`:''}<div class="card-media">${imageHtml(x)}</div><div class="card-body"><h3>${esc(x.nom).toUpperCase()}</h3><div class="meta">${esc(x.categoria||x.zona||'')}</div></div></article>`}
 function cleanDataValue(value){
   const v=String(value||'').trim();
   return v && !['-','?','null','undefined','n/a','no'].includes(v.toLowerCase()) ? v : '';
@@ -4058,7 +4058,7 @@ function openDetail(id){const x=DATA.find(y=>y.id===id);if(!x)return;const isR=x
     ${info('Recomanat per',x.recomanatPer)}
     ${info('Descripció',x.notes||x.observacions,true)}
   </div>`;
-}else{body=`${acts?`<div class="action-row">${acts}</div>`:''}<div class="info-grid">${info('Especialitat',x.categoria)}${info('Zona',x.zona)}${info('Descripció',x.notes||x.observacions||x.narracio,true)}</div>`}const logo=(isR&&x.logo)?`<img class="detail-logo" src="${esc(x.logo)}" alt="Logotip de ${esc(x.nom)}" onerror="this.style.display='none'">`:'';$('#sheet').innerHTML=`<div class="detail-cover">${imageHtml({...x,logo:''})}<button class="close" onclick="closeModal()">×</button><button class="close detail-heart ${favorites.has(x.id)?'on':''}" onclick="toggleFav('${x.id}',event)">${favorites.has(x.id)?'♥':'♡'}</button></div><div class="detail"><div class="detail-title-row">${logo}<div><h2>${esc(x.nom).toUpperCase()}</h2><div class="meta">${esc([x.zona,x.vegueria].filter(Boolean).join(' · '))}</div></div></div>${body}${adminMode?`<div class="admin-actions"><button class="primary-btn" onclick="editItem('${x.id}')">✎ Modificar</button><button class="danger-btn" onclick="deleteItem('${x.id}')">Desactivar</button></div>`:''}</div>`;$('#modal').classList.remove('hidden');document.body.style.overflow='hidden'}
+}else{body=`${acts?`<div class="action-row">${acts}</div>`:''}<div class="info-grid">${info('Especialitat',x.categoria)}${info('Zona',x.zona)}${info('Descripció',x.notes||x.observacions||x.narracio,true)}</div>`}const logo=(isR&&x.logo)?`<img class="detail-logo" src="${esc(x.logo)}" alt="Logotip de ${esc(x.nom)}" onerror="this.style.display='none'">`:'';$('#sheet').innerHTML=`<div class="detail-cover">${imageHtml({...x,logo:''})}<button class="close" onclick="closeModal()">×</button>${adminMode?`<button class="close detail-heart ${favorites.has(x.id)?'on':''}" onclick="toggleFav('${x.id}',event)">${favorites.has(x.id)?'♥':'♡'}</button>`:''}</div><div class="detail"><div class="detail-title-row">${logo}<div><h2>${esc(x.nom).toUpperCase()}</h2><div class="meta">${esc([x.zona,x.vegueria].filter(Boolean).join(' · '))}</div></div></div>${body}${adminMode?`<div class="admin-actions"><button class="primary-btn" onclick="editItem('${x.id}')">✎ Modificar</button><button class="danger-btn" onclick="deleteItem('${x.id}')">Desactivar</button></div>`:''}</div>`;$('#modal').classList.remove('hidden');document.body.style.overflow='hidden'}
 function closeModal(){$('#modal').classList.add('hidden');document.body.style.overflow=''}
 function parseCoords(s){if(!s)return null;const p=String(s).split(',').map(Number);return p.length===2&&p.every(Number.isFinite)?p:null}
 
@@ -5134,6 +5134,8 @@ $('#appLogo').addEventListener('click',async e=>{
       adminMode=false;
       sessionStorage.removeItem('salivera-admin');
       applyAdminUI();
+      renderModules();
+      renderCurrent();
       closeAdmin();
       closeCreate();
       alert('Mode administrador desactivat.');
@@ -5145,6 +5147,8 @@ $('#appLogo').addEventListener('click',async e=>{
       sessionStorage.setItem('salivera-admin','1');
       await syncFavoritesFromSupabase();
       applyAdminUI();
+      renderModules();
+      renderCurrent();
       openAdmin();
     }
   }
@@ -5351,111 +5355,117 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
     document.body.appendChild(script);
   }
 
-  async function start() {
-    showDataStatus('Connectant SALIVERA amb Supabase…', 'loading');
-    const appData = document.getElementById('appData');
-    if (!appData) throw new Error('No s’ha trobat el bloc de dades de SALIVERA.');
-
-    const fallback = JSON.parse(appData.textContent);
-    const nonRemote = fallback.filter(item => !['restaurant','botiga','experiencia','vi','recepta'].includes(item.tipus));
-
-    try {
-      const response = await fetch(
-        `${SUPABASE_URL}/rest/v1/restaurants?select=*&order=nom.asc&limit=1000`,
+  async function fetchPublicTable(path, label, warnings){
+    try{
+      const response=await fetch(
+        `${SUPABASE_URL}/rest/v1/${path}`,
         {
-          headers: {
-            apikey: SUPABASE_KEY,
-            Authorization: `Bearer ${SUPABASE_KEY}`,
-            Accept: 'application/json'
+          headers:{
+            apikey:SUPABASE_KEY,
+            Authorization:`Bearer ${SUPABASE_KEY}`,
+            Accept:'application/json'
           },
-          cache: 'no-store'
+          cache:'no-store'
         }
       );
 
-      if (!response.ok) {
-        const detail = await response.text();
-        throw new Error(`Supabase ha respost ${response.status}: ${detail.slice(0,180)}`);
+      if(!response.ok){
+        const detail=await response.text();
+        throw new Error(`${response.status}: ${detail.slice(0,160)}`);
       }
 
-      const rows = await response.json();
-      if (!Array.isArray(rows) || rows.length === 0) {
-        throw new Error('Supabase no ha retornat cap restaurant.');
-      }
-
-      const shopResponse=await fetch(
-        `${SUPABASE_URL}/rest/v1/botigues?select=*&order=nom.asc&limit=1000`,
-        {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,Accept:'application/json'},cache:'no-store'}
-      );
-      if(!shopResponse.ok)throw new Error(`No s’han pogut carregar les botigues: ${shopResponse.status}`);
-      const shopRows=await shopResponse.json();
-
-      const experienceResponse=await fetch(
-        `${SUPABASE_URL}/rest/v1/experiencies?select=*&order=nom.asc&limit=1000`,
-        {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,Accept:'application/json'},cache:'no-store'}
-      );
-      if(!experienceResponse.ok)throw new Error(`No s’han pogut carregar les experiències: ${experienceResponse.status}`);
-      const experienceRows=await experienceResponse.json();
-
-      const wineResponse=await fetch(
-        `${SUPABASE_URL}/rest/v1/vins?select=*&order=nom.asc&limit=1000`,
-        {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,Accept:'application/json'},cache:'no-store'}
-      );
-      if(!wineResponse.ok)throw new Error(`No s’han pogut carregar els vins: ${wineResponse.status}`);
-      const wineRows=await wineResponse.json();
-
-      const recipeResponse=await fetch(
-        `${SUPABASE_URL}/rest/v1/receptes?select=*&order=nom.asc&limit=1000`,
-        {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,Accept:'application/json'},cache:'no-store'}
-      );
-      if(!recipeResponse.ok)throw new Error(`No s’han pogut carregar les receptes: ${recipeResponse.status}`);
-      const recipeRows=await recipeResponse.json();
-
-      const configResponse=await fetch(
-        `${SUPABASE_URL}/rest/v1/salivera_config?clau=eq.taxonomies&select=valor&limit=1`,
-        {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,Accept:'application/json'},cache:'no-store'}
-      );
-      window.__SALIVERA_REMOTE_TAXONOMY__=null;
-      if(configResponse.ok){
-        const configRows=await configResponse.json();
-        if(Array.isArray(configRows)&&configRows[0]?.valor){
-          window.__SALIVERA_REMOTE_TAXONOMY__=configRows[0].valor;
-        }
-      }
-
-      window.__SALIVERA_REMOTE_FAVORITES__=[];
-      const adminToken=await window.SaliveraAuth.getAccessToken();
-      if(adminToken){
-        const favoriteResponse=await fetch(
-          `${SUPABASE_URL}/rest/v1/salivera_preferits?select=item_id&order=created_at.asc`,
-          {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${adminToken}`,Accept:'application/json'},cache:'no-store'}
-        );
-        if(favoriteResponse.ok){
-          const favoriteRows=await favoriteResponse.json();
-          window.__SALIVERA_REMOTE_FAVORITES__=Array.isArray(favoriteRows)?favoriteRows.map(row=>String(row.item_id)):[];
-        }
-      }
-
-      const remoteRestaurants = rows.map(fromSupabase);
-      const remoteShops = Array.isArray(shopRows)?shopRows.map(fromSupabaseShop):[];
-      const remoteExperiences = Array.isArray(experienceRows)?experienceRows.map(fromSupabaseExperience):[];
-      const remoteWines = Array.isArray(wineRows)?wineRows.map(fromSupabaseWine):[];
-      const remoteRecipes = Array.isArray(recipeRows)?recipeRows.map(fromSupabaseRecipe):[];
-      appData.textContent = JSON.stringify([...remoteRestaurants, ...remoteShops, ...remoteExperiences, ...remoteWines, ...remoteRecipes, ...nonRemote]);
-      executeSalivera();
-      showDataStatus(`${remoteRestaurants.length} restaurants, ${remoteShops.length} botigues, ${remoteExperiences.length} experiències, ${remoteWines.length} vins i ${remoteRecipes.length} receptes carregats`, 'ok');
-      document.documentElement.dataset.dataSource = 'supabase';
-    } catch (error) {
-      console.error('Error carregant Supabase:', error);
-      executeSalivera();
-      showDataStatus('No s’ha pogut connectar amb Supabase. No es mostraran dades antigues.', 'error');
-      document.documentElement.dataset.dataSource = 'fallback';
+      const rows=await response.json();
+      return Array.isArray(rows)?rows:[];
+    }catch(error){
+      console.error(`No s’ha pogut carregar ${label}:`,error);
+      warnings.push(`${label}: ${error.message||error}`);
+      return [];
     }
   }
 
-  start().catch(error => {
+  async function start(){
+    showDataStatus('Connectant SALIVERA amb Supabase…','loading');
+
+    const appData=document.getElementById('appData');
+    if(!appData)throw new Error('No s’ha trobat el bloc de dades de SALIVERA.');
+
+    const warnings=[];
+
+    const [
+      restaurantRows,
+      shopRows,
+      experienceRows,
+      wineRows,
+      recipeRows
+    ]=await Promise.all([
+      fetchPublicTable('restaurants?select=*&order=nom.asc&limit=1000','restaurants',warnings),
+      fetchPublicTable('botigues?select=*&order=nom.asc&limit=1000','botigues',warnings),
+      fetchPublicTable('experiencies?select=*&order=nom.asc&limit=1000','experiències',warnings),
+      fetchPublicTable('vins?select=*&order=nom.asc&limit=1000','vins',warnings),
+      fetchPublicTable('receptes?select=*&order=nom.asc&limit=1000','receptes',warnings)
+    ]);
+
+    window.__SALIVERA_REMOTE_TAXONOMY__=null;
+
+    try{
+      const configRows=await fetchPublicTable(
+        'salivera_config?clau=eq.taxonomies&select=valor&limit=1',
+        'llistes d’administració',
+        warnings
+      );
+
+      if(configRows[0]?.valor){
+        window.__SALIVERA_REMOTE_TAXONOMY__=configRows[0].valor;
+      }
+    }catch(error){
+      console.error(error);
+    }
+
+    /* Els preferits no es consulten en mode públic.
+       Es carregaran després d’autenticar l’administrador. */
+    window.__SALIVERA_REMOTE_FAVORITES__=[];
+
+    const remoteRestaurants=restaurantRows.map(fromSupabase);
+    const remoteShops=shopRows.map(fromSupabaseShop);
+    const remoteExperiences=experienceRows.map(fromSupabaseExperience);
+    const remoteWines=wineRows.map(fromSupabaseWine);
+    const remoteRecipes=recipeRows.map(fromSupabaseRecipe);
+
+    appData.textContent=JSON.stringify([
+      ...remoteRestaurants,
+      ...remoteShops,
+      ...remoteExperiences,
+      ...remoteWines,
+      ...remoteRecipes
+    ]);
+
+    executeSalivera();
+    document.documentElement.dataset.dataSource='supabase';
+
+    const summary=
+      `${remoteRestaurants.length} restaurants, `+
+      `${remoteShops.length} botigues, `+
+      `${remoteExperiences.length} experiències, `+
+      `${remoteWines.length} vins i `+
+      `${remoteRecipes.length} receptes carregats`;
+
+    if(warnings.length){
+      showDataStatus(
+        `${summary}. No s’ha pogut carregar: ${warnings.map(w=>w.split(':')[0]).join(', ')}.`,
+        'error'
+      );
+    }else{
+      showDataStatus(summary,'ok');
+    }
+  }
+
+  start().catch(error=>{
     console.error(error);
-    try { executeSalivera(); } catch (_) {}
-    showDataStatus('SALIVERA ha trobat un error en iniciar-se.', 'error');
+    try{executeSalivera();}catch(_){}
+    showDataStatus(
+      `SALIVERA no ha pogut iniciar-se: ${error.message||error}`,
+      'error'
+    );
   });
 })();
 </script>
@@ -5472,7 +5482,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
 </div>
 
 <script>
-document.documentElement.dataset.saliveraVersion='2026.08.03.8-supabase-only-admin-favorites';
+document.documentElement.dataset.saliveraVersion='2026.08.03.9-robust-loader-private-favorites';
 </script>
 </body></html>
 <style>.module-go,.module-arrow{display:none!important}</style>
@@ -5482,10 +5492,10 @@ document.documentElement.dataset.saliveraVersion='2026.08.03.8-supabase-only-adm
 .module-card{cursor:pointer!important}
 </style>
 
-<script>document.documentElement.dataset.saliveraVersion='2026.08.03.8-supabase-only-admin-favorites';</script>
+<script>document.documentElement.dataset.saliveraVersion='2026.08.03.9-robust-loader-private-favorites';</script>
 
-<script>document.documentElement.dataset.saliveraVersion='2026.08.03.8-supabase-only-admin-favorites';</script>
+<script>document.documentElement.dataset.saliveraVersion='2026.08.03.9-robust-loader-private-favorites';</script>
 
-<script>document.documentElement.dataset.saliveraVersion='2026.08.03.8-supabase-only-admin-favorites';</script>
+<script>document.documentElement.dataset.saliveraVersion='2026.08.03.9-robust-loader-private-favorites';</script>
 
-<script>document.documentElement.dataset.saliveraVersion='2026.08.03.8-supabase-only-admin-favorites';</script>
+<script>document.documentElement.dataset.saliveraVersion='2026.08.03.9-robust-loader-private-favorites';</script>
