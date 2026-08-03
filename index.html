@@ -2091,6 +2091,238 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
   }
 }
 
+
+/* Receptes: filtres ordenats i orientats a exclusió d'al·lèrgens */
+.recipe-filter-panel{
+  grid-template-columns:repeat(3,minmax(150px,1fr)) auto auto auto !important;
+}
+#recipeExcludeAllergen{
+  background-color:#fffaf2;
+}
+@media(max-width:1100px){
+  .recipe-filter-panel{
+    grid-template-columns:repeat(2,minmax(0,1fr)) auto auto auto !important;
+  }
+}
+@media(max-width:650px){
+  .recipe-filter-panel{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
+
+/* Vins: versió simple i coherent amb Restaurants */
+.wine-toolbar-simple{
+  display:grid !important;
+  grid-template-columns:minmax(230px,1.1fr) minmax(175px,.75fr) auto auto !important;
+  gap:10px !important;
+  align-items:center;
+  margin:0 0 15px !important;
+}
+.wine-toolbar-simple select{
+  width:100%;
+  min-width:0;
+  padding:12px 38px 12px 14px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#fffdf9;
+  color:var(--ink);
+  font:inherit;
+  cursor:pointer;
+}
+.wine-toolbar-simple select:disabled{
+  opacity:1;
+  color:#49372e;
+  background:#f2ece6;
+  cursor:not-allowed;
+}
+.wine-toolbar-simple .chip{
+  min-height:46px;
+  white-space:nowrap;
+}
+.wine-map-open{
+  color:#8a532b !important;
+}
+.wine-origin-intro-simple{
+  display:block;
+  margin:0 0 16px !important;
+  padding:20px 22px !important;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:linear-gradient(135deg,#fff8f2,#f6faf4) !important;
+  box-shadow:0 8px 22px rgba(72,45,34,.04);
+}
+.wine-origin-intro-simple.hidden{
+  display:none !important;
+}
+.wine-origin-intro-simple h2{
+  margin:.32rem 0 .65rem;
+  font-family:Georgia,serif;
+  font-size:clamp(1.9rem,3vw,3rem);
+  line-height:1;
+}
+.wine-origin-intro-simple p{
+  margin:0;
+  max-width:1050px;
+  color:var(--muted);
+  line-height:1.58;
+}
+.wine-origin-intro-simple small{
+  display:block;
+  margin-top:12px;
+  color:#958178;
+  font-size:.72rem;
+}
+.wine-selected-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+}
+.wine-selected-count{
+  flex:none;
+  padding:7px 11px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:white;
+  font-size:.75rem;
+  font-weight:800;
+}
+
+/* Anul·la els blocs grans de versions anteriors si en quedés algun estil residual */
+.wine-do-layout,
+.wine-map-compact,
+.wine-do-grid-rc{
+  display:none !important;
+}
+
+@media(max-width:900px){
+  .wine-toolbar-simple{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+@media(max-width:650px){
+  .wine-toolbar-simple{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:8px !important;
+  }
+  .wine-toolbar-simple select{
+    padding:10px 29px 10px 11px;
+    border-radius:14px;
+    font-size:.84rem;
+  }
+  .wine-toolbar-simple .chip{
+    width:100%;
+    min-height:42px;
+    font-size:.8rem;
+  }
+  .wine-origin-intro-simple{
+    padding:17px !important;
+    border-radius:19px;
+  }
+  .wine-origin-intro-simple h2{
+    font-size:2.15rem;
+  }
+}
+
+
+/* Graella de denominacions recuperada */
+.wine-do-selector-simple{
+  display:block !important;
+  margin:0 0 15px;
+  padding:16px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:#fffaf6;
+  box-shadow:0 8px 22px rgba(72,45,34,.04);
+}
+.wine-do-selector-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:12px;
+}
+.wine-do-selector-head h3{
+  margin:4px 0 0;
+  font-family:Georgia,serif;
+  font-size:1.55rem;
+}
+.wine-do-grid-simple{
+  display:grid !important;
+  grid-template-columns:repeat(7,minmax(0,1fr)) !important;
+  gap:8px;
+  max-height:none !important;
+  overflow:visible !important;
+}
+.wine-do-grid-simple .wine-do-card{
+  display:block !important;
+  min-height:84px;
+  padding:11px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:linear-gradient(145deg,#fff,#fbf4ed);
+  text-align:left;
+  cursor:pointer;
+  transition:transform .16s,box-shadow .16s,border-color .16s;
+}
+.wine-do-grid-simple .wine-do-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 18px rgba(77,46,35,.08);
+}
+.wine-do-grid-simple .wine-do-card.active{
+  border-color:#9c5360;
+  background:#fff6f6;
+  box-shadow:0 0 0 3px rgba(125,49,64,.12);
+}
+.wine-do-grid-simple .wine-do-card strong{
+  display:block;
+  padding-right:18px;
+  font-family:Georgia,serif;
+  font-size:.8rem;
+  line-height:1.14;
+}
+.wine-do-grid-simple .wine-do-card small{
+  display:block;
+  margin-top:8px;
+  color:var(--muted);
+  font-size:.66rem;
+}
+.wine-do-grid-simple .wine-do-motif{
+  float:right;
+  font-size:1rem;
+}
+
+/* Només s'oculten estructures antigues */
+.wine-do-layout,
+.wine-map-compact,
+.wine-do-grid-rc{
+  display:none !important;
+}
+
+@media(max-width:1180px){
+  .wine-do-grid-simple{
+    grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+  }
+}
+@media(max-width:850px){
+  .wine-do-grid-simple{
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  }
+}
+@media(max-width:650px){
+  .wine-do-selector-head{
+    align-items:stretch;
+    flex-direction:column;
+  }
+  .wine-do-selector-head .secondary-btn{
+    align-self:flex-start;
+  }
+  .wine-do-grid-simple{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+}
+
 </style>
 
 <script>
@@ -2176,7 +2408,7 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
 </div></div>
 
 <div id="wineTools" class="hidden">
-  <div class="wine-toolbar wine-toolbar-rc">
+  <div class="wine-toolbar wine-toolbar-simple">
     <label class="field">
       <select id="wineOrigin" onchange="handleWineOriginChange()">
         <option value="">DENOMINACIÓ D’ORIGEN</option>
@@ -2188,37 +2420,21 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
       </select>
     </label>
     <button class="chip" id="wineFavChip" onclick="toggleGenericFavs()">♡ Només preferits</button>
+    <button class="chip wine-map-open" type="button" onclick="openWineMapLightbox()">🗺️ Mapa de les D.O.</button>
   </div>
 
-  <section class="wine-do-layout" id="wineOriginsSection">
-    <div class="wine-map-compact">
-      <div class="wine-block-heading">
-        <div>
-          <div class="eyebrow">Catalunya, terra de vi</div>
-          <h3>Mapa de les D.O.</h3>
-        </div>
-        <button type="button" class="secondary-btn" onclick="openWineMapLightbox()">Ampliar</button>
-      </div>
-      <img src="mapa-do-incavi.webp" alt="Mapa de les denominacions d’origen catalanes publicat per l’INCAVI">
-      <div class="wine-map-mini-notes">
-        <span><b>DO Catalunya:</b> àmbit superposat.</span>
-        <span><b>DO Cava:</b> territori discontinu.</span>
-      </div>
-    </div>
-
-    <div id="wineOriginIntro" class="wine-origin-intro wine-origin-intro-rc"></div>
-  </section>
-
-  <section class="wine-do-selector">
-    <div class="wine-block-heading">
+  <section class="wine-do-selector wine-do-selector-simple">
+    <div class="wine-do-selector-head">
       <div>
         <div class="eyebrow">Tria un territori</div>
         <h3>Denominacions d’origen</h3>
       </div>
       <button type="button" class="secondary-btn" onclick="showAllWines()">Veure tots els vins</button>
     </div>
-    <div id="wineDoGrid" class="wine-do-grid wine-do-grid-rc"></div>
+    <div id="wineDoGrid" class="wine-do-grid wine-do-grid-simple"></div>
   </section>
+
+  <section id="wineOriginIntro" class="wine-origin-intro wine-origin-intro-simple hidden"></section>
 </div>
 
 <div id="wineMapLightbox" class="modal hidden" role="dialog" aria-modal="true">
@@ -2241,11 +2457,17 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
   <select id="recipeCuisine" onchange="handleRecipeFilterChange()">
     <option value="">Tipus de cuina</option>
   </select>
+  <select id="recipeDifficulty" onchange="handleRecipeFilterChange()">
+    <option value="">Dificultat</option>
+  </select>
+  <select id="recipeTxoco" onchange="handleRecipeFilterChange()">
+    <option value="">Txoco</option>
+  </select>
   <select id="recipeCook" onchange="handleRecipeFilterChange()">
     <option value="">Cuiner / autor</option>
   </select>
-  <select id="recipeAllergen" onchange="handleRecipeFilterChange()">
-    <option value="">Al·lèrgens</option>
+  <select id="recipeExcludeAllergen" onchange="handleRecipeFilterChange()">
+    <option value="">Evitar al·lèrgens</option>
   </select>
   <button class="chip" id="recipeHealthyChip" onclick="toggleRecipeHealthy()">♡ Saludables</button>
   <button class="chip" id="recipeFavChip" onclick="toggleRecipeFavs()">♡ Només preferides</button>
@@ -2882,10 +3104,104 @@ function openRestaurants(favs=false){favOnly=!!favs;currentType='restaurant';ope
 
 let recipeHealthyOnly=false;
 
+const RECIPE_CATEGORY_ORDER=[
+  'ENTRANTS',
+  'PRIMERS',
+  'SEGONS',
+  'POSTRES',
+  'GUARNICIONS'
+];
+
+const RECIPE_DIFFICULTY_ORDER=[
+  'FÀCIL',
+  'MITJANA',
+  'DIFÍCIL'
+];
+
+const RECIPE_TXOCO_OPTIONS=[
+  ['ha_anat','Ha anat al Txoco'],
+  ['susceptible','Susceptible de Txoco'],
+  ['no','No és de Txoco']
+];
+
 function recipeArrayValues(item,key){
   const value=item?.[key];
-  if(Array.isArray(value))return [...new Set(value.map(v=>String(v).trim()).filter(Boolean))];
-  return [...new Set(String(value||'').split(',').map(v=>v.trim()).filter(Boolean))];
+  if(Array.isArray(value)){
+    return [...new Set(value.map(v=>String(v).trim()).filter(Boolean))];
+  }
+  return [...new Set(
+    String(value||'')
+      .split(',')
+      .map(v=>v.trim())
+      .filter(Boolean)
+  )];
+}
+
+function normalizeRecipeCategory(value){
+  const v=String(value||'').trim().toUpperCase();
+  const aliases={
+    'ENTRANT':'ENTRANTS',
+    'PRIMER':'PRIMERS',
+    'SEGON':'SEGONS',
+    'POSTRE':'POSTRES',
+    'GUARNICIÓ':'GUARNICIONS',
+    'GUARNICIO':'GUARNICIONS'
+  };
+  return aliases[v]||v;
+}
+
+function recipeCategoryValues(item){
+  return [...new Set([
+    ...recipeArrayValues(item,'categories'),
+    ...recipeArrayValues(item,'categoria'),
+    ...recipeArrayValues(item,'tipus')
+  ].map(normalizeRecipeCategory).filter(Boolean))];
+}
+
+function normalizeRecipeDifficulty(item){
+  const raw=String(item.dificultat||item.difficulty||'').trim().toUpperCase();
+  const aliases={
+    'FACIL':'FÀCIL',
+    'FÁCIL':'FÀCIL',
+    'MITJA':'MITJANA',
+    'MEDIA':'MITJANA',
+    'DIFICIL':'DIFÍCIL',
+    'DIFÍCIL':'DIFÍCIL'
+  };
+  return aliases[raw]||raw;
+}
+
+function recipeTxocoValue(item){
+  const raw=String(
+    item.txoco ??
+    item.estatTxoco ??
+    item.apteTxoco ??
+    ''
+  ).trim().toLowerCase();
+
+  if(
+    raw==='ha_anat' ||
+    raw==='ha anat' ||
+    raw==='sí' ||
+    raw==='si' ||
+    raw==='true' ||
+    raw==='1'
+  ) return 'ha_anat';
+
+  if(
+    raw==='susceptible' ||
+    raw==='susceptible de txoco' ||
+    raw==='pot anar' ||
+    raw==='possible'
+  ) return 'susceptible';
+
+  if(
+    raw==='no' ||
+    raw==='false' ||
+    raw==='0'
+  ) return 'no';
+
+  return '';
 }
 
 function recipeFilterItems(exclude=[]){
@@ -2893,30 +3209,43 @@ function recipeFilterItems(exclude=[]){
 
   const category=$('#recipeCategory')?.value||'';
   const cuisine=$('#recipeCuisine')?.value||'';
+  const difficulty=$('#recipeDifficulty')?.value||'';
+  const txoco=$('#recipeTxoco')?.value||'';
   const cook=$('#recipeCook')?.value||'';
-  const allergen=$('#recipeAllergen')?.value||'';
+  const excludedAllergen=$('#recipeExcludeAllergen')?.value||'';
 
   if(!exclude.includes('category')&&category){
-    items=items.filter(x=>{
-      const values=[
-        ...recipeArrayValues(x,'categories'),
-        ...recipeArrayValues(x,'categoria'),
-        ...recipeArrayValues(x,'tipus')
-      ].map(v=>v.toUpperCase());
-      return values.includes(category);
-    });
+    items=items.filter(x=>recipeCategoryValues(x).includes(category));
   }
 
   if(!exclude.includes('cuisine')&&cuisine){
-    items=items.filter(x=>recipeArrayValues(x,'cuines').map(v=>v.toUpperCase()).includes(cuisine));
+    items=items.filter(x=>
+      recipeArrayValues(x,'cuines')
+        .map(v=>v.toUpperCase())
+        .includes(cuisine)
+    );
+  }
+
+  if(!exclude.includes('difficulty')&&difficulty){
+    items=items.filter(x=>normalizeRecipeDifficulty(x)===difficulty);
+  }
+
+  if(!exclude.includes('txoco')&&txoco){
+    items=items.filter(x=>recipeTxocoValue(x)===txoco);
   }
 
   if(!exclude.includes('cook')&&cook){
-    items=items.filter(x=>String(x.cuiner||x.autor||'').trim()===cook);
+    items=items.filter(x=>
+      String(x.cuiner||x.autor||'').trim()===cook
+    );
   }
 
-  if(!exclude.includes('allergen')&&allergen){
-    items=items.filter(x=>recipeArrayValues(x,'allergens').map(v=>v.toUpperCase()).includes(allergen));
+  if(!exclude.includes('allergen')&&excludedAllergen){
+    items=items.filter(x=>
+      !recipeArrayValues(x,'allergens')
+        .map(v=>v.toUpperCase())
+        .includes(excludedAllergen)
+    );
   }
 
   if(recipeHealthyOnly){
@@ -2930,53 +3259,143 @@ function recipeFilterItems(exclude=[]){
   return items;
 }
 
-function recipeSelectOptions(id,values,label,counts){
+function recipeSelectOptions(id,values,label,counts,preserveOrder=false){
   const el=$('#'+id);
   if(!el)return;
 
   const current=el.value;
-  const ordered=[...new Set(values.filter(Boolean))]
-    .sort((a,b)=>a.localeCompare(b,'ca'));
+  const ordered=[...new Set(values.filter(Boolean))];
+
+  if(!preserveOrder){
+    ordered.sort((a,b)=>a.localeCompare(b,'ca'));
+  }
 
   el.innerHTML=`<option value="">${label}</option>`+
     ordered.map(v=>`<option value="${esc(v)}">${esc(v)} (${counts.get(v)||0})</option>`).join('');
 
-  if(ordered.includes(current))el.value=current;
+  if(ordered.includes(current)){
+    el.value=current;
+  }
 }
 
 function fillRecipeFilters(){
   const all=byType('recepta');
 
   const categoryPool=recipeFilterItems(['category']);
-  const categories=[...new Set(all.flatMap(x=>[
-    ...recipeArrayValues(x,'categories'),
-    ...recipeArrayValues(x,'categoria'),
-    ...recipeArrayValues(x,'tipus')
-  ]).map(v=>v.toUpperCase()).filter(Boolean))];
-  const categoryCounts=countsFor(categoryPool,x=>[
-    ...recipeArrayValues(x,'categories'),
-    ...recipeArrayValues(x,'categoria'),
-    ...recipeArrayValues(x,'tipus')
-  ].map(v=>v.toUpperCase()));
-  recipeSelectOptions('recipeCategory',categories,'Categories',categoryCounts);
+  const categoryCounts=countsFor(categoryPool,x=>recipeCategoryValues(x));
+  const categories=RECIPE_CATEGORY_ORDER.filter(v=>
+    all.some(x=>recipeCategoryValues(x).includes(v))
+  );
+  recipeSelectOptions(
+    'recipeCategory',
+    categories,
+    'Categories',
+    categoryCounts,
+    true
+  );
 
   const cuisinePool=recipeFilterItems(['cuisine']);
-  const cuisines=[...new Set(all.flatMap(x=>recipeArrayValues(x,'cuines').map(v=>v.toUpperCase())).filter(Boolean))];
-  const cuisineCounts=countsFor(cuisinePool,x=>recipeArrayValues(x,'cuines').map(v=>v.toUpperCase()));
-  recipeSelectOptions('recipeCuisine',cuisines,'Tipus de cuina',cuisineCounts);
+  const cuisines=[...new Set(
+    all.flatMap(x=>
+      recipeArrayValues(x,'cuines').map(v=>v.toUpperCase())
+    ).filter(Boolean)
+  )];
+  const cuisineCounts=countsFor(
+    cuisinePool,
+    x=>recipeArrayValues(x,'cuines').map(v=>v.toUpperCase())
+  );
+  recipeSelectOptions(
+    'recipeCuisine',
+    cuisines,
+    'Tipus de cuina',
+    cuisineCounts
+  );
+
+  const difficultyPool=recipeFilterItems(['difficulty']);
+  const difficultyCounts=countsFor(
+    difficultyPool,
+    x=>{
+      const value=normalizeRecipeDifficulty(x);
+      return value?[value]:[];
+    }
+  );
+  const difficulties=RECIPE_DIFFICULTY_ORDER.filter(v=>
+    all.some(x=>normalizeRecipeDifficulty(x)===v)
+  );
+  recipeSelectOptions(
+    'recipeDifficulty',
+    difficulties,
+    'Dificultat',
+    difficultyCounts,
+    true
+  );
+
+  const txocoPool=recipeFilterItems(['txoco']);
+  const txocoCounts=countsFor(
+    txocoPool,
+    x=>{
+      const value=recipeTxocoValue(x);
+      return value?[value]:[];
+    }
+  );
+
+  const txoco=$('#recipeTxoco');
+  if(txoco){
+    const current=txoco.value;
+    txoco.innerHTML='<option value="">Txoco</option>'+
+      RECIPE_TXOCO_OPTIONS
+        .filter(([value])=>all.some(x=>recipeTxocoValue(x)===value))
+        .map(([value,label])=>
+          `<option value="${value}">${label} (${txocoCounts.get(value)||0})</option>`
+        ).join('');
+
+    if(RECIPE_TXOCO_OPTIONS.some(([value])=>value===current)){
+      txoco.value=current;
+    }
+  }
 
   const cookPool=recipeFilterItems(['cook']);
-  const cooks=[...new Set(all.map(x=>String(x.cuiner||x.autor||'').trim()).filter(Boolean))];
-  const cookCounts=countsFor(cookPool,x=>{
-    const value=String(x.cuiner||x.autor||'').trim();
-    return value?[value]:[];
-  });
-  recipeSelectOptions('recipeCook',cooks,'Cuiner / autor',cookCounts);
+  const cooks=[...new Set(
+    all.map(x=>String(x.cuiner||x.autor||'').trim()).filter(Boolean)
+  )];
+  const cookCounts=countsFor(
+    cookPool,
+    x=>{
+      const value=String(x.cuiner||x.autor||'').trim();
+      return value?[value]:[];
+    }
+  );
+  recipeSelectOptions(
+    'recipeCook',
+    cooks,
+    'Cuiner / autor',
+    cookCounts
+  );
 
   const allergenPool=recipeFilterItems(['allergen']);
-  const allergens=[...new Set(all.flatMap(x=>recipeArrayValues(x,'allergens').map(v=>v.toUpperCase())).filter(Boolean))];
-  const allergenCounts=countsFor(allergenPool,x=>recipeArrayValues(x,'allergens').map(v=>v.toUpperCase()));
-  recipeSelectOptions('recipeAllergen',allergens,'Al·lèrgens',allergenCounts);
+  const allergens=[...new Set(
+    all.flatMap(x=>
+      recipeArrayValues(x,'allergens').map(v=>v.toUpperCase())
+    ).filter(Boolean)
+  )];
+  const allergenCounts=new Map();
+  for(const allergen of allergens){
+    allergenCounts.set(
+      allergen,
+      allergenPool.filter(x=>
+        !recipeArrayValues(x,'allergens')
+          .map(v=>v.toUpperCase())
+          .includes(allergen)
+      ).length
+    );
+  }
+
+  recipeSelectOptions(
+    'recipeExcludeAllergen',
+    allergens,
+    'Evitar al·lèrgens',
+    allergenCounts
+  );
 
   $('#recipeHealthyChip')?.classList.toggle('active',recipeHealthyOnly);
   $('#recipeFavChip')?.classList.toggle('active',favOnly);
@@ -2986,8 +3405,10 @@ function fillRecipeFilters(){
     const hasFilters=Boolean(
       $('#recipeCategory')?.value ||
       $('#recipeCuisine')?.value ||
+      $('#recipeDifficulty')?.value ||
+      $('#recipeTxoco')?.value ||
       $('#recipeCook')?.value ||
-      $('#recipeAllergen')?.value ||
+      $('#recipeExcludeAllergen')?.value ||
       recipeHealthyOnly ||
       favOnly
     );
@@ -3013,21 +3434,38 @@ function toggleRecipeFavs(){
 }
 
 function clearRecipeFilters(){
-  ['recipeCategory','recipeCuisine','recipeCook','recipeAllergen'].forEach(id=>{
+  [
+    'recipeCategory',
+    'recipeCuisine',
+    'recipeDifficulty',
+    'recipeTxoco',
+    'recipeCook',
+    'recipeExcludeAllergen'
+  ].forEach(id=>{
     const el=$('#'+id);
     if(el)el.value='';
   });
+
   recipeHealthyOnly=false;
   favOnly=false;
+
   fillRecipeFilters();
   renderCurrent();
 }
 
 function resetRecipeFilters(){
-  ['recipeCategory','recipeCuisine','recipeCook','recipeAllergen'].forEach(id=>{
+  [
+    'recipeCategory',
+    'recipeCuisine',
+    'recipeDifficulty',
+    'recipeTxoco',
+    'recipeCook',
+    'recipeExcludeAllergen'
+  ].forEach(id=>{
     const el=$('#'+id);
     if(el)el.value='';
   });
+
   recipeHealthyOnly=false;
 }
 
@@ -3346,12 +3784,17 @@ function selectWineOrigin(origin){
   setTimeout(()=>$('#wineOriginIntro')?.scrollIntoView({behavior:'smooth',block:'start'}),40);
 }
 function showAllWines(){
-  $('#wineOrigin').value='';
-  $('#wineType').disabled=false;
-  $('#wineType').value='';
+  const origin=$('#wineOrigin');
+  const type=$('#wineType');
+
+  if(origin)origin.value='';
+  if(type){
+    type.disabled=false;
+    type.value='';
+  }
+
   renderWineDoGrid();
   renderCurrent();
-  setTimeout(()=>$('#wineOriginIntro')?.scrollIntoView({behavior:'smooth',block:'center'}),40);
 }
 function scrollToWineOrigins(){
   $('#wineOriginsSection')?.scrollIntoView({behavior:'smooth',block:'start'});
@@ -3382,24 +3825,13 @@ function renderWineOriginIntro(origin){
   if(!box)return;
 
   if(!origin){
-    box.innerHTML=`<div class="wine-selected-head">
-      <div>
-        <div class="eyebrow">Denominacions d’origen</div>
-        <h2>Tria una D.O.</h2>
-      </div>
-      <span class="wine-selected-count">${byType('vi').length} vins</span>
-    </div>
-    <p>Selecciona una denominació al desplegable o a les targetes inferiors. Aquí podràs conèixer-ne el territori i veure només els vins que hi pertanyen.</p>
-    <div class="wine-intro-hints">
-      <span>🍇 Descobreix el territori</span>
-      <span>🍷 Filtra els vins</span>
-      <span>♡ Guarda els preferits</span>
-    </div>`;
-    box.classList.remove('hidden');
+    box.innerHTML='';
+    box.classList.add('hidden');
     return;
   }
 
   const official=!['CORPINNAT','ALTRES'].includes(origin);
+
   box.innerHTML=`<div class="wine-selected-head">
     <div>
       <div class="eyebrow">${official?'Denominació seleccionada':'Origen seleccionat'}</div>
@@ -3409,6 +3841,7 @@ function renderWineOriginIntro(origin){
   </div>
   <p>${esc(WINE_ORIGIN_INFO[origin]||'').replace(/\n/g,'<br>')}</p>
   <small>${official?'Text resumit a partir de la informació de l’INCAVI.':'Informació contextual de SALIVERA.'}</small>`;
+
   box.classList.remove('hidden');
 }
 function wineCard(x){
@@ -4900,7 +5333,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
 </div>
 
 <script>
-document.documentElement.dataset.saliveraVersion='2026.08.03.3-recipe-filters';
+document.documentElement.dataset.saliveraVersion='2026.08.03.7-home-and-wines-stable';
 </script>
 </body></html>
 <style>.module-go,.module-arrow{display:none!important}</style>
@@ -4910,8 +5343,8 @@ document.documentElement.dataset.saliveraVersion='2026.08.03.3-recipe-filters';
 .module-card{cursor:pointer!important}
 </style>
 
-<script>document.documentElement.dataset.saliveraVersion='2026.08.03.3-recipe-filters';</script>
+<script>document.documentElement.dataset.saliveraVersion='2026.08.03.7-home-and-wines-stable';</script>
 
-<script>document.documentElement.dataset.saliveraVersion='2026.08.03.3-recipe-filters';</script>
+<script>document.documentElement.dataset.saliveraVersion='2026.08.03.7-home-and-wines-stable';</script>
 
-<script>document.documentElement.dataset.saliveraVersion='2026.08.03.3-recipe-filters';</script>
+<script>document.documentElement.dataset.saliveraVersion='2026.08.03.7-home-and-wines-stable';</script>
