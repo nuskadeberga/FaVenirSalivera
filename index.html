@@ -2907,7 +2907,46 @@ window.SaliveraDB=(()=>{
     return await parseResponse(response);
   }
 
-  return {insertRestaurant,updateRestaurant,deactivateRestaurant,insertShop,updateShop,deactivateShop,insertExperience,updateExperience,deactivateExperience,insertWine,updateWine,deactivateWine};
+  
+  function recipeToRow(item){
+    return {
+      id:String(item.id),
+      nom:String(item.nom||'').trim(),
+      dades:{...item,tipus:'recepta'},
+      tancada:Boolean(item.tancat),
+      estat:item.tancat?'tancat':'actiu',
+      updated_at:new Date().toISOString()
+    };
+  }
+  async function insertRecipe(item){
+    const response=await fetch(`${URL}/rest/v1/receptes`,{
+      method:'POST',headers:await authHeaders(),body:JSON.stringify(recipeToRow(item))
+    });
+    return await parseResponse(response);
+  }
+  async function updateRecipe(item){
+    const response=await fetch(`${URL}/rest/v1/receptes?id=eq.${encodeURIComponent(String(item.id))}`,{
+      method:'PATCH',headers:await authHeaders(),body:JSON.stringify(recipeToRow(item))
+    });
+    return await parseResponse(response);
+  }
+  async function deactivateRecipe(id){
+    const response=await fetch(`${URL}/rest/v1/receptes?id=eq.${encodeURIComponent(String(id))}`,{
+      method:'PATCH',headers:await authHeaders(),
+      body:JSON.stringify({estat:'tancat',tancada:true,updated_at:new Date().toISOString()})
+    });
+    return await parseResponse(response);
+  }
+  async function saveTaxonomy(value){
+    const response=await fetch(`${URL}/rest/v1/salivera_config?on_conflict=clau`,{
+      method:'POST',
+      headers:{...(await authHeaders()),Prefer:'resolution=merge-duplicates,return=minimal'},
+      body:JSON.stringify({clau:'taxonomies',valor:value,updated_at:new Date().toISOString()})
+    });
+    return await parseResponse(response);
+  }
+
+  return {insertRestaurant,updateRestaurant,deactivateRestaurant,insertShop,updateShop,deactivateShop,insertExperience,updateExperience,deactivateExperience,insertWine,updateWine,deactivateWine,insertRecipe,updateRecipe,deactivateRecipe,saveTaxonomy};
 })();
 </script>
 
@@ -2973,7 +3012,16 @@ function loadTax(){
 let tax=loadTax();
 function ensureTax(){tax.custom=tax.custom||{};tax.renames=tax.renames||{};tax.deleted=tax.deleted||{};TAX_TYPES.forEach(t=>{tax.custom[t]=tax.custom[t]||[];tax.renames[t]=tax.renames[t]||{};tax.deleted[t]=tax.deleted[t]||[]})}
 ensureTax();
-function saveTax(){ensureTax();localStorage.setItem(TAX_KEY,JSON.stringify(tax))}
+function saveTax(){
+  ensureTax();
+  localStorage.setItem(TAX_KEY,JSON.stringify(tax));
+  if(window.SaliveraDB?.saveTaxonomy){
+    window.SaliveraDB.saveTaxonomy(tax).catch(error=>{
+      console.error('No s’ha pogut sincronitzar les llistes:',error);
+      alert('La llista s’ha desat en aquest navegador, però no s’ha pogut sincronitzar amb Supabase.');
+    });
+  }
+}
 function renamed(type,value){return (tax.renames[type]&&tax.renames[type][value])||value}
 function baseMaster(type){
  const m={
@@ -4875,6 +4923,28 @@ async function saveItem(type){
       setTimeout(()=>openDetail(item.id),50);return;
     }
 
+    if(type==='recepta'){
+      if(currentEditingId){
+        const idx=DATA.findIndex(x=>x.id===currentEditingId);
+        if(idx<0)throw new Error('No s’ha trobat la recepta.');
+        const updated=buildItemFromForm(type,DATA[idx]);
+        updated.id=currentEditingId;
+        await window.SaliveraDB.updateRecipe(updated);
+        DATA[idx]=updated;
+        closeCreate();renderModules();renderCurrent();
+        alert('Recepta actualitzada. El canvi ja és visible a tots els dispositius.');
+        setTimeout(()=>openDetail(updated.id),40);
+        return;
+      }
+      const id=globalThis.crypto?.randomUUID?.()||('recepta-'+Date.now());
+      const item=buildItemFromForm(type,{id});item.id=id;
+      await window.SaliveraDB.insertRecipe(item);
+      DATA.push(item);renderModules();closeCreate();openType(type);
+      alert('Recepta afegida a Supabase.');
+      setTimeout(()=>openDetail(item.id),50);
+      return;
+    }
+
     if(currentEditingId){
       const idx=DATA.findIndex(x=>x.id===currentEditingId);
       if(idx<0)return;
@@ -5001,8 +5071,8 @@ async function deleteItem(id){
   const x=DATA.find(i=>i.id===id);
   if(!x)return;
 
-  if(!['restaurant','botiga','experiencia','vi'].includes(x.tipus)){
-    alert('La desactivació online està disponible per a restaurants, botigues, experiències i vins.');
+  if(!['restaurant','botiga','experiencia','vi','recepta'].includes(x.tipus)){
+    alert('La desactivació online està disponible per a restaurants, botigues, experiències, vins i receptes.');
     return;
   }
 
@@ -5012,7 +5082,8 @@ async function deleteItem(id){
     if(x.tipus==='restaurant') await window.SaliveraDB.deactivateRestaurant(id);
     else if(x.tipus==='botiga') await window.SaliveraDB.deactivateShop(id);
     else if(x.tipus==='experiencia') await window.SaliveraDB.deactivateExperience(id);
-    else await window.SaliveraDB.deactivateWine(id);
+    else if(x.tipus==='vi') await window.SaliveraDB.deactivateWine(id);
+    else await window.SaliveraDB.deactivateRecipe(id);
     x.tancat=true;
     x.estat='tancat';
 
@@ -5237,6 +5308,18 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
     };
   }
 
+  function fromSupabaseRecipe(row){
+    const payload=(row&&typeof row.dades==='object'&&row.dades)||{};
+    return {
+      ...payload,
+      id:text(row.id||payload.id),
+      nom:text(row.nom||payload.nom),
+      tipus:'recepta',
+      tancat:Boolean(row.tancada||['tancat','eliminat'].includes(row.estat)||payload.tancat),
+      origenDades:'supabase'
+    };
+  }
+
   function executeSalivera() {
     const source = document.getElementById('saliveraMain');
     if (!source) throw new Error('No s’ha trobat el codi principal de SALIVERA.');
@@ -5251,7 +5334,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
     if (!appData) throw new Error('No s’ha trobat el bloc de dades de SALIVERA.');
 
     const fallback = JSON.parse(appData.textContent);
-    const nonRemote = fallback.filter(item => !['restaurant','botiga','experiencia','vi'].includes(item.tipus));
+    const nonRemote = fallback.filter(item => !['restaurant','botiga','experiencia','vi','recepta'].includes(item.tipus));
 
     try {
       const response = await fetch(
@@ -5297,13 +5380,32 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
       if(!wineResponse.ok)throw new Error(`No s’han pogut carregar els vins: ${wineResponse.status}`);
       const wineRows=await wineResponse.json();
 
+      const recipeResponse=await fetch(
+        `${SUPABASE_URL}/rest/v1/receptes?select=*&order=nom.asc&limit=1000`,
+        {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,Accept:'application/json'},cache:'no-store'}
+      );
+      if(!recipeResponse.ok)throw new Error(`No s’han pogut carregar les receptes: ${recipeResponse.status}`);
+      const recipeRows=await recipeResponse.json();
+
+      const configResponse=await fetch(
+        `${SUPABASE_URL}/rest/v1/salivera_config?clau=eq.taxonomies&select=valor&limit=1`,
+        {headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,Accept:'application/json'},cache:'no-store'}
+      );
+      if(configResponse.ok){
+        const configRows=await configResponse.json();
+        if(Array.isArray(configRows)&&configRows[0]?.valor){
+          localStorage.setItem('salivera-taxonomies-v214',JSON.stringify(configRows[0].valor));
+        }
+      }
+
       const remoteRestaurants = rows.map(fromSupabase);
       const remoteShops = Array.isArray(shopRows)?shopRows.map(fromSupabaseShop):[];
       const remoteExperiences = Array.isArray(experienceRows)?experienceRows.map(fromSupabaseExperience):[];
       const remoteWines = Array.isArray(wineRows)?wineRows.map(fromSupabaseWine):[];
-      appData.textContent = JSON.stringify([...remoteRestaurants, ...remoteShops, ...remoteExperiences, ...remoteWines, ...nonRemote]);
+      const remoteRecipes = Array.isArray(recipeRows)?recipeRows.map(fromSupabaseRecipe):[];
+      appData.textContent = JSON.stringify([...remoteRestaurants, ...remoteShops, ...remoteExperiences, ...remoteWines, ...remoteRecipes, ...nonRemote]);
       executeSalivera();
-      showDataStatus(`${remoteRestaurants.length} restaurants, ${remoteShops.length} botigues, ${remoteExperiences.length} experiències i ${remoteWines.length} vins carregats`, 'ok');
+      showDataStatus(`${remoteRestaurants.length} restaurants, ${remoteShops.length} botigues, ${remoteExperiences.length} experiències, ${remoteWines.length} vins i ${remoteRecipes.length} receptes carregats`, 'ok');
       document.documentElement.dataset.dataSource = 'supabase';
     } catch (error) {
       console.error('Error carregant Supabase:', error);
@@ -5348,3 +5450,5 @@ document.documentElement.dataset.saliveraVersion='2026.08.03.7-home-and-wines-st
 <script>document.documentElement.dataset.saliveraVersion='2026.08.03.7-home-and-wines-stable';</script>
 
 <script>document.documentElement.dataset.saliveraVersion='2026.08.03.7-home-and-wines-stable';</script>
+
+<script>document.documentElement.dataset.saliveraVersion='2026.08.03.8-total-sync';</script>
