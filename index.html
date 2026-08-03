@@ -2323,6 +2323,18 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
   }
 }
 
+
+.image-upload-actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:7px}
+.image-file-input{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.image-upload-status{color:#5d805f;font-weight:750}
+.required-fields-heading,.optional-fields-heading{display:flex;flex-direction:column;gap:3px;padding:12px 14px;border-radius:15px}
+.required-fields-heading{background:#fff2e9;border:1px solid #f0cfbe}
+.optional-fields-heading{margin-top:5px;background:#f7f3ef;border:1px solid var(--line)}
+.required-fields-heading small{color:var(--muted);font-size:.76rem}
+.required-field>input,.required-field>select,.required-field>textarea{border-color:#db9f83}
+.required-field-error{padding:8px;margin:-8px;border-radius:14px;background:#fff0ee!important;outline:2px solid #d96255}
+.required-field-error input,.required-field-error select,.required-field-error textarea{border-color:#d34f43!important}
+
 </style>
 
 <script>
@@ -4013,8 +4025,8 @@ function openDetail(id){const x=DATA.find(y=>y.id===id);if(!x)return;const isR=x
         ${info('Varietats',(x.varietats||[]).join(', '))}
         ${info('Criança',x.crianca)}
         ${info('Color',x.colorVi)}
-        ${info('Temperatura de servei',x.temperatura)}
-        ${info('Graduació',x.graduacio)}
+        ${info('Temperatura de servei',formatWineTemperature(x.temperatura))}
+        ${info('Graduació',formatWineAlcohol(x.graduacio))}
         ${info('Preu',x.preu?x.preu+' €':'')}
         ${info('Elaboració',x.elaboracio,true)}
       </div>
@@ -4581,8 +4593,183 @@ function setTxoco(value='no'){
   document.querySelectorAll('#txoco-control button').forEach(b=>b.classList.toggle('active',b.dataset.value===value));
 }
 
+
+const SALIVERA_STORAGE_BUCKET='salivera-media';
+const SALIVERA_STORAGE_URL='https://uezcqjldkqopevtjjjon.supabase.co';
+const SALIVERA_STORAGE_KEY='sb_publishable_Pv0IsnuTm69Xj2fKscp0ig_0uEENW7h';
+
+function imageUploadField(inputId,label){
+  const fileId=inputId+'-file';
+  const statusId=inputId+'-upload-status';
+  return `<label class="image-upload-field">${label}
+    <input id="${inputId}" placeholder="https://...">
+    <span class="image-upload-actions">
+      <input id="${fileId}" class="image-file-input" type="file"
+        accept="image/jpeg,image/png,image/webp"
+        onchange="uploadSaliveraImage('${fileId}','${inputId}','${statusId}')">
+      <button type="button" class="mini-btn"
+        onclick="document.getElementById('${fileId}').click()">📷 Pujar des de l’ordinador</button>
+      <small id="${statusId}" class="image-upload-status"></small>
+    </span>
+  </label>`;
+}
+
+function cleanStorageFilename(name){
+  const parts=String(name||'imatge').split('.');
+  const ext=(parts.pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+  const base=parts.join('.').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,70)||'imatge';
+  return `${base}-${Date.now()}.${ext}`;
+}
+
+async function uploadSaliveraImage(fileId,targetInputId,statusId){
+  const fileInput=document.getElementById(fileId);
+  const target=document.getElementById(targetInputId);
+  const status=document.getElementById(statusId);
+  const file=fileInput?.files?.[0];
+  if(!file)return;
+
+  if(!['image/jpeg','image/png','image/webp'].includes(file.type)){
+    alert('Només pots pujar imatges JPG, PNG o WEBP.');
+    fileInput.value='';
+    return;
+  }
+  if(file.size>5*1024*1024){
+    alert('La imatge no pot superar els 5 MB.');
+    fileInput.value='';
+    return;
+  }
+
+  try{
+    status.textContent='Pujant…';
+    const ok=await window.SaliveraAuth.requireAdmin();
+    if(!ok)throw new Error('Cal iniciar sessió com a administrador.');
+    const token=await window.SaliveraAuth.getAccessToken();
+    if(!token)throw new Error('La sessió ha caducat.');
+
+    const type=document.querySelector('.create-grid')?.dataset?.type||'altres';
+    const path=`${type}/${cleanStorageFilename(file.name)}`;
+
+    const response=await fetch(
+      `${SALIVERA_STORAGE_URL}/storage/v1/object/${SALIVERA_STORAGE_BUCKET}/${path}`,
+      {
+        method:'POST',
+        headers:{
+          apikey:SALIVERA_STORAGE_KEY,
+          Authorization:`Bearer ${token}`,
+          'Content-Type':file.type,
+          'x-upsert':'false'
+        },
+        body:file
+      }
+    );
+
+    if(!response.ok){
+      const detail=await response.text();
+      throw new Error(detail||`Error ${response.status}`);
+    }
+
+    target.value=`${SALIVERA_STORAGE_URL}/storage/v1/object/public/${SALIVERA_STORAGE_BUCKET}/${path}`;
+    status.textContent='✓ Imatge pujada';
+  }catch(error){
+    console.error(error);
+    status.textContent='Error';
+    alert(`No s’ha pogut pujar la imatge: ${error.message||error}`);
+  }finally{
+    fileInput.value='';
+  }
+}
+
+function stripTemperatureUnit(value){
+  return String(value||'').replace(/º\s*c/gi,'').replace(/°\s*c/gi,'').replace(/\s*c$/gi,'').trim();
+}
+function stripAlcoholUnit(value){
+  return String(value||'').replace(/%\s*vol/gi,'').replace(/%/g,'').replace(/\s*vol$/gi,'').trim();
+}
+function formatWineTemperature(value){
+  const clean=stripTemperatureUnit(value);
+  return clean?`${clean} °C`:'';
+}
+function formatWineAlcohol(value){
+  const clean=stripAlcoholUnit(value);
+  return clean?`${clean} %`:'';
+}
+
+const REQUIRED_FIELD_MAP={
+  restaurant:[['new-nom','Nom'],['restaurant-territory','Àmbit'],['new-rang','Rang de preus']],
+  recepta:[['new-nom','Nom'],['new-categoria','Categoria'],['new-dificultat','Dificultat']],
+  botiga:[['new-nom','Nom'],['new-botiga-vegueria','Vegueria'],['new-botiga-zona','Zona'],['new-tipus-botiga','Tipus de botiga']],
+  experiencia:[['new-nom','Nom'],['new-experiencia-vegueria','Vegueria'],['new-experiencia-zona','Zona'],['new-tipus-experiencia','Tipus d’experiència']],
+  vi:[['new-nom','Nom'],['new-wine-origin','Origen / DO'],['new-wine-type','Tipus de vi']]
+};
+
+function requiredContainerFor(id){
+  if(id==='restaurant-territory')return document.querySelector('.territory-block');
+  return document.getElementById(id)?.closest('label')||null;
+}
+function markRequired(container){
+  if(!container)return;
+  container.classList.add('required-field');
+  if(container.matches('label')){
+    const node=[...container.childNodes].find(n=>n.nodeType===Node.TEXT_NODE&&n.textContent.trim());
+    if(node&&!node.textContent.includes('*'))node.textContent=node.textContent.trimEnd()+' *';
+  }
+}
+function organizeRequiredFields(type){
+  const grid=document.querySelector('.create-grid');
+  if(!grid)return;
+  const heading=document.createElement('div');
+  heading.className='required-fields-heading wide';
+  heading.innerHTML='<strong>Camps obligatoris</strong><small>Els camps amb * s’han d’emplenar abans de desar.</small>';
+  grid.prepend(heading);
+
+  let anchor=heading;
+  const used=[];
+  for(const [id] of REQUIRED_FIELD_MAP[type]||[]){
+    const container=requiredContainerFor(id);
+    if(!container||used.includes(container))continue;
+    markRequired(container);
+    anchor.after(container);
+    anchor=container;
+    used.push(container);
+  }
+  if(used.length){
+    const optional=document.createElement('div');
+    optional.className='optional-fields-heading wide';
+    optional.innerHTML='<strong>Informació opcional</strong>';
+    anchor.after(optional);
+  }
+}
+function validateRequiredFields(type){
+  const missing=[];
+  const check=(id,label)=>{
+    const el=document.getElementById(id);
+    if(!el||!String(el.value||'').trim())missing.push({el,label});
+  };
+
+  if(type==='restaurant'){
+    check('new-nom','Nom');
+    check('new-rang','Rang de preus');
+    if(isOutsideTerritory())check('new-zona-outside','Zona exterior');
+    else{check('new-vegueria','Vegueria');check('new-zona','Zona');}
+  }else{
+    for(const [id,label] of REQUIRED_FIELD_MAP[type]||[]){
+      if(id!=='restaurant-territory')check(id,label);
+    }
+  }
+
+  document.querySelectorAll('.required-field-error').forEach(el=>el.classList.remove('required-field-error'));
+  if(!missing.length)return true;
+
+  missing.forEach(({el})=>el?.closest('label,.territory-block')?.classList.add('required-field-error'));
+  missing[0].el?.focus();
+  alert('Falten camps obligatoris:\n\n'+missing.map(x=>'• '+x.label).join('\n'));
+  return false;
+}
+
 function createFields(type){
-  const common=`<label class="wide">Nom *<input id="new-nom" required></label><label>Imatge (URL)<input id="new-imatge" placeholder="https://..."></label>`;
+  const common=`<label class="wide">Nom *<input id="new-nom" required></label>
+  ${imageUploadField('new-imatge','Imatge principal')}`;
   if(type==='restaurant')return common+`
     <label>Logotip (URL)<input id="new-logo"></label>
     <div class="wide territory-block">
@@ -4728,14 +4915,14 @@ function createFields(type){
     <label class="wide">Varietats<input id="new-wine-varieties" placeholder="Garnatxa, Samsó..."></label>
     <label>Criança<input id="new-wine-aging" placeholder="14 mesos en roure..."></label>
     <label>Color<input id="new-wine-color" placeholder="Negre, robí..."></label>
-    <label>Temperatura de servei<input id="new-wine-temperature" placeholder="15-16 ºC"></label>
-    <label>Graduació<input id="new-wine-alcohol" placeholder="14% vol"></label>
+    <label>Temperatura de servei<input id="new-wine-temperature" inputmode="decimal" placeholder="Ex.: 15-16"></label>
+    <label>Graduació<input id="new-wine-alcohol" type="number" min="0" max="100" step="0.1" placeholder="Ex.: 14"></label>
     <label>Preu (€)<input id="new-wine-price" type="number" min="0" step="0.01"></label>
     <label>Web<input id="new-wine-web" placeholder="https://..."></label>
     <label>Instagram<input id="new-wine-instagram" placeholder="https://..."></label>
-    <label>Imatge de l’ampolla<input id="new-wine-bottle-image" placeholder="https://..."></label>
-    <label>Imatge de l’etiqueta<input id="new-wine-label-image" placeholder="https://..."></label>
-    <label>Logo del productor<input id="new-wine-logo" placeholder="https://..."></label>
+    ${imageUploadField('new-wine-bottle-image','Imatge de l’ampolla')}
+    ${imageUploadField('new-wine-label-image','Imatge de l’etiqueta')}
+    ${imageUploadField('new-wine-logo','Logo del productor')}
     <label class="wide">Elaboració<textarea id="new-wine-production"></textarea></label>
     <label class="wide">Nota visual<textarea id="new-wine-visual"></textarea></label>
     <label class="wide">Nota olfactiva<textarea id="new-wine-nose"></textarea></label>
@@ -4749,7 +4936,7 @@ function createFields(type){
     <label class="wide">Observacions<textarea id="new-notes"></textarea></label>`;
   return common+`<label>Categoria<input id="new-categoria"></label><label>Zona<input id="new-zona-text"></label><label>Enllaç<input id="new-enllac"></label><label class="wide">Descripció<textarea id="new-notes"></textarea></label>`;
 }
-function openCreate(type){if(!adminMode)return;currentEditingId=null;type=type||({restaurant:'restaurant',recepta:'recepta',vi:'vi',botiga:'botiga',experiencia:'experiencia'}[currentType]||'restaurant');const names={restaurant:'restaurant',recepta:'recepta',vi:'vi',botiga:'botiga',experiencia:'experiència'};$('#createTitle').textContent='Afegir '+names[type];$('#createContent').innerHTML=`<div class="create-grid" data-type="${type}">${createFields(type)}</div><div class="create-actions"><button class="secondary-btn" onclick="closeCreate();openAdmin()">⚙ Administrar llistes</button><button class="secondary-btn" onclick="closeCreate()">Cancel·lar</button><button class="primary-btn" onclick="saveItem('${type}')">Desar</button></div>`;$('#createModal').classList.remove('hidden');document.body.style.overflow='hidden';bindCreateDependencies();toggleOutsideTerritory(false);refreshRestaurantZoneOptions('');refreshShopZoneOptions('');refreshExperienceZoneOptions('');setSchedule({});setRatings([]);setTxoco('no');setNav('create')}
+function openCreate(type){if(!adminMode)return;currentEditingId=null;type=type||({restaurant:'restaurant',recepta:'recepta',vi:'vi',botiga:'botiga',experiencia:'experiencia'}[currentType]||'restaurant');const names={restaurant:'restaurant',recepta:'recepta',vi:'vi',botiga:'botiga',experiencia:'experiència'};$('#createTitle').textContent='Afegir '+names[type];$('#createContent').innerHTML=`<div class="create-grid" data-type="${type}">${createFields(type)}</div><div class="create-actions"><button class="secondary-btn" onclick="closeCreate();openAdmin()">⚙ Administrar llistes</button><button class="secondary-btn" onclick="closeCreate()">Cancel·lar</button><button class="primary-btn" onclick="saveItem('${type}')">Desar</button></div>`;$('#createModal').classList.remove('hidden');document.body.style.overflow='hidden';bindCreateDependencies();toggleOutsideTerritory(false);refreshRestaurantZoneOptions('');refreshShopZoneOptions('');refreshExperienceZoneOptions('');setSchedule({});setRatings([]);setTxoco('no');organizeRequiredFields(type);setNav('create')}
 function closeCreate(){$('#createModal').classList.add('hidden');document.body.style.overflow='';currentEditingId=null;setNav(currentType==='restaurant'?'restaurants':'home')}
 function field(id){return $('#'+id)?.value?.trim()||''}
 function csvArray(v){return v.split(',').map(x=>x.trim()).filter(Boolean)}
@@ -4778,8 +4965,8 @@ function buildItemFromForm(type,existing={}){
     varietats:csvArray(field('new-wine-varieties')),
     crianca:field('new-wine-aging'),
     colorVi:field('new-wine-color'),
-    temperatura:field('new-wine-temperature'),
-    graduacio:field('new-wine-alcohol'),
+    temperatura:stripTemperatureUnit(field('new-wine-temperature')),
+    graduacio:stripAlcoholUnit(field('new-wine-alcohol')),
     preu:field('new-wine-price'),
     web:field('new-wine-web'),
     instagram:field('new-wine-instagram'),
@@ -5000,6 +5187,7 @@ function editItem(id){
   const names={restaurant:'restaurant',recepta:'recepta',vi:'vi',botiga:'botiga',experiencia:'experiència'};
   $('#createTitle').textContent='Modificar '+(names[x.tipus]||'element');
   $('#createContent').innerHTML=`<div class="edit-note">Estàs editant un element existent. En desar, quedarà actualitzat a Supabase i a tots els dispositius.</div><div class="create-grid" data-type="${x.tipus}">${createFields(x.tipus)}</div><div class="create-actions"><button class="secondary-btn" onclick="closeCreate()">Cancel·lar</button><button class="primary-btn" onclick="saveItem('${x.tipus}')">Desar canvis</button></div>`;
+  organizeRequiredFields(x.tipus);
   setFormValue('new-nom',x.nom);setFormValue('new-imatge',x.imatge);setFormValue('new-categoria',x.categoria);
   setFormValue('new-zona-text',x.zona);setFormValue('new-enllac',x.enllac);setFormValue('new-notes',x.notes);
   if(x.tipus==='restaurant'){
@@ -5031,8 +5219,8 @@ function editItem(id){
     setFormValue('new-wine-varieties',(x.varietats||[]).join(', '));
     setFormValue('new-wine-aging',x.crianca);
     setFormValue('new-wine-color',x.colorVi);
-    setFormValue('new-wine-temperature',x.temperatura);
-    setFormValue('new-wine-alcohol',x.graduacio);
+    setFormValue('new-wine-temperature',stripTemperatureUnit(x.temperatura));
+    setFormValue('new-wine-alcohol',stripAlcoholUnit(x.graduacio));
     setFormValue('new-wine-price',x.preu);
     setFormValue('new-wine-web',x.web);
     setFormValue('new-wine-instagram',x.instagram);
@@ -5482,7 +5670,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
 </div>
 
 <script>
-document.documentElement.dataset.saliveraVersion='2026.08.03.9-robust-loader-private-favorites';
+document.documentElement.dataset.saliveraVersion='2026.08.03.10-storage-required-fields';
 </script>
 </body></html>
 <style>.module-go,.module-arrow{display:none!important}</style>
@@ -5492,10 +5680,10 @@ document.documentElement.dataset.saliveraVersion='2026.08.03.9-robust-loader-pri
 .module-card{cursor:pointer!important}
 </style>
 
-<script>document.documentElement.dataset.saliveraVersion='2026.08.03.9-robust-loader-private-favorites';</script>
+<script>document.documentElement.dataset.saliveraVersion='2026.08.03.10-storage-required-fields';</script>
 
-<script>document.documentElement.dataset.saliveraVersion='2026.08.03.9-robust-loader-private-favorites';</script>
+<script>document.documentElement.dataset.saliveraVersion='2026.08.03.10-storage-required-fields';</script>
 
-<script>document.documentElement.dataset.saliveraVersion='2026.08.03.9-robust-loader-private-favorites';</script>
+<script>document.documentElement.dataset.saliveraVersion='2026.08.03.10-storage-required-fields';</script>
 
-<script>document.documentElement.dataset.saliveraVersion='2026.08.03.9-robust-loader-private-favorites';</script>
+<script>document.documentElement.dataset.saliveraVersion='2026.08.03.10-storage-required-fields';</script>
