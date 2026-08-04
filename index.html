@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Fa venir SALIVERA · V10 · Mapa global simplificat</title>
+<title>Fa venir SALIVERA · V10 · Vins simplificats</title>
 <meta name="theme-color" content="#7e3f28">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
@@ -2350,6 +2350,50 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
 
 
 #mapView{display:none!important}
+
+.wine-quick-facts{
+  grid-column:1/-1;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+.wine-quick-facts .info{
+  min-width:0;
+  padding:12px 14px;
+}
+.wine-form-quick{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.wine-form-quick label{
+  min-width:0;
+}
+@media(max-width:560px){
+  .wine-quick-facts{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:7px;
+  }
+  .wine-quick-facts .info{
+    padding:10px 8px;
+    text-align:center;
+  }
+  .wine-quick-facts .info small{
+    font-size:.66rem;
+  }
+  .wine-form-quick{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:7px;
+  }
+  .wine-form-quick label{
+    font-size:.72rem;
+  }
+  .wine-form-quick input{
+    padding-left:8px;
+    padding-right:8px;
+  }
+}
+
 </style>
 
 <script>
@@ -4107,14 +4151,14 @@ function openDetail(id){const x=DATA.find(y=>y.id===id);if(!x)return;const isR=x
       <div class="info-grid">
         ${info('Origen / DO',x.origen)}
         ${info('Tipus de vi',x.tipusVi)}
-        ${info('Productor',x.productor)}
-        ${info('Elaborador',x.elaborador)}
+        ${info('Celler',x.celler||x.productor)}
         ${info('Varietats',(x.varietats||[]).join(', '))}
         ${info('Criança',x.crianca)}
-        ${info('Color',x.colorVi)}
-        ${info('Temperatura de servei',formatWineTemperature(x.temperatura))}
-        ${info('Graduació',formatWineAlcohol(x.graduacio))}
-        ${info('Preu',x.preu?x.preu+' €':'')}
+        <div class="wine-quick-facts">
+          ${info('Temperatura',formatWineTemperature(x.temperatura))}
+          ${info('Graduació',formatWineAlcohol(x.graduacio))}
+          ${info('Preu',x.preu?x.preu+' €':'')}
+        </div>
         ${info('Elaboració',x.elaboracio,true)}
       </div>
     </div>
@@ -5213,20 +5257,18 @@ function createFields(type){
   if(type==='vi')return common+`
     <label>Origen / DO<select id="new-wine-origin"><option value="">Selecciona...</option>${formOptions(masterValues('origenVi'))}</select></label>
     <label>Tipus de vi<select id="new-wine-type"><option value="">Selecciona...</option>${formOptions(masterValues('tipusVi'))}</select></label>
-    <label>Productor<input id="new-wine-producer"></label>
-    <label>Elaborador / Enòleg<input id="new-wine-maker"></label>
     <label>Nom del celler<input id="new-winery-name"></label>
     <label>Coordenades del celler<input id="new-winery-coords" placeholder="41.0000, 2.0000"></label>
     <label>Web del celler<input id="new-winery-web" placeholder="https://..."></label>
     <label class="switch-field"><input id="new-winery-visitable" type="checkbox"> Celler visitable</label>
     <label class="switch-field"><input id="new-winery-tourism" type="checkbox"> Ofereix enoturisme</label>
-    <label class="wide">Observacions del celler<textarea id="new-winery-notes"></textarea></label>
     <label class="wide">Varietats<input id="new-wine-varieties" placeholder="Garnatxa, Samsó..."></label>
     <label>Criança<input id="new-wine-aging" placeholder="14 mesos en roure..."></label>
-    <label>Color<input id="new-wine-color" placeholder="Negre, robí..."></label>
-    <label>Temperatura de servei<input id="new-wine-temperature" inputmode="decimal" placeholder="Ex.: 15-16"></label>
-    <label>Graduació<input id="new-wine-alcohol" type="number" min="0" max="100" step="0.1" placeholder="Ex.: 14"></label>
-    <label>Preu (€)<input id="new-wine-price" type="number" min="0" step="0.01"></label>
+    <div class="wine-form-quick wide">
+      <label>Temperatura<input id="new-wine-temperature" inputmode="decimal" placeholder="15-16"></label>
+      <label>Graduació<input id="new-wine-alcohol" type="number" min="0" max="100" step="0.1" placeholder="14"></label>
+      <label>Preu (€)<input id="new-wine-price" type="number" min="0" step="0.01"></label>
+    </div>
     <label>Web<input id="new-wine-web" placeholder="https://..."></label>
     <label>Instagram<input id="new-wine-instagram" placeholder="https://..."></label>
     ${imageUploadField('new-wine-bottle-image','Imatge de l’ampolla')}
@@ -5269,17 +5311,18 @@ function buildItemFromForm(type,existing={}){
   if(type==='vi')Object.assign(item,{
     origen:field('new-wine-origin'),
     tipusVi:field('new-wine-type'),
-    productor:field('new-wine-producer'),
-    elaborador:field('new-wine-maker'),
+    productor:existing.productor||'',
+    elaborador:existing.elaborador||'',
     celler:field('new-winery-name'),
     coordenadesCeller:field('new-winery-coords'),
     webCeller:field('new-winery-web'),
     cellerVisitable:!!$('#new-winery-visitable')?.checked,
     enoturisme:!!$('#new-winery-tourism')?.checked,
-    observacionsCeller:field('new-winery-notes'),
+    observacionsCeller:existing.observacionsCeller||'',
     varietats:csvArray(field('new-wine-varieties')),
     crianca:field('new-wine-aging'),
-    colorVi:field('new-wine-color'),
+    colorVi:existing.colorVi||'',
+
     temperatura:stripTemperatureUnit(field('new-wine-temperature')),
     graduacio:stripAlcoholUnit(field('new-wine-alcohol')),
     preu:field('new-wine-price'),
@@ -5529,17 +5572,13 @@ function editItem(id){
   if(x.tipus==='vi'){
     setFormValue('new-wine-origin',x.origen);
     setFormValue('new-wine-type',x.tipusVi);
-    setFormValue('new-wine-producer',x.productor);
-    setFormValue('new-wine-maker',x.elaborador);
-    setFormValue('new-winery-name',x.celler);
+    setFormValue('new-winery-name',x.celler||x.productor);
     setFormValue('new-winery-coords',x.coordenadesCeller);
     setFormValue('new-winery-web',x.webCeller);
     setFormChecked('new-winery-visitable',x.cellerVisitable);
     setFormChecked('new-winery-tourism',x.enoturisme);
-    setFormValue('new-winery-notes',x.observacionsCeller);
     setFormValue('new-wine-varieties',(x.varietats||[]).join(', '));
     setFormValue('new-wine-aging',x.crianca);
-    setFormValue('new-wine-color',x.colorVi);
     setFormValue('new-wine-temperature',stripTemperatureUnit(x.temperatura));
     setFormValue('new-wine-alcohol',stripAlcoholUnit(x.graduacio));
     setFormValue('new-wine-price',x.preu);
