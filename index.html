@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Fa venir SALIVERA · Supabase</title>
+<title>Fa venir SALIVERA · V10 · Mapa global simplificat</title>
 <meta name="theme-color" content="#7e3f28">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
@@ -2335,6 +2335,21 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
 .required-field-error{padding:8px;margin:-8px;border-radius:14px;background:#fff0ee!important;outline:2px solid #d96255}
 .required-field-error input,.required-field-error select,.required-field-error textarea{border-color:#d34f43!important}
 
+
+.global-map-legend{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:0 0 14px;
+}
+.global-map-legend .chip{opacity:.55}
+.global-map-legend .chip.active{
+  opacity:1;
+  box-shadow:0 6px 18px rgba(126,63,40,.10);
+}
+
+
+#mapView{display:none!important}
 </style>
 
 <script>
@@ -2501,12 +2516,27 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
   <button class="chip admin-only hidden" id="genericFavChip" onclick="toggleGenericFavs()">♡ Només preferits</button>
   <button class="chip generic-clear" id="genericClearBtn" onclick="clearGenericFilters()">× Esborrar filtres</button>
 </div><div class="cards" id="cards"></div></section>
-<section id="mapView" class="hidden"><div class="section-head"><div><div class="eyebrow">Restaurants</div><h1>Mapa de restaurants</h1></div><p id="mapCount"></p></div><div id="mapWarning" class="map-note hidden">Per veure el mapa cal connexió a internet. La resta de l’aplicació funciona igualment.</div><div id="map" class="map-wrap"></div><div class="map-actions">
+<section id="globalMapView" class="hidden">
+  <div class="section-head">
+    <div><div class="eyebrow">SALIVERA</div><h1>Mapa global</h1></div>
+    <p id="globalMapCount"></p>
+  </div>
+  <div class="global-map-legend">
+    <button class="chip active" data-global-map-type="restaurant">🍴 Restaurants</button>
+    <button class="chip active" data-global-map-type="botiga">🧺 Botigues</button>
+    <button class="chip active" data-global-map-type="experiencia">✨ Experiències</button>
+    <button class="chip active" data-global-map-type="vi">🍇 Cellers</button>
+    <button class="chip" id="globalOutsideRestaurants">Mostrar altres restaurants</button>
+  </div>
+  <div id="globalMapWarning" class="map-note hidden">Per veure el mapa cal connexió a internet.</div>
+  <div id="globalMap" class="map-wrap"></div>
+</section>
+<section id="mapView" class="hidden"><div class="section-head"><div><div class="eyebrow" id="mapEyebrow">Restaurants</div><h1 id="mapTitle">Mapa de restaurants</h1></div><p id="mapCount"></p></div><div id="mapWarning" class="map-note hidden">Per veure el mapa cal connexió a internet. La resta de l’aplicació funciona igualment.</div><div id="map" class="map-wrap"></div><div class="map-actions">
   <button class="chip" id="outsideToggle">Mostrar altres restaurants</button>
   <button class="chip data-issues-btn" onclick="openDataIssues()">Revisar dades pendents</button>
 </div></section>
 </main>
-<nav class="bottom"><div class="bottom-inner"><button class="navbtn active" data-nav="home" onclick="goHome()"><b>⌂</b>Inici</button><button class="navbtn hidden" id="restaurantsNav" data-nav="restaurants" onclick="openRestaurants()"><b>🍴</b>Restaurants</button><button class="navbtn hidden" id="mapNav" data-nav="map" onclick="showMap()"><b>🗺</b>Mapa</button><button class="navbtn admin-only hidden" data-nav="favorites" onclick="showGlobalFavorites()"><b>♥</b>Preferits</button><button class="navbtn admin-only hidden" data-nav="create" onclick="openCreate()"><b>＋</b>Afegir</button><button class="navbtn admin-only hidden" data-nav="admin" onclick="openAdmin()"><b>⚙</b>Administrar</button></div></nav>
+<nav class="bottom"><div class="bottom-inner"><button class="navbtn active" data-nav="home" onclick="goHome()"><b>⌂</b>Inici</button><button class="navbtn" id="globalMapNav" data-nav="globalmap" onclick="showGlobalMap()"><b>🗺</b>Mapa global</button><button class="navbtn admin-only hidden" data-nav="favorites" onclick="showGlobalFavorites()"><b>♥</b>Preferits</button><button class="navbtn admin-only hidden" data-nav="create" onclick="openCreate()"><b>＋</b>Afegir</button><button class="navbtn admin-only hidden" data-nav="admin" onclick="openAdmin()"><b>⚙</b>Administrar</button></div></nav>
 <div id="modal" class="modal hidden" onclick="if(event.target===this)closeModal()"><article class="sheet" id="sheet"></article></div><div id="createModal" class="modal hidden"><div class="sheet" style="max-width:860px"><div class="detail" style="padding-top:24px"><button class="close" onclick="closeCreate()">×</button><div class="eyebrow">Nou element</div><h2 id="createTitle">Afegir</h2><div id="createContent"></div></div></div></div><div id="adminModal" class="modal hidden" onclick="if(event.target===this)closeAdmin()"><article class="sheet"><div class="detail"><button class="close" style="position:sticky;float:right" onclick="closeAdmin()">×</button><div class="eyebrow">Configuració</div><h2 style="font-family:Georgia,serif;font-size:2.2rem;margin:.3rem 0 1rem">Administrar llistes</h2><p class="meta">Pots afegir opcions noves o canviar el nom de les existents. Les modificacions queden desades en aquest navegador.</p><div class="admin-grid" id="adminContent"></div></div></article></div>
 
 <div id="authModal" class="auth-modal hidden" role="dialog" aria-modal="true" aria-labelledby="authTitle">
@@ -2885,6 +2915,9 @@ window.SaliveraDB=(()=>{
       id:String(item.id),nom:String(item.nom||'').trim(),
       origen:item.origen||null,tipus_vi:item.tipusVi||null,
       productor:item.productor||null,elaborador:item.elaborador||null,
+      celler:item.celler||null,coordenades_celler:item.coordenadesCeller||null,
+      web_celler:item.webCeller||null,celler_visitable:Boolean(item.cellerVisitable),
+      enoturisme:Boolean(item.enoturisme),observacions_celler:item.observacionsCeller||null,
       varietats:Array.isArray(item.varietats)?item.varietats:[],
       crianca:item.crianca||null,color_vi:item.colorVi||null,
       temperatura_servei:item.temperatura||null,graduacio:item.graduacio||null,
@@ -2993,7 +3026,7 @@ window.SaliveraDB=(()=>{
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script type="text/plain" id="saliveraMain">
 
-const FORM_TAXONOMY={"vegueries": ["EL BERGUEDÀ", "BARCELONA", "CATALUNYA CENTRAL", "GIRONA", "EL PENEDÈS", "ALT PIRINEU I ARAN", "CAMP DE TARRAGONA", "TERRES DE L'EBRE", "ILLES BALEARS", "ONLINE", "LLEIDA", "CATALUNYA NORD"], "zones": [{"nom": "SANT MARTÍ", "vegueria": "BARCELONA"}, {"nom": "ÀREA METROPOLITANA", "vegueria": "BARCELONA"}, {"nom": "CIUTAT VELLA", "vegueria": "BARCELONA"}, {"nom": "EIXAMPLE", "vegueria": "BARCELONA"}, {"nom": "GRÀCIA", "vegueria": "BARCELONA"}, {"nom": "LES CORTS", "vegueria": "BARCELONA"}, {"nom": "MARESME", "vegueria": "BARCELONA"}, {"nom": "SANTS-MONTJUÏC", "vegueria": "BARCELONA"}, {"nom": "SARRIÀ-SANT GERVASI", "vegueria": "BARCELONA"}, {"nom": "AVIÀ", "vegueria": "EL BERGUEDÀ"}, {"nom": "BERGA", "vegueria": "EL BERGUEDÀ"}, {"nom": "CASTELLÀ DEL RIU", "vegueria": "EL BERGUEDÀ"}, {"nom": "GIRONELLA", "vegueria": "EL BERGUEDÀ"}, {"nom": "MONTCLAR", "vegueria": "EL BERGUEDÀ"}, {"nom": "OLVAN", "vegueria": "EL BERGUEDÀ"}, {"nom": "PUIG-REIG", "vegueria": "EL BERGUEDÀ"}, {"nom": "SAGÀS", "vegueria": "EL BERGUEDÀ"}, {"nom": "SERRATEIX", "vegueria": "EL BERGUEDÀ"}, {"nom": "CONCA DE BARBERÀ", "vegueria": "CAMP DE TARRAGONA"}, {"nom": "TARRAGONÈS", "vegueria": "CAMP DE TARRAGONA"}, {"nom": "BAGES", "vegueria": "CATALUNYA CENTRAL"}, {"nom": "LLUÇANÈS", "vegueria": "CATALUNYA CENTRAL"}, {"nom": "MOIANÈS", "vegueria": "CATALUNYA CENTRAL"}, {"nom": "OSONA", "vegueria": "CATALUNYA CENTRAL"}, {"nom": "SOLSONÈS", "vegueria": "CATALUNYA CENTRAL"}, {"nom": "BAIX PENEDÈS", "vegueria": "EL PENEDÈS"}, {"nom": "ALT EMPORDÀ", "vegueria": "GIRONA"}, {"nom": "GIRONÈS", "vegueria": "GIRONA"}, {"nom": "LA SELVA", "vegueria": "GIRONA"}, {"nom": "ONLINE", "vegueria": "ONLINE"}, {"nom": "EIVISSA", "vegueria": "ILLES BALEARS"}, {"nom": "FORMENTERA", "vegueria": "ILLES BALEARS"}, {"nom": "BAIX EBRE", "vegueria": "TERRES DE L'EBRE"}, {"nom": "MONTSIÀ", "vegueria": "TERRES DE L'EBRE"}, {"nom": "URGELL", "vegueria": "LLEIDA"}, {"nom": "MENORCA", "vegueria": "ILLES BALEARS"}, {"nom": "...Altres", "vegueria": "...Altres"}, {"nom": "LA POBLA DE LILLET", "vegueria": "EL BERGUEDÀ"}, {"nom": "MAÇANERS", "vegueria": "EL BERGUEDÀ"}, {"nom": "ALT URGELL", "vegueria": "ALT PIRINEU I ARAN"}, {"nom": "PALLARS SOBIRÀ", "vegueria": "ALT PIRINEU I ARAN"}, {"nom": "MALANYEU", "vegueria": "EL BERGUEDÀ"}, {"nom": "ALT PENEDÈS", "vegueria": "EL PENEDÈS"}, {"nom": "ROSSELLÓ", "vegueria": "CATALUNYA NORD"}], "cuines": ["CATALANA", "MEDITERRÀNIA", "ITALIANA", "FUSIÓ", "TAPES I PLATETS", "GASTROBAR", "CUINA DE MERCAT", "ENTREPANS", "ORIENTAL", "ALTRES", "ESMORZAR DE FORQUILLA", "CERVESERIA", "VERMUTERIA", "VINET", "COCTELERIA", "SIDRERIA"], "especialitats": ["Arrossos", "Peix i Marisc", "Brasa", "Pizzes", "Truites", "Entrepans", "Pasta", "Sushi"], "rangsPreu": ["Menys de 20€", "Entre 20 i 35€", "Entre 35 i 50€", "Entre 50 i 100€", "Més de 100€"], "recomanadors": ["Abda Forés", "Anna Freixa", "Neus Ribera", "Òscar Garcia", "Gemma Jacas", "Blanca Jacas", "Joan Franquesa", "Elvira Busoma", "Judith Palomo", "Enric Ribera", "Dolors Forés", "Tik Tok", "Instagram", "Aran Sanfeliu", "Edu Cal Marino", "Els Blais", "Laura Molina", "Núria Montoro", "Francesc Ribera", "Joc de Cartes", "Eva Abertis", "Júlia Martí", "Josep i Yolanda", "Rafa Provi", "Joseba", "Pablo"], "categoriesRecepta": ["Entrants", "Primers", "Segons", "Postres", "Guarnicions"], "tipusAliment": ["Carns", "Peixos i Mariscos", "Ous", "Farines", "Verdures", "Arrossos i Pasta", "Sopes i Cremes", "Xocolata"], "allergens": ["Gluten", "Làctics", "Crustacis", "Bolets", "Fruits secs", "Formatge", "Alcohol", "Peixos"], "cuiners": ["Anna", "Carles", "Gemma", "Joan", "Carme", "Mercè"], "saludable": ["Si", "No"]};
+const FORM_TAXONOMY={"vegueries": ["EL BERGUEDÀ", "BARCELONA", "CATALUNYA CENTRAL", "GIRONA", "EL PENEDÈS", "ALT PIRINEU I ARAN", "CAMP DE TARRAGONA", "TERRES DE L'EBRE", "ILLES BALEARS", "ONLINE", "LLEIDA", "CATALUNYA NORD"], "zones": [{"nom": "SANT MARTÍ", "vegueria": "BARCELONA"}, {"nom": "ÀREA METROPOLITANA", "vegueria": "BARCELONA"}, {"nom": "CIUTAT VELLA", "vegueria": "BARCELONA"}, {"nom": "EIXAMPLE", "vegueria": "BARCELONA"}, {"nom": "GRÀCIA", "vegueria": "BARCELONA"}, {"nom": "LES CORTS", "vegueria": "BARCELONA"}, {"nom": "MARESME", "vegueria": "BARCELONA"}, {"nom": "SANTS-MONTJUÏC", "vegueria": "BARCELONA"}, {"nom": "SARRIÀ-SANT GERVASI", "vegueria": "BARCELONA"}, {"nom": "AVIÀ", "vegueria": "EL BERGUEDÀ"}, {"nom": "BERGA", "vegueria": "EL BERGUEDÀ"}, {"nom": "CASTELLÀ DEL RIU", "vegueria": "EL BERGUEDÀ"}, {"nom": "GIRONELLA", "vegueria": "EL BERGUEDÀ"}, {"nom": "MONTCLAR", "vegueria": "EL BERGUEDÀ"}, {"nom": "OLVAN", "vegueria": "EL BERGUEDÀ"}, {"nom": "PUIG-REIG", "vegueria": "EL BERGUEDÀ"}, {"nom": "SAGÀS", "vegueria": "EL BERGUEDÀ"}, {"nom": "SERRATEIX", "vegueria": "EL BERGUEDÀ"}, {"nom": "CONCA DE BARBERÀ", "vegueria": "CAMP DE TARRAGONA"}, {"nom": "TARRAGONÈS", "vegueria": "CAMP DE TARRAGONA"}, {"nom": "BAGES", "vegueria": "CATALUNYA CENTRAL"}, {"nom": "LLUÇANÈS", "vegueria": "CATALUNYA CENTRAL"}, {"nom": "MOIANÈS", "vegueria": "CATALUNYA CENTRAL"}, {"nom": "OSONA", "vegueria": "CATALUNYA CENTRAL"}, {"nom": "SOLSONÈS", "vegueria": "CATALUNYA CENTRAL"}, {"nom": "BAIX PENEDÈS", "vegueria": "EL PENEDÈS"}, {"nom": "ALT EMPORDÀ", "vegueria": "GIRONA"}, {"nom": "GIRONÈS", "vegueria": "GIRONA"}, {"nom": "LA SELVA", "vegueria": "GIRONA"}, {"nom": "ONLINE", "vegueria": "ONLINE"}, {"nom": "EIVISSA", "vegueria": "ILLES BALEARS"}, {"nom": "FORMENTERA", "vegueria": "ILLES BALEARS"}, {"nom": "BAIX EBRE", "vegueria": "TERRES DE L'EBRE"}, {"nom": "MONTSIÀ", "vegueria": "TERRES DE L'EBRE"}, {"nom": "URGELL", "vegueria": "LLEIDA"}, {"nom": "MENORCA", "vegueria": "ILLES BALEARS"}, {"nom": "...Altres", "vegueria": "...Altres"}, {"nom": "LA POBLA DE LILLET", "vegueria": "EL BERGUEDÀ"}, {"nom": "MAÇANERS", "vegueria": "EL BERGUEDÀ"}, {"nom": "ALT URGELL", "vegueria": "ALT PIRINEU I ARAN"}, {"nom": "PALLARS SOBIRÀ", "vegueria": "ALT PIRINEU I ARAN"}, {"nom": "MALANYEU", "vegueria": "EL BERGUEDÀ"}, {"nom": "ALT PENEDÈS", "vegueria": "EL PENEDÈS"}, {"nom": "ROSSELLÓ", "vegueria": "CATALUNYA NORD"}], "cuines": ["CATALANA", "MEDITERRÀNIA", "ITALIANA", "FUSIÓ", "TAPES I PLATETS", "GASTROBAR", "CUINA DE MERCAT", "ENTREPANS", "ORIENTAL", "ALTRES", "ESMORZAR DE FORQUILLA", "CERVESERIA", "VERMUTERIA", "COCTELERIA", "SIDRERIA"], "especialitats": ["Arrossos", "Peix i Marisc", "Brasa", "Pizzes", "Truites", "Entrepans", "Pasta", "Sushi"], "rangsPreu": ["Menys de 20€", "Entre 20 i 35€", "Entre 35 i 50€", "Entre 50 i 100€", "Més de 100€"], "recomanadors": ["Abda Forés", "Anna Freixa", "Neus Ribera", "Òscar Garcia", "Gemma Jacas", "Blanca Jacas", "Joan Franquesa", "Elvira Busoma", "Judith Palomo", "Enric Ribera", "Dolors Forés", "Tik Tok", "Instagram", "Aran Sanfeliu", "Edu Cal Marino", "Els Blais", "Laura Molina", "Núria Montoro", "Francesc Ribera", "Joc de Cartes", "Eva Abertis", "Júlia Martí", "Josep i Yolanda", "Rafa Provi", "Joseba", "Pablo"], "categoriesRecepta": ["Entrants", "Primers", "Segons", "Postres", "Guarnicions"], "tipusAliment": ["Carns", "Peixos i Mariscos", "Ous", "Farines", "Verdures", "Arrossos i Pasta", "Sopes i Cremes", "Xocolata"], "allergens": ["Gluten", "Làctics", "Crustacis", "Bolets", "Fruits secs", "Formatge", "Alcohol", "Peixos"], "cuiners": ["Anna", "Carles", "Gemma", "Joan", "Carme", "Mercè"], "saludable": ["Si", "No"]};
 const RAW_BASE_DATA=JSON.parse(document.getElementById('appData').textContent);
 /* Supabase és l'única font de contingut. No es carreguen altes, edicions ni baixes locals antigues. */
 const customItems=[];
@@ -3106,7 +3139,20 @@ async function toggleFav(id,e){
     alert(error.message||'No s’ha pogut actualitzar el preferit.');
   }
 }
-function setNav(name){$$('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.nav===name));const inRestaurants=currentType==='restaurant';$('#mapNav').classList.toggle('hidden',!inRestaurants);$('#restaurantsNav').classList.toggle('hidden',!inRestaurants)}
+const MAPPED_TYPES=['restaurant','botiga','experiencia','vi'];
+const MAP_TYPE_META={
+  restaurant:{label:'Restaurants',singular:'restaurant',icon:'🍴'},
+  botiga:{label:'Botigues',singular:'botiga',icon:'🧺'},
+  experiencia:{label:'Experiències',singular:'experiència',icon:'✨'},
+  vi:{label:'Cellers',singular:'celler',icon:'🍇'}
+};
+function setNav(name){
+  $$('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.nav===name));
+}
+function openMappedList(){
+  if(MAPPED_TYPES.includes(currentType))openType(currentType);
+  else openRestaurants();
+}
 
 function showGlobalFavorites(){
   currentType='favorites';
@@ -3127,7 +3173,7 @@ function showGlobalFavorites(){
   scrollTo(0,0);
 }
 
-function goHome(){currentType='home';$('#homeView').classList.remove('hidden');$('#listView').classList.add('hidden');$('#mapView').classList.add('hidden');$('#globalFavoritesView').classList.add('hidden');setNav('home');scrollTo(0,0)}
+function goHome(){currentType='home';$('#homeView').classList.remove('hidden');$('#listView').classList.add('hidden');$('#mapView').classList.add('hidden');$('#globalMapView').classList.add('hidden');$('#globalFavoritesView').classList.add('hidden');setNav('home');scrollTo(0,0)}
 
 const WINE_ORIGINS=[
   'DO ALELLA','DO CATALUNYA','DO CONCA DE BARBERÀ','DO COSTERS DEL SEGRE',
@@ -3169,7 +3215,7 @@ const moduleImages={
   experiencia:'data:image/webp;base64,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'
 };
 function renderModules(){
-  const order=['restaurant','recepta','vi','botiga','experiencia'];
+  const order=['restaurant','botiga','experiencia','vi','recepta'];
   $('#modules').innerHTML=order.map(t=>{
     const [n,d]=moduleMeta[t];
     const c=byType(t).length;
@@ -3346,14 +3392,14 @@ function recipeSelectOptions(id,values,label,counts,preserveOrder=false){
   if(!el)return;
 
   const current=el.value;
-  const ordered=[...new Set(values.filter(Boolean))];
+  const ordered=[...new Set(values.filter(Boolean))].filter(v=>(counts.get(v)||0)>0);
 
   if(!preserveOrder){
     ordered.sort((a,b)=>a.localeCompare(b,'ca'));
   }
 
   el.innerHTML=`<option value="">${label}</option>`+
-    ordered.map(v=>`<option value="${esc(v)}">${esc(v)} (${counts.get(v)||0})</option>`).join('');
+    ordered.map(v=>`<option value="${esc(v)}">${esc(v)} (${counts.get(v)})</option>`).join('');
 
   if(ordered.includes(current)){
     el.value=current;
@@ -3426,9 +3472,9 @@ function fillRecipeFilters(){
     const current=txoco.value;
     txoco.innerHTML='<option value="">Txoco</option>'+
       RECIPE_TXOCO_OPTIONS
-        .filter(([value])=>all.some(x=>recipeTxocoValue(x)===value))
+        .filter(([value])=>(txocoCounts.get(value)||0)>0)
         .map(([value,label])=>
-          `<option value="${value}">${label} (${txocoCounts.get(value)||0})</option>`
+          `<option value="${value}">${label} (${txocoCounts.get(value)})</option>`
         ).join('');
 
     if(RECIPE_TXOCO_OPTIONS.some(([value])=>value===current)){
@@ -3600,14 +3646,14 @@ function genericSelectOptions(id,values,label,counts){
 
   const current=el.value;
   const ordered=[...new Set(values.filter(Boolean))]
+    .filter(v=>(counts.get(v)||0)>0)
     .sort((a,b)=>a.localeCompare(b,'ca'));
 
   el.innerHTML=`<option value="">${label}</option>`+
-    ordered.map(v=>`<option value="${esc(v)}">${esc(v)} (${counts.get(v)||0})</option>`).join('');
+    ordered.map(v=>`<option value="${esc(v)}">${esc(v)} (${counts.get(v)})</option>`).join('');
 
-  if(ordered.includes(current)){
-    el.value=current;
-  }
+  if(ordered.includes(current))el.value=current;
+  else if(current)el.value='';
 }
 
 function genericCategoryValue(item){
@@ -3740,7 +3786,7 @@ function openType(t){
   }
   if($('#genericFavChip'))$('#genericFavChip').classList.toggle('active',favOnly);
   if($('#wineFavChip'))$('#wineFavChip').classList.toggle('active',favOnly);
-  setNav(t==='restaurant'?(favOnly?'favorites':'restaurants'):'home');
+  setNav(MAPPED_TYPES.includes(t)?(favOnly?'favorites':'restaurants'):'home');
   renderCurrent();
   scrollTo(0,0);
 }
@@ -3759,7 +3805,17 @@ function upperMultiValues(value){return splitMultiValues(value).map(v=>v.toUpper
 function recommenderValues(r){return splitMultiValues(r.recomanatPer)}
 function baseRestaurantPool(exclude=[]){let a=[...restaurants],q=$('#search').value.trim().toLowerCase();if(q)a=a.filter(r=>JSON.stringify(r).toLowerCase().includes(q));if(favOnly)a=a.filter(r=>favorites.has(r.id));if(activeOnly)a=a.filter(r=>!r.tancat);const v=$('#vegueria').value,z=$('#zona').value,c=$('#cuina').value,cat=$('#categoria').value,preu=$('#preu').value,rec=$('#recomanador').value,dia=$('#diaObert')?.value||'';if(!exclude.includes('vegueria')&&v)a=a.filter(r=>r.vegueria===v);if(!exclude.includes('zona')&&z)a=a.filter(r=>r.zona===z);if(!exclude.includes('cuina')&&c)a=a.filter(r=>upperMultiValues(r.cuines).includes(c));if(!exclude.includes('categoria')&&cat)a=a.filter(r=>upperMultiValues(r.especialitats).includes(cat));if(!exclude.includes('preu')&&preu)a=a.filter(r=>restaurantPriceValues(r).includes(preu));if(!exclude.includes('recomanador')&&rec)a=a.filter(r=>recommenderValues(r).includes(rec));if(!exclude.includes('diaObert')&&dia)a=a.filter(r=>isOpenOnDay(r,dia));for(const f of selectedFeatures)if(!exclude.includes('feature:'+f))a=a.filter(r=>truthyFeature(r[f]));return a}
 function countsFor(items,getValues){const m=new Map();for(const item of items){const unique=[...new Set(getValues(item).filter(Boolean))];for(const v of unique)m.set(v,(m.get(v)||0)+1)}return m}
-function setSelectCountOptions(id,values,label,counts,total=null,preserveOrder=false){const el=$('#'+id),current=el.value;const ordered=[...new Set(values.filter(Boolean))];if(!preserveOrder)ordered.sort((a,b)=>a.localeCompare(b,'ca'));const header=total===null?label:`${label} (${total})`;el.innerHTML=`<option value="">${header}</option>`+ordered.map(v=>`<option value="${esc(v)}">${esc(v)} (${counts.get(v)||0})</option>`).join('');if(ordered.includes(current))el.value=current}
+function setSelectCountOptions(id,values,label,counts,total=null,preserveOrder=false){
+  const el=$('#'+id);
+  if(!el)return;
+  const current=el.value;
+  const ordered=[...new Set(values.filter(Boolean))].filter(v=>(counts.get(v)||0)>0);
+  if(!preserveOrder)ordered.sort((a,b)=>a.localeCompare(b,'ca'));
+  const header=total===null?label:`${label} (${total})`;
+  el.innerHTML=`<option value="">${header}</option>`+ordered.map(v=>`<option value="${esc(v)}">${esc(v)} (${counts.get(v)})</option>`).join('');
+  if(ordered.includes(current))el.value=current;
+  else if(current)el.value='';
+}
 function fillFilters(){
   const pool=baseRestaurantPool(['vegueria','zona','cuina','categoria','preu','recomanador']);
   const allowed=masterValues('vegueria');
@@ -3775,11 +3831,40 @@ function fillZones(){
   const counts=countsFor(pool,r=>allowed.includes(r.zona)?[r.zona]:[]);
   setSelectCountOptions('zona',allowed,'Zones',counts,null)
 }
+const CUISINE_ORDER=[
+  'CATALANA',
+  'MEDITERRÀNIA',
+  'CUINA DE MERCAT',
+  'TAPES I PLATETS',
+  'ESMORZAR DE FORQUILLA',
+  'GASTROBAR',
+  'VERMUTERIA',
+  'CERVESERIA',
+  'ENTREPANS',
+  'ITALIANA',
+  'ORIENTAL',
+  'FUSIÓ',
+  'COCTELERIA',
+  'SIDRERIA',
+  'ALTRES'
+];
+
+function sortByConfiguredOrder(values,configuredOrder){
+  const position=new Map(configuredOrder.map((value,index)=>[value,index]));
+  return [...values].sort((a,b)=>{
+    const ai=position.has(a)?position.get(a):Number.MAX_SAFE_INTEGER;
+    const bi=position.has(b)?position.get(b):Number.MAX_SAFE_INTEGER;
+    if(ai!==bi)return ai-bi;
+    return a.localeCompare(b,'ca');
+  });
+}
+
 function fillCuisines(){
   const pool=baseRestaurantPool(['cuina','categoria']);
-  const allowed=masterValues('cuinaRestaurant').map(v=>v.toUpperCase());
+  const available=masterValues('cuinaRestaurant').map(v=>v.toUpperCase());
+  const allowed=sortByConfiguredOrder(available,CUISINE_ORDER);
   const counts=countsFor(pool,r=>upperMultiValues(r.cuines).filter(v=>allowed.includes(v)));
-  setSelectCountOptions('cuina',allowed,'Cuines',counts,null)
+  setSelectCountOptions('cuina',allowed,'Cuines',counts,null,true)
 }
 function fillCategories(){
   const pool=baseRestaurantPool(['categoria']);
@@ -3799,8 +3884,10 @@ function fillOpenDays(){
   const counts=new Map(WEEKDAYS.map(d=>[d.key,pool.filter(r=>isOpenOnDay(r,d.key)).length]));
   const sel=$('#diaObert'),cur=sel?.value||'';
   if(!sel)return;
-  sel.innerHTML=`<option value="">Dies oberts</option>`+WEEKDAYS.map(d=>`<option value="${d.key}">${labels[d.key]} (${counts.get(d.key)||0})</option>`).join('');
-  if([...sel.options].some(o=>o.value===cur))sel.value=cur;
+  const available=WEEKDAYS.filter(d=>(counts.get(d.key)||0)>0);
+  sel.innerHTML=`<option value="">Dies oberts</option>`+available.map(d=>`<option value="${d.key}">${labels[d.key]} (${counts.get(d.key)})</option>`).join('');
+  if(available.some(d=>d.key===cur))sel.value=cur;
+  else if(cur)sel.value='';
 }
 
 function fillRecommenders(){
@@ -3809,12 +3896,12 @@ function fillRecommenders(){
   const values=[...counts.keys()].filter(v=>(counts.get(v)||0)>0);
   setSelectCountOptions('recomanador',values,'Recomanadors',counts,null);
 }
-function updateFeatureCounts(){document.querySelectorAll('.feature-chip').forEach(btn=>{const f=btn.dataset.feature;const pool=baseRestaurantPool(['feature:'+f]);const count=pool.filter(r=>truthyFeature(r[f])).length;btn.querySelector('b').textContent=count;btn.classList.toggle('active',selectedFeatures.has(f));btn.disabled=count===0&&!selectedFeatures.has(f)})}
+function updateFeatureCounts(){document.querySelectorAll('.feature-chip').forEach(btn=>{const f=btn.dataset.feature;const pool=baseRestaurantPool(['feature:'+f]);const count=pool.filter(r=>truthyFeature(r[f])).length;if(count===0&&selectedFeatures.has(f))selectedFeatures.delete(f);btn.querySelector('b').textContent=count;btn.classList.toggle('active',selectedFeatures.has(f));btn.hidden=count===0;btn.disabled=count===0})}
 function toggleFeatureFilter(feature){selectedFeatures.has(feature)?selectedFeatures.delete(feature):selectedFeatures.add(feature);fillFilters();renderCurrent();updateClearFiltersButton()}
 function updateCascadingFilters(from){if(from==='vegueria'){$('#zona').value='';$('#cuina').value='';$('#categoria').value='';$('#preu').value='';$('#recomanador').value=''}else if(from==='zona'){$('#cuina').value='';$('#categoria').value='';$('#preu').value='';$('#recomanador').value=''}else if(from==='cuina'){$('#categoria').value='';$('#preu').value='';$('#recomanador').value=''}fillFilters();renderCurrent()}
 function filteredRestaurants(){return baseRestaurantPool([])}
 function wineOriginPlaceholder(){
-  return window.matchMedia('(max-width:650px)').matches?'D.O.':'DENOMINACIÓ D’ORIGEN';
+  return window.matchMedia('(max-width:650px)').matches?'D.O.':'D.O.';
 }
 function fillWineFilters(){
   const origin=$('#wineOrigin'),type=$('#wineType');
@@ -3822,7 +3909,7 @@ function fillWineFilters(){
   const currentOrigin=origin.value,currentTypeValue=type.value;
   origin.innerHTML=`<option value="">${wineOriginPlaceholder()}</option>`+
     WINE_ORIGINS.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
-  type.innerHTML='<option value="">TIPOLOGIES</option>'+
+  type.innerHTML='<option value="">Tipologia</option>'+
     WINE_TYPES.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('');
   if(WINE_ORIGINS.includes(currentOrigin))origin.value=currentOrigin;
   if(WINE_TYPES.includes(currentTypeValue))type.value=currentTypeValue;
@@ -4301,10 +4388,226 @@ function closeDataIssues(){
   document.body.style.overflow='';
 }
 
-function showMap(){currentType='restaurant';$('#homeView').classList.add('hidden');$('#listView').classList.add('hidden');$('#globalFavoritesView').classList.add('hidden');$('#mapView').classList.remove('hidden');setNav('map');setTimeout(initMap,50);scrollTo(0,0)}
-function initMap(){if(!window.L){$('#mapWarning').classList.remove('hidden');return}$('#mapWarning').classList.add('hidden');if(map){map.remove();map=null}map=L.map('map',{zoomControl:true}).setView([41.65,1.75],7);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap'}).addTo(map);mapLayer=L.layerGroup().addTo(map);renderMarkers();setTimeout(()=>map.invalidateSize(),150)}
-function renderMarkers(){if(!mapLayer)return;mapLayer.clearLayers();const a=restaurants.filter(r=>parseCoords(r.coordenades)&&(showOutside||r.territori==='ppcc'));for(const r of a){const c=parseCoords(r.coordenades);const icon=L.divIcon({className:'',html:'<div class="marker-dot"><span>🍴</span></div>',iconSize:[28,28],iconAnchor:[14,28]});L.marker(c,{icon}).addTo(mapLayer).bindPopup(`<b>${esc(r.nom)}</b><br>${esc(r.zona||'')}<br><button onclick="openDetail('${r.id}')" style="margin-top:6px">Obrir fitxa</button>`)}$('#mapCount').textContent=`${a.length} restaurants al mapa`;if(a.length){const bounds=L.latLngBounds(a.map(r=>parseCoords(r.coordenades)));map.fitBounds(bounds.pad(.08),{maxZoom:9})}setTimeout(()=>map.invalidateSize(),100)}
-$('#outsideToggle').onclick=()=>{showOutside=!showOutside;$('#outsideToggle').classList.toggle('active',showOutside);$('#outsideToggle').textContent=showOutside?'Amagar altres restaurants':'Mostrar altres restaurants';renderMarkers()};
+
+function wineryGroupKey(wine){
+  const name=(wine.celler||'').trim().toLocaleLowerCase('ca');
+  const coords=(wine.coordenadesCeller||'').trim();
+  return `${name}|${coords}`;
+}
+function wineryGroups(){
+  const groups=new Map();
+  byType('vi').forEach(wine=>{
+    const cellar=(wine.celler||'').trim();
+    const coords=parseCoords(wine.coordenadesCeller);
+    if(!cellar||!coords)return;
+    const key=wineryGroupKey(wine);
+    if(!groups.has(key)){
+      groups.set(key,{
+        id:`celler-${key}`,
+        tipus:'vi',
+        nom:cellar,
+        celler:cellar,
+        coordenades:wine.coordenadesCeller,
+        webCeller:wine.webCeller||'',
+        cellerVisitable:!!wine.cellerVisitable,
+        enoturisme:!!wine.enoturisme,
+        observacionsCeller:wine.observacionsCeller||'',
+        territori:wine.territori||'ppcc',
+        zona:wine.origen||'',
+        vins:[]
+      });
+    }
+    groups.get(key).vins.push(wine);
+  });
+  return [...groups.values()];
+}
+function mappedItems(){
+  if(currentType==='restaurant')return restaurants.filter(item=>parseCoords(item.coordenades));
+  if(currentType==='vi')return wineryGroups();
+  return byType(currentType).filter(item=>parseCoords(item.coordenades));
+}
+function updateMapHeader(){
+  const meta=MAP_TYPE_META[currentType]||MAP_TYPE_META.restaurant;
+  $('#mapEyebrow').textContent=meta.label;
+  $('#mapTitle').textContent=`Mapa de ${meta.label.toLowerCase()}`;
+  $('#outsideToggle').textContent=showOutside
+    ?`Amagar altres ${meta.label.toLowerCase()}`
+    :`Mostrar altres ${meta.label.toLowerCase()}`;
+}
+function showMap(){
+  if(!MAPPED_TYPES.includes(currentType))currentType='restaurant';
+  $('#homeView').classList.add('hidden');
+  $('#listView').classList.add('hidden');
+  $('#globalFavoritesView').classList.add('hidden');
+  $('#mapView').classList.remove('hidden');
+  updateMapHeader();
+  setNav('map');
+  setTimeout(initMap,50);
+  scrollTo(0,0);
+}
+function initMap(){
+  if(!window.L){$('#mapWarning').classList.remove('hidden');return}
+  $('#mapWarning').classList.add('hidden');
+  if(map){map.remove();map=null}
+  map=L.map('map',{zoomControl:true}).setView([41.65,1.75],7);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    maxZoom:19,attribution:'© OpenStreetMap'
+  }).addTo(map);
+  mapLayer=L.layerGroup().addTo(map);
+  renderMarkers();
+  setTimeout(()=>map.invalidateSize(),150);
+}
+function renderMarkers(){
+  if(!mapLayer)return;
+  mapLayer.clearLayers();
+  const meta=MAP_TYPE_META[currentType]||MAP_TYPE_META.restaurant;
+  const items=mappedItems().filter(item=>showOutside||item.territori==='ppcc');
+  for(const item of items){
+    const coords=parseCoords(item.coordenades);
+    const icon=L.divIcon({
+      className:'',
+      html:`<div class="marker-dot"><span>${meta.icon}</span></div>`,
+      iconSize:[28,28],iconAnchor:[14,28]
+    });
+    const popup=currentType==='vi'
+      ?`<b>${esc(item.celler)}</b><br>${item.vins.length} ${item.vins.length===1?'vi registrat':'vins registrats'}`
+        +`${item.webCeller?`<br><a href="${esc(item.webCeller)}" target="_blank" rel="noopener">Web del celler</a>`:''}`
+        +`<br>${item.cellerVisitable?'✅ Visitable':'◯ Visites no indicades'}`
+        +`<br>${item.enoturisme?'✅ Enoturisme':'◯ Enoturisme no indicat'}`
+        +`${item.observacionsCeller?`<br>${esc(item.observacionsCeller)}`:''}`
+        +`<br><button onclick="showWineryWines('${encodeURIComponent(item.celler)}')" style="margin-top:6px">Veure vins</button>`
+      :`<b>${esc(item.nom)}</b><br>${esc(item.zona||item.vegueria||'')}<br>`
+        +`<button onclick="openDetail('${item.id}')" style="margin-top:6px">Obrir fitxa</button>`;
+    L.marker(coords,{icon}).addTo(mapLayer).bindPopup(popup);
+  }
+  const noun=items.length===1?meta.singular:meta.label.toLowerCase();
+  $('#mapCount').textContent=`${items.length} ${noun} al mapa`;
+  if(items.length){
+    const bounds=L.latLngBounds(items.map(item=>parseCoords(item.coordenades)));
+    map.fitBounds(bounds.pad(.08),{maxZoom:9});
+  }
+  updateMapHeader();
+  setTimeout(()=>map.invalidateSize(),100);
+}
+
+function showWineryWines(encodedCellar){
+  const cellar=decodeURIComponent(encodedCellar);
+  currentType='vi';
+  query=cellar;
+  const search=$('#search');
+  if(search)search.value=cellar;
+  openType('vi');
+}
+$('#outsideToggle').onclick=()=>{
+  showOutside=!showOutside;
+  $('#outsideToggle').classList.toggle('active',showOutside);
+  renderMarkers();
+};
+
+
+let globalMap=null;
+let globalMapLayer=null;
+const globalMapEnabledTypes=new Set(['restaurant','botiga','experiencia','vi']);
+let globalShowOutsideRestaurants=false;
+
+function showGlobalMap(){
+  $('#homeView').classList.add('hidden');
+  $('#listView').classList.add('hidden');
+  $('#mapView').classList.add('hidden');
+  $('#globalFavoritesView').classList.add('hidden');
+  $('#globalMapView').classList.remove('hidden');
+  setNav('globalmap');
+  setTimeout(initGlobalMap,50);
+  scrollTo(0,0);
+}
+function initGlobalMap(){
+  if(!window.L){
+    $('#globalMapWarning').classList.remove('hidden');
+    return;
+  }
+  $('#globalMapWarning').classList.add('hidden');
+  if(globalMap){
+    globalMap.remove();
+    globalMap=null;
+  }
+  globalMap=L.map('globalMap',{zoomControl:true}).setView([41.65,1.75],7);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    maxZoom:19,
+    attribution:'© OpenStreetMap'
+  }).addTo(globalMap);
+  globalMapLayer=L.layerGroup().addTo(globalMap);
+  renderGlobalMapMarkers();
+  setTimeout(()=>globalMap.invalidateSize(),150);
+}
+function getGlobalMapItems(){
+  const items=[];
+  if(globalMapEnabledTypes.has('restaurant')){
+    restaurants
+      .filter(x=>parseCoords(x.coordenades))
+      .filter(x=>globalShowOutsideRestaurants||x.territori==='ppcc')
+      .forEach(x=>items.push({...x,mapType:'restaurant'}));
+  }
+  if(globalMapEnabledTypes.has('botiga')){
+    byType('botiga').filter(x=>parseCoords(x.coordenades)).forEach(x=>items.push({...x,mapType:'botiga'}));
+  }
+  if(globalMapEnabledTypes.has('experiencia')){
+    byType('experiencia').filter(x=>parseCoords(x.coordenades)).forEach(x=>items.push({...x,mapType:'experiencia'}));
+  }
+  if(globalMapEnabledTypes.has('vi')){
+    wineryGroups().forEach(x=>items.push({...x,mapType:'vi'}));
+  }
+  return items;
+}
+function renderGlobalMapMarkers(){
+  if(!globalMapLayer)return;
+  globalMapLayer.clearLayers();
+  const items=getGlobalMapItems();
+  for(const item of items){
+    const meta=MAP_TYPE_META[item.mapType];
+    const coords=parseCoords(item.coordenades);
+    if(!coords)continue;
+    const icon=L.divIcon({
+      className:'',
+      html:`<div class="marker-dot"><span>${meta.icon}</span></div>`,
+      iconSize:[28,28],
+      iconAnchor:[14,28]
+    });
+    const popup=item.mapType==='vi'
+      ?`<b>${esc(item.celler)}</b><br>${item.vins.length} ${item.vins.length===1?'vi registrat':'vins registrats'}`
+        +`<br><button onclick="showWineryWines('${encodeURIComponent(item.celler)}')" style="margin-top:6px">Veure vins</button>`
+      :`<b>${esc(item.nom)}</b><br>${meta.label}<br>`
+        +`<button onclick="openDetail('${item.id}')" style="margin-top:6px">Obrir fitxa</button>`;
+    L.marker(coords,{icon}).addTo(globalMapLayer).bindPopup(popup);
+  }
+  $('#globalMapCount').textContent=`${items.length} punts al mapa`;
+  if(items.length){
+    const bounds=L.latLngBounds(items.map(x=>parseCoords(x.coordenades)).filter(Boolean));
+    globalMap.fitBounds(bounds.pad(.08),{maxZoom:9});
+  }
+}
+document.querySelectorAll('[data-global-map-type]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const type=btn.dataset.globalMapType;
+    if(globalMapEnabledTypes.has(type)){
+      globalMapEnabledTypes.delete(type);
+      btn.classList.remove('active');
+    }else{
+      globalMapEnabledTypes.add(type);
+      btn.classList.add('active');
+    }
+    renderGlobalMapMarkers();
+  });
+});
+
+$('#globalOutsideRestaurants')?.addEventListener('click',()=>{
+  globalShowOutsideRestaurants=!globalShowOutsideRestaurants;
+  const btn=$('#globalOutsideRestaurants');
+  btn.classList.toggle('active',globalShowOutsideRestaurants);
+  btn.textContent=globalShowOutsideRestaurants
+    ?'Amagar altres restaurants'
+    :'Mostrar altres restaurants';
+  renderGlobalMapMarkers();
+});
 
 function hasAnyActiveFilter(){
   return Boolean(
@@ -4342,7 +4645,7 @@ function clearAllFilters(){
 
 $('#search').addEventListener('input',()=>{fillFilters();renderCurrent();updateClearFiltersButton()});$('#vegueria').addEventListener('change',()=>{updateCascadingFilters('vegueria');updateClearFiltersButton()});$('#zona').addEventListener('change',()=>{updateCascadingFilters('zona');updateClearFiltersButton()});$('#cuina').addEventListener('change',()=>{updateCascadingFilters('cuina');updateClearFiltersButton()});$('#categoria').addEventListener('change',()=>{fillFilters();renderCurrent();updateClearFiltersButton()});$('#favChip').onclick=()=>{favOnly=!favOnly;$('#favChip').classList.toggle('active',favOnly);fillFilters();renderCurrent();updateClearFiltersButton()};$('#activeChip').onclick=()=>{activeOnly=!activeOnly;$('#activeChip').classList.toggle('active',activeOnly);fillFilters();renderCurrent();updateClearFiltersButton()};$('#preu').addEventListener('change',()=>{fillFilters();renderCurrent();updateClearFiltersButton()});$('#recomanador').addEventListener('change',()=>{fillFilters();renderCurrent();updateClearFiltersButton()});$('#diaObert').addEventListener('change',()=>{fillFilters();renderCurrent();updateClearFiltersButton()});document.querySelectorAll('.feature-chip').forEach(btn=>btn.addEventListener('click',()=>toggleFeatureFilter(btn.dataset.feature)));$('#genericFavChip').onclick=()=>{favOnly=!favOnly;$('#genericFavChip').classList.toggle('active',favOnly);renderCurrent()};
 function openAdmin(){if(!adminMode)return;renderAdmin();$('#adminModal').classList.remove('hidden');document.body.style.overflow='hidden';setNav('admin')}
-function closeAdmin(){$('#adminModal').classList.add('hidden');document.body.style.overflow='';setNav(currentType==='restaurant'?'restaurants':'home')}
+function closeAdmin(){$('#adminModal').classList.add('hidden');document.body.style.overflow='';setNav(MAPPED_TYPES.includes(currentType)?'restaurants':'home')}
 const ADMIN_GROUPS=[
  {title:'Restaurants',items:[['vegueria','Vegueries'],['zona','Zones'],['cuinaRestaurant','Tipus de cuina'],['especialitat','Especialitats'],['rangPreu','Rangs de preu'],['persona','Persones / recomanadors']]},
  {title:'Botigues',items:[['tipusBotiga','Tipus de botiga']]},
@@ -4912,6 +5215,12 @@ function createFields(type){
     <label>Tipus de vi<select id="new-wine-type"><option value="">Selecciona...</option>${formOptions(masterValues('tipusVi'))}</select></label>
     <label>Productor<input id="new-wine-producer"></label>
     <label>Elaborador / Enòleg<input id="new-wine-maker"></label>
+    <label>Nom del celler<input id="new-winery-name"></label>
+    <label>Coordenades del celler<input id="new-winery-coords" placeholder="41.0000, 2.0000"></label>
+    <label>Web del celler<input id="new-winery-web" placeholder="https://..."></label>
+    <label class="switch-field"><input id="new-winery-visitable" type="checkbox"> Celler visitable</label>
+    <label class="switch-field"><input id="new-winery-tourism" type="checkbox"> Ofereix enoturisme</label>
+    <label class="wide">Observacions del celler<textarea id="new-winery-notes"></textarea></label>
     <label class="wide">Varietats<input id="new-wine-varieties" placeholder="Garnatxa, Samsó..."></label>
     <label>Criança<input id="new-wine-aging" placeholder="14 mesos en roure..."></label>
     <label>Color<input id="new-wine-color" placeholder="Negre, robí..."></label>
@@ -4937,7 +5246,7 @@ function createFields(type){
   return common+`<label>Categoria<input id="new-categoria"></label><label>Zona<input id="new-zona-text"></label><label>Enllaç<input id="new-enllac"></label><label class="wide">Descripció<textarea id="new-notes"></textarea></label>`;
 }
 function openCreate(type){if(!adminMode)return;currentEditingId=null;type=type||({restaurant:'restaurant',recepta:'recepta',vi:'vi',botiga:'botiga',experiencia:'experiencia'}[currentType]||'restaurant');const names={restaurant:'restaurant',recepta:'recepta',vi:'vi',botiga:'botiga',experiencia:'experiència'};$('#createTitle').textContent='Afegir '+names[type];$('#createContent').innerHTML=`<div class="create-grid" data-type="${type}">${createFields(type)}</div><div class="create-actions"><button class="secondary-btn" onclick="closeCreate();openAdmin()">⚙ Administrar llistes</button><button class="secondary-btn" onclick="closeCreate()">Cancel·lar</button><button class="primary-btn" onclick="saveItem('${type}')">Desar</button></div>`;$('#createModal').classList.remove('hidden');document.body.style.overflow='hidden';bindCreateDependencies();toggleOutsideTerritory(false);refreshRestaurantZoneOptions('');refreshShopZoneOptions('');refreshExperienceZoneOptions('');setSchedule({});setRatings([]);setTxoco('no');organizeRequiredFields(type);setNav('create')}
-function closeCreate(){$('#createModal').classList.add('hidden');document.body.style.overflow='';currentEditingId=null;setNav(currentType==='restaurant'?'restaurants':'home')}
+function closeCreate(){$('#createModal').classList.add('hidden');document.body.style.overflow='';currentEditingId=null;setNav(MAPPED_TYPES.includes(currentType)?'restaurants':'home')}
 function field(id){return $('#'+id)?.value?.trim()||''}
 function csvArray(v){return v.split(',').map(x=>x.trim()).filter(Boolean)}
 function buildItemFromForm(type,existing={}){
@@ -4962,6 +5271,12 @@ function buildItemFromForm(type,existing={}){
     tipusVi:field('new-wine-type'),
     productor:field('new-wine-producer'),
     elaborador:field('new-wine-maker'),
+    celler:field('new-winery-name'),
+    coordenadesCeller:field('new-winery-coords'),
+    webCeller:field('new-winery-web'),
+    cellerVisitable:!!$('#new-winery-visitable')?.checked,
+    enoturisme:!!$('#new-winery-tourism')?.checked,
+    observacionsCeller:field('new-winery-notes'),
     varietats:csvArray(field('new-wine-varieties')),
     crianca:field('new-wine-aging'),
     colorVi:field('new-wine-color'),
@@ -5216,6 +5531,12 @@ function editItem(id){
     setFormValue('new-wine-type',x.tipusVi);
     setFormValue('new-wine-producer',x.productor);
     setFormValue('new-wine-maker',x.elaborador);
+    setFormValue('new-winery-name',x.celler);
+    setFormValue('new-winery-coords',x.coordenadesCeller);
+    setFormValue('new-winery-web',x.webCeller);
+    setFormChecked('new-winery-visitable',x.cellerVisitable);
+    setFormChecked('new-winery-tourism',x.enoturisme);
+    setFormValue('new-winery-notes',x.observacionsCeller);
     setFormValue('new-wine-varieties',(x.varietats||[]).join(', '));
     setFormValue('new-wine-aging',x.crianca);
     setFormValue('new-wine-color',x.colorVi);
@@ -5508,6 +5829,9 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
       id:text(row.id),nom:text(row.nom),tipus:'vi',
       origen:text(row.origen),tipusVi:text(row.tipus_vi),
       productor:text(row.productor),elaborador:text(row.elaborador),
+      celler:text(row.celler),coordenadesCeller:text(row.coordenades_celler),
+      webCeller:text(row.web_celler),cellerVisitable:Boolean(row.celler_visitable),
+      enoturisme:Boolean(row.enoturisme),observacionsCeller:text(row.observacions_celler),
       varietats:Array.isArray(row.varietats)?row.varietats:[],
       crianca:text(row.crianca),colorVi:text(row.color_vi),
       temperatura:text(row.temperatura_servei),graduacio:text(row.graduacio),
