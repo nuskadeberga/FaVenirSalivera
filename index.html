@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Fa venir SALIVERA · V10 · Vins simplificats</title>
+<title>Fa venir SALIVERA · V10 · Detall de vi dinàmic</title>
 <meta name="theme-color" content="#7e3f28">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
@@ -2394,6 +2394,674 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
   }
 }
 
+
+/* MODALS CENTRATS */
+.modal{
+  place-items:center!important;
+  padding:20px!important;
+}
+.modal .sheet{
+  width:min(760px,calc(100vw - 28px))!important;
+  max-height:min(90vh,900px)!important;
+  border-radius:28px!important;
+  box-shadow:0 24px 70px rgba(0,0,0,.28)!important;
+}
+#createModal .sheet{
+  width:min(860px,calc(100vw - 28px))!important;
+}
+#adminModal .sheet{
+  width:min(960px,calc(100vw - 28px))!important;
+}
+@media(max-width:650px){
+  .modal{padding:12px!important}
+  .modal .sheet{
+    width:calc(100vw - 24px)!important;
+    max-height:92vh!important;
+    border-radius:22px!important;
+  }
+}
+
+/* MAPA */
+.global-outside-restaurants{
+  margin-right:14px;
+  border-style:dashed!important;
+}
+.global-outside-restaurants.hidden{display:none!important}
+
+/* VINS */
+.wine-detail-cover{
+  height:250px!important;
+  background:#fff!important;
+}
+.wine-detail-cover img{
+  object-fit:contain!important;
+  padding:14px!important;
+  background:#fff!important;
+}
+.wine-detail-layout{
+  grid-template-columns:minmax(150px,210px) 1fr!important;
+  gap:18px!important;
+}
+.wine-bottle-panel{
+  min-height:390px!important;
+  padding:14px!important;
+  align-content:center!important;
+}
+.wine-bottle-image{
+  width:100%!important;
+  height:320px!important;
+  max-height:320px!important;
+  object-fit:contain!important;
+}
+.wine-short-text textarea{
+  min-height:78px!important;
+  max-height:94px!important;
+  resize:vertical!important;
+}
+@media(max-width:650px){
+  .wine-detail-cover{height:220px!important}
+  .wine-detail-layout{
+    grid-template-columns:145px minmax(0,1fr)!important;
+    gap:10px!important;
+  }
+  .wine-bottle-panel{
+    min-height:300px!important;
+    padding:8px!important;
+  }
+  .wine-bottle-image{
+    height:250px!important;
+    max-height:250px!important;
+  }
+}
+@media(max-width:430px){
+  .wine-detail-layout{grid-template-columns:1fr!important}
+  .wine-bottle-panel{min-height:280px!important}
+}
+
+
+/* DETALL DEL VI: AMPOLLA ÚNICA I GRAN */
+.wine-detail-cover-hidden{
+  height:0!important;
+  min-height:0!important;
+  padding:0!important;
+  overflow:visible!important;
+  background:transparent!important;
+}
+.wine-detail-cover-hidden .close{
+  top:14px!important;
+  right:14px!important;
+  z-index:20!important;
+}
+.wine-detail-cover-hidden .detail-heart{
+  right:64px!important;
+}
+.wine-detail-body{
+  padding-top:26px!important;
+}
+.wine-detail-layout{
+  grid-template-columns:minmax(210px,280px) minmax(0,1fr)!important;
+  align-items:stretch!important;
+  gap:20px!important;
+}
+.wine-bottle-panel{
+  min-height:650px!important;
+  height:100%!important;
+  padding:18px 12px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  background:#fff!important;
+  border-radius:24px!important;
+  overflow:hidden!important;
+}
+.wine-bottle-image{
+  width:100%!important;
+  height:610px!important;
+  max-height:610px!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  transform:scale(1.08);
+}
+.wine-producer-logo{
+  max-height:48px!important;
+  margin-top:10px!important;
+  object-fit:contain!important;
+}
+@media(max-width:760px){
+  .wine-detail-layout{
+    grid-template-columns:minmax(150px,190px) minmax(0,1fr)!important;
+    gap:12px!important;
+  }
+  .wine-bottle-panel{
+    min-height:500px!important;
+    padding:12px 8px!important;
+  }
+  .wine-bottle-image{
+    height:470px!important;
+    max-height:470px!important;
+    transform:scale(1.06);
+  }
+}
+@media(max-width:520px){
+  .wine-detail-layout{
+    grid-template-columns:135px minmax(0,1fr)!important;
+    gap:9px!important;
+  }
+  .wine-bottle-panel{
+    min-height:430px!important;
+    padding:8px 5px!important;
+    border-radius:18px!important;
+  }
+  .wine-bottle-image{
+    height:405px!important;
+    max-height:405px!important;
+    transform:scale(1.04);
+  }
+}
+@media(max-width:390px){
+  .wine-detail-layout{
+    grid-template-columns:120px minmax(0,1fr)!important;
+  }
+  .wine-bottle-panel{
+    min-height:390px!important;
+  }
+  .wine-bottle-image{
+    height:365px!important;
+    max-height:365px!important;
+  }
+}
+
+
+/* DETALL DEL VI: CAIXES FIXES I AMPOLLA INDEPENDENT */
+.wine-detail-layout{
+  display:grid!important;
+  grid-template-columns:260px minmax(0,1fr)!important;
+  gap:18px!important;
+  align-items:start!important;
+}
+.wine-bottle-panel{
+  width:260px!important;
+  height:620px!important;
+  min-height:620px!important;
+  max-height:620px!important;
+  padding:14px 10px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  overflow:hidden!important;
+  background:#fff!important;
+  border-radius:24px!important;
+}
+.wine-bottle-image{
+  width:100%!important;
+  height:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  transform:none!important;
+}
+.wine-detail-main{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  grid-auto-rows:auto!important;
+  gap:12px!important;
+  align-content:start!important;
+}
+.wine-detail-main > .info{
+  min-height:96px!important;
+  max-height:none!important;
+  padding:14px 16px!important;
+  align-self:start!important;
+}
+.wine-detail-main > .info:nth-child(5){
+  min-height:118px!important;
+}
+.wine-quick-facts{
+  grid-column:1/-1!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:10px!important;
+  align-items:start!important;
+}
+.wine-quick-facts .info{
+  min-height:84px!important;
+  height:84px!important;
+  max-height:84px!important;
+  padding:12px 14px!important;
+  overflow:hidden!important;
+}
+.wine-detail-main > .info.wide{
+  grid-column:1/-1!important;
+  min-height:110px!important;
+  height:auto!important;
+}
+@media(max-width:760px){
+  .wine-detail-layout{
+    grid-template-columns:180px minmax(0,1fr)!important;
+    gap:12px!important;
+  }
+  .wine-bottle-panel{
+    width:180px!important;
+    height:500px!important;
+    min-height:500px!important;
+    max-height:500px!important;
+  }
+  .wine-detail-main > .info{
+    min-height:88px!important;
+    padding:12px!important;
+  }
+  .wine-quick-facts .info{
+    min-height:76px!important;
+    height:76px!important;
+    max-height:76px!important;
+  }
+}
+@media(max-width:520px){
+  .wine-detail-layout{
+    grid-template-columns:135px minmax(0,1fr)!important;
+    gap:9px!important;
+  }
+  .wine-bottle-panel{
+    width:135px!important;
+    height:430px!important;
+    min-height:430px!important;
+    max-height:430px!important;
+    padding:8px 5px!important;
+    border-radius:18px!important;
+  }
+  .wine-detail-main{
+    gap:8px!important;
+  }
+  .wine-detail-main > .info{
+    min-height:82px!important;
+    padding:10px!important;
+  }
+  .wine-quick-facts{
+    gap:7px!important;
+  }
+  .wine-quick-facts .info{
+    min-height:72px!important;
+    height:72px!important;
+    max-height:72px!important;
+    padding:9px 7px!important;
+  }
+}
+@media(max-width:390px){
+  .wine-detail-layout{
+    grid-template-columns:120px minmax(0,1fr)!important;
+  }
+  .wine-bottle-panel{
+    width:120px!important;
+    height:390px!important;
+    min-height:390px!important;
+    max-height:390px!important;
+  }
+}
+
+
+/* AJUST FINAL DEL DETALL DE VI: MÉS COMPACTE */
+.wine-detail-body{
+  padding-top:42px!important;
+}
+.wine-detail-body h2,
+.wine-detail-body .detail-title{
+  padding-right:56px!important;
+  margin-top:0!important;
+}
+.wine-detail-cover-hidden .close{
+  top:12px!important;
+  right:12px!important;
+}
+.wine-detail-layout{
+  grid-template-columns:220px minmax(0,1fr)!important;
+  gap:16px!important;
+}
+.wine-bottle-panel{
+  width:220px!important;
+  height:500px!important;
+  min-height:500px!important;
+  max-height:500px!important;
+  padding:12px 8px!important;
+}
+.wine-bottle-image{
+  height:100%!important;
+  max-height:100%!important;
+  transform:none!important;
+}
+.wine-quick-facts .info{
+  min-height:58px!important;
+  height:58px!important;
+  max-height:58px!important;
+  padding:8px 12px!important;
+}
+.wine-quick-facts .info small{
+  margin-bottom:2px!important;
+}
+@media(max-width:760px){
+  .wine-detail-body{
+    padding-top:40px!important;
+  }
+  .wine-detail-layout{
+    grid-template-columns:160px minmax(0,1fr)!important;
+    gap:10px!important;
+  }
+  .wine-bottle-panel{
+    width:160px!important;
+    height:390px!important;
+    min-height:390px!important;
+    max-height:390px!important;
+  }
+  .wine-quick-facts .info{
+    min-height:54px!important;
+    height:54px!important;
+    max-height:54px!important;
+    padding:7px 8px!important;
+  }
+}
+@media(max-width:520px){
+  .wine-detail-layout{
+    grid-template-columns:120px minmax(0,1fr)!important;
+    gap:8px!important;
+  }
+  .wine-bottle-panel{
+    width:120px!important;
+    height:320px!important;
+    min-height:320px!important;
+    max-height:320px!important;
+    padding:6px 4px!important;
+  }
+  .wine-quick-facts{
+    gap:6px!important;
+  }
+  .wine-quick-facts .info{
+    min-height:50px!important;
+    height:50px!important;
+    max-height:50px!important;
+    padding:6px!important;
+  }
+  .wine-quick-facts .info small{
+    font-size:.62rem!important;
+  }
+}
+@media(max-width:390px){
+  .wine-detail-layout{
+    grid-template-columns:105px minmax(0,1fr)!important;
+  }
+  .wine-bottle-panel{
+    width:105px!important;
+    height:285px!important;
+    min-height:285px!important;
+    max-height:285px!important;
+  }
+}
+
+
+/* DETALL DEL VI REORGANITZAT */
+.wine-detail-cover-hidden .close{
+  top:14px!important;
+  left:14px!important;
+  right:auto!important;
+}
+.wine-detail-body{
+  padding-top:30px!important;
+}
+.wine-detail-body h2{
+  margin:0 0 18px!important;
+  padding-left:64px!important;
+  padding-right:18px!important;
+  min-height:48px!important;
+  display:flex!important;
+  align-items:center!important;
+  line-height:1.05!important;
+}
+
+.wine-detail-layout{
+  display:grid!important;
+  grid-template-columns:220px minmax(0,1fr)!important;
+  gap:16px!important;
+  align-items:start!important;
+}
+.wine-bottle-panel{
+  width:220px!important;
+  height:500px!important;
+  min-height:500px!important;
+  max-height:500px!important;
+  padding:12px 8px!important;
+}
+.wine-bottle-image{
+  width:100%!important;
+  height:100%!important;
+  max-height:100%!important;
+  object-fit:contain!important;
+  object-position:center!important;
+  transform:none!important;
+}
+
+.wine-detail-main{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  align-content:start!important;
+}
+.wine-detail-main > .info{
+  min-height:78px!important;
+  padding:12px 14px!important;
+}
+.wine-detail-main > .info.wide{
+  grid-column:1/-1!important;
+}
+.wine-quick-facts{
+  grid-column:1/-1!important;
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:10px!important;
+}
+.wine-quick-facts .info{
+  min-height:52px!important;
+  height:52px!important;
+  max-height:52px!important;
+  padding:7px 11px!important;
+}
+.wine-inline-long{
+  grid-column:1/-1!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+}
+.wine-inline-long .info{
+  min-height:118px!important;
+  padding:12px 14px!important;
+}
+.wine-notes-grid{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  margin-top:14px!important;
+}
+.wine-notes-grid .info{
+  min-height:88px!important;
+  padding:12px 14px!important;
+}
+.wine-notes-grid .info:last-child{
+  grid-column:1/-1!important;
+}
+
+@media(max-width:760px){
+  .wine-detail-layout{
+    grid-template-columns:160px minmax(0,1fr)!important;
+    gap:10px!important;
+  }
+  .wine-bottle-panel{
+    width:160px!important;
+    height:390px!important;
+    min-height:390px!important;
+    max-height:390px!important;
+  }
+  .wine-detail-main{
+    gap:8px!important;
+  }
+  .wine-detail-main > .info{
+    min-height:70px!important;
+    padding:10px!important;
+  }
+  .wine-inline-long{
+    grid-template-columns:1fr!important;
+    gap:8px!important;
+  }
+  .wine-inline-long .info{
+    min-height:90px!important;
+  }
+  .wine-notes-grid{
+    grid-template-columns:1fr!important;
+    gap:8px!important;
+  }
+  .wine-notes-grid .info,
+  .wine-notes-grid .info:last-child{
+    grid-column:1!important;
+  }
+}
+
+@media(max-width:520px){
+  .wine-detail-body h2{
+    padding-left:56px!important;
+    font-size:1.65rem!important;
+  }
+  .wine-detail-layout{
+    grid-template-columns:120px minmax(0,1fr)!important;
+    gap:8px!important;
+  }
+  .wine-bottle-panel{
+    width:120px!important;
+    height:320px!important;
+    min-height:320px!important;
+    max-height:320px!important;
+  }
+  .wine-detail-main > .info{
+    min-height:66px!important;
+    padding:9px!important;
+  }
+  .wine-quick-facts{
+    gap:6px!important;
+  }
+  .wine-quick-facts .info{
+    min-height:48px!important;
+    height:48px!important;
+    max-height:48px!important;
+    padding:6px!important;
+  }
+}
+
+
+/* FITXA EDITORIAL DE VINS */
+.wine-editorial-sections{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:12px!important;
+  margin-top:14px!important;
+}
+.wine-editorial-section{
+  background:#fff!important;
+  border-radius:20px!important;
+  padding:14px 16px!important;
+  box-shadow:0 6px 18px rgba(90,55,37,.05)!important;
+}
+.wine-editorial-section h3{
+  margin:0 0 6px!important;
+  font-size:.92rem!important;
+  font-weight:500!important;
+  color:#9a6d58!important;
+}
+.wine-editorial-section p{
+  margin:0!important;
+  font-size:1rem!important;
+  line-height:1.45!important;
+  color:#2f241f!important;
+  white-space:pre-line!important;
+}
+.wine-detail-main{
+  align-content:start!important;
+}
+.wine-detail-main > .info:empty{
+  display:none!important;
+}
+@media(max-width:650px){
+  .wine-editorial-sections{
+    gap:9px!important;
+    margin-top:10px!important;
+  }
+  .wine-editorial-section{
+    padding:12px 13px!important;
+    border-radius:16px!important;
+  }
+  .wine-editorial-section h3{
+    font-size:.82rem!important;
+  }
+  .wine-editorial-section p{
+    font-size:.94rem!important;
+    line-height:1.4!important;
+  }
+}
+
+
+/* OMPLIMENT DINÀMIC DE LA COLUMNA DRETA */
+.wine-editorial-right{
+  grid-column:1/-1!important;
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:10px!important;
+  align-content:start!important;
+}
+.wine-editorial-right .wine-editorial-section{
+  margin:0!important;
+}
+.wine-editorial-right .wine-editorial-section.compact{
+  min-height:82px!important;
+  padding:11px 13px!important;
+}
+.wine-editorial-right .wine-editorial-section.compact:nth-child(odd):last-child{
+  grid-column:1/-1!important;
+}
+.wine-editorial-below{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:12px!important;
+  margin-top:14px!important;
+}
+.wine-editorial-below .wine-editorial-section:nth-child(odd):last-child{
+  grid-column:1/-1!important;
+}
+.wine-editorial-section{
+  background:#fff!important;
+  border-radius:18px!important;
+  padding:12px 14px!important;
+  box-shadow:0 6px 18px rgba(90,55,37,.05)!important;
+}
+.wine-editorial-section h3{
+  margin:0 0 5px!important;
+  font-size:.84rem!important;
+  font-weight:500!important;
+  color:#9a6d58!important;
+}
+.wine-editorial-section p{
+  margin:0!important;
+  font-size:.94rem!important;
+  line-height:1.38!important;
+  color:#2f241f!important;
+  white-space:pre-line!important;
+}
+@media(max-width:760px){
+  .wine-editorial-right,
+  .wine-editorial-below{
+    grid-template-columns:1fr!important;
+    gap:8px!important;
+  }
+  .wine-editorial-right .wine-editorial-section.compact:nth-child(odd):last-child,
+  .wine-editorial-below .wine-editorial-section:nth-child(odd):last-child{
+    grid-column:1!important;
+  }
+}
+
 </style>
 
 <script>
@@ -2562,15 +3230,15 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
 </div><div class="cards" id="cards"></div></section>
 <section id="globalMapView" class="hidden">
   <div class="section-head">
-    <div><div class="eyebrow">SALIVERA</div><h1>Mapa global</h1></div>
+    <div><div class="eyebrow">SALIVERA</div><h1>Mapa</h1></div>
     <p id="globalMapCount"></p>
   </div>
   <div class="global-map-legend">
     <button class="chip active" data-global-map-type="restaurant">🍴 Restaurants</button>
+    <button class="chip global-outside-restaurants" id="globalOutsideRestaurants">Mostrar altres restaurants</button>
     <button class="chip active" data-global-map-type="botiga">🧺 Botigues</button>
     <button class="chip active" data-global-map-type="experiencia">✨ Experiències</button>
-    <button class="chip active" data-global-map-type="vi">🍇 Cellers</button>
-    <button class="chip" id="globalOutsideRestaurants">Mostrar altres restaurants</button>
+    <button class="chip active" data-global-map-type="vi">🍾 Cellers</button>
   </div>
   <div id="globalMapWarning" class="map-note hidden">Per veure el mapa cal connexió a internet.</div>
   <div id="globalMap" class="map-wrap"></div>
@@ -2580,7 +3248,7 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
   <button class="chip data-issues-btn" onclick="openDataIssues()">Revisar dades pendents</button>
 </div></section>
 </main>
-<nav class="bottom"><div class="bottom-inner"><button class="navbtn active" data-nav="home" onclick="goHome()"><b>⌂</b>Inici</button><button class="navbtn" id="globalMapNav" data-nav="globalmap" onclick="showGlobalMap()"><b>🗺</b>Mapa global</button><button class="navbtn admin-only hidden" data-nav="favorites" onclick="showGlobalFavorites()"><b>♥</b>Preferits</button><button class="navbtn admin-only hidden" data-nav="create" onclick="openCreate()"><b>＋</b>Afegir</button><button class="navbtn admin-only hidden" data-nav="admin" onclick="openAdmin()"><b>⚙</b>Administrar</button></div></nav>
+<nav class="bottom"><div class="bottom-inner"><button class="navbtn active" data-nav="home" onclick="goHome()"><b>⌂</b>Inici</button><button class="navbtn" id="globalMapNav" data-nav="globalmap" onclick="showGlobalMap()"><b>🗺</b>Mapa</button><button class="navbtn admin-only hidden" data-nav="favorites" onclick="showGlobalFavorites()"><b>♥</b>Preferits</button><button class="navbtn admin-only hidden" data-nav="create" onclick="openCreate()"><b>＋</b>Afegir</button><button class="navbtn admin-only hidden" data-nav="admin" onclick="openAdmin()"><b>⚙</b>Administrar</button></div></nav>
 <div id="modal" class="modal hidden" onclick="if(event.target===this)closeModal()"><article class="sheet" id="sheet"></article></div><div id="createModal" class="modal hidden"><div class="sheet" style="max-width:860px"><div class="detail" style="padding-top:24px"><button class="close" onclick="closeCreate()">×</button><div class="eyebrow">Nou element</div><h2 id="createTitle">Afegir</h2><div id="createContent"></div></div></div></div><div id="adminModal" class="modal hidden" onclick="if(event.target===this)closeAdmin()"><article class="sheet"><div class="detail"><button class="close" style="position:sticky;float:right" onclick="closeAdmin()">×</button><div class="eyebrow">Configuració</div><h2 style="font-family:Georgia,serif;font-size:2.2rem;margin:.3rem 0 1rem">Administrar llistes</h2><p class="meta">Pots afegir opcions noves o canviar el nom de les existents. Les modificacions queden desades en aquest navegador.</p><div class="admin-grid" id="adminContent"></div></div></article></div>
 
 <div id="authModal" class="auth-modal hidden" role="dialog" aria-modal="true" aria-labelledby="authTitle">
@@ -2969,7 +3637,8 @@ window.SaliveraDB=(()=>{
       imatge_ampolla:item.imatgeAmpolla||item.imatge||null,
       imatge_etiqueta:item.imatgeEtiqueta||null,logo_productor:item.logoProductor||null,
       nota_visual:item.notaVisual||null,nota_olfactiva:item.notaOlfactiva||null,
-      nota_gustativa:item.notaGustativa||null,elaboracio:item.elaboracio||null,
+      nota_gustativa:item.notaGustativa||null,maridatge:item.maridatge||null,
+      elaboracio:item.elaboracio||null,
       observacions:item.notes||null,top:Boolean(item.top),novetat:Boolean(item.novetat),
       pendent:Boolean(item.pendent),per_tastar:Boolean(item.perTastar),
       tancat:Boolean(item.tancat),estat:item.tancat?'tancat':'actiu',
@@ -3188,7 +3857,7 @@ const MAP_TYPE_META={
   restaurant:{label:'Restaurants',singular:'restaurant',icon:'🍴'},
   botiga:{label:'Botigues',singular:'botiga',icon:'🧺'},
   experiencia:{label:'Experiències',singular:'experiència',icon:'✨'},
-  vi:{label:'Cellers',singular:'celler',icon:'🍇'}
+  vi:{label:'Cellers',singular:'celler',icon:'🍾'}
 };
 function setNav(name){
   $$('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.nav===name));
@@ -4143,32 +4812,63 @@ function openDetail(id){const x=DATA.find(y=>y.id===id);if(!x)return;const isR=x
     action('📷 Instagram',validExternalUrl(x.instagram))
   ].filter(Boolean).join('');
   body=`${wineActs?`<div class="action-row">${wineActs}</div>`:''}
-    <div class="wine-detail-layout">
-      <div class="wine-bottle-panel">
-        ${x.logoProductor?`<img class="wine-producer-logo" src="${esc(x.logoProductor)}" alt="">`:''}
-        ${x.imatgeAmpolla?`<img class="wine-bottle-image" src="${esc(x.imatgeAmpolla)}" alt="${esc(x.nom)}">`:''}
-      </div>
-      <div class="info-grid">
-        ${info('Origen / DO',x.origen)}
-        ${info('Tipus de vi',x.tipusVi)}
-        ${info('Celler',x.celler||x.productor)}
-        ${info('Varietats',(x.varietats||[]).join(', '))}
-        ${info('Criança',x.crianca)}
-        <div class="wine-quick-facts">
-          ${info('Temperatura',formatWineTemperature(x.temperatura))}
-          ${info('Graduació',formatWineAlcohol(x.graduacio))}
-          ${info('Preu',x.preu?x.preu+' €':'')}
+    ${(()=>{
+      const sections=[
+        ['Elaboració',x.elaboracio],
+        ['Maridatge',x.maridatge],
+        ['Nota visual',x.notaVisual],
+        ['Nota olfactiva',x.notaOlfactiva],
+        ['Nota gustativa',x.notaGustativa],
+        ['Observacions',x.notes]
+      ].filter(([,value])=>String(value||'').trim());
+
+      // Estimació simple de l'espai: posem primer a la dreta les seccions
+      // més curtes, fins a omplir aproximadament l'alçada de l'ampolla.
+      let used=0;
+      const right=[];
+      const below=[];
+      const capacity=320;
+
+      for(const section of sections){
+        const text=String(section[1]||'').trim();
+        const estimated=54+Math.ceil(text.length/72)*22;
+        if(used+estimated<=capacity){
+          right.push(section);
+          used+=estimated;
+        }else{
+          below.push(section);
+        }
+      }
+
+      const renderSection=([title,text],extraClass='')=>
+        `<section class="wine-editorial-section ${extraClass}">
+          <h3>${esc(title)}</h3>
+          <p>${esc(text)}</p>
+        </section>`;
+
+      return `<div class="wine-detail-layout">
+        <div class="wine-bottle-panel">
+          ${x.imatgeAmpolla?`<img class="wine-bottle-image" src="${esc(x.imatgeAmpolla)}" alt="Ampolla de ${esc(x.nom)}">`:''}
+          ${x.logoProductor?`<img class="wine-producer-logo" src="${esc(x.logoProductor)}" alt="">`:''}
         </div>
-        ${info('Elaboració',x.elaboracio,true)}
+        <div class="wine-detail-main">
+          ${info('Origen / DO',x.origen)}
+          ${info('Tipus de vi',x.tipusVi)}
+          ${info('Celler',x.celler||x.productor)}
+          ${info('Varietats',(x.varietats||[]).join(', '))}
+          ${info('Criança',x.crianca,true)}
+          <div class="wine-quick-facts">
+            ${info('Temperatura',formatWineTemperature(x.temperatura))}
+            ${info('Graduació',formatWineAlcohol(x.graduacio))}
+            ${info('Preu',x.preu?x.preu+' €':'')}
+          </div>
+          <div class="wine-editorial-right">
+            ${right.map(s=>renderSection(s,'compact')).join('')}
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="wine-tasting">
-      ${info('Visual',x.notaVisual,true)}
-      ${info('Nas',x.notaOlfactiva,true)}
-      ${info('Boca',x.notaGustativa,true)}
-      ${info('Observacions',x.notes,true)}
-    </div>
-    ${x.imatgeEtiqueta?`<div class="wine-label-wrap"><img src="${esc(x.imatgeEtiqueta)}" alt="Etiqueta de ${esc(x.nom)}"></div>`:''}`;
+      ${below.length?`<div class="wine-editorial-below">${below.map(s=>renderSection(s)).join('')}</div>`:''}`;
+    })()}`;
 }else if(x.tipus==='experiencia'){
   const expPhone=validPhone(x.telefon1);
   const expWa=validWhatsapp(x.whatsapp);
@@ -4201,7 +4901,7 @@ function openDetail(id){const x=DATA.find(y=>y.id===id);if(!x)return;const isR=x
     ${info('Recomanat per',x.recomanatPer)}
     ${info('Descripció',x.notes||x.observacions,true)}
   </div>`;
-}else{body=`${acts?`<div class="action-row">${acts}</div>`:''}<div class="info-grid">${info('Especialitat',x.categoria)}${info('Zona',x.zona)}${info('Descripció',x.notes||x.observacions||x.narracio,true)}</div>`}const logo=(isR&&x.logo)?`<img class="detail-logo" src="${esc(x.logo)}" alt="Logotip de ${esc(x.nom)}" onerror="this.style.display='none'">`:'';$('#sheet').innerHTML=`<div class="detail-cover">${imageHtml({...x,logo:''})}<button class="close" onclick="closeModal()">×</button>${adminMode?`<button class="close detail-heart ${favorites.has(x.id)?'on':''}" onclick="toggleFav('${x.id}',event)">${favorites.has(x.id)?'♥':'♡'}</button>`:''}</div><div class="detail"><div class="detail-title-row">${logo}<div><h2>${esc(x.nom).toUpperCase()}</h2><div class="meta">${esc([x.zona,x.vegueria].filter(Boolean).join(' · '))}</div></div></div>${body}${adminMode?`<div class="admin-actions"><button class="primary-btn" onclick="editItem('${x.id}')">✎ Modificar</button><button class="danger-btn" onclick="deleteItem('${x.id}')">Desactivar</button></div>`:''}</div>`;$('#modal').classList.remove('hidden');document.body.style.overflow='hidden'}
+}else{body=`${acts?`<div class="action-row">${acts}</div>`:''}<div class="info-grid">${info('Especialitat',x.categoria)}${info('Zona',x.zona)}${info('Descripció',x.notes||x.observacions||x.narracio,true)}</div>`}const logo=(isR&&x.logo)?`<img class="detail-logo" src="${esc(x.logo)}" alt="Logotip de ${esc(x.nom)}" onerror="this.style.display='none'">`:'';const detailImage={...x,logo:''};$('#sheet').innerHTML=`<div class="detail-cover ${x.tipus==='vi'?'wine-detail-cover wine-detail-cover-hidden':''}">${x.tipus==='vi'?'':imageHtml(detailImage)}<button class="close" onclick="closeModal()">×</button>${adminMode?`<button class="close detail-heart ${favorites.has(x.id)?'on':''}" onclick="toggleFav('${x.id}',event)">${favorites.has(x.id)?'♥':'♡'}</button>`:''}</div><div class="detail ${x.tipus==='vi'?'wine-detail-body':''}"><div class="detail-title-row">${logo}<div><h2>${esc(x.nom).toUpperCase()}</h2><div class="meta">${esc([x.zona,x.vegueria].filter(Boolean).join(' · '))}</div></div></div>${body}${adminMode?`<div class="admin-actions"><button class="primary-btn" onclick="editItem('${x.id}')">✎ Modificar</button><button class="danger-btn" onclick="deleteItem('${x.id}')">Desactivar</button></div>`:''}</div>`;$('#modal').classList.remove('hidden');document.body.style.overflow='hidden'}
 function closeModal(){$('#modal').classList.add('hidden');document.body.style.overflow=''}
 function parseCoords(s){if(!s)return null;const p=String(s).split(',').map(Number);return p.length===2&&p.every(Number.isFinite)?p:null}
 
@@ -4638,6 +5338,16 @@ document.querySelectorAll('[data-global-map-type]').forEach(btn=>{
     }else{
       globalMapEnabledTypes.add(type);
       btn.classList.add('active');
+    }
+    if(type==='restaurant'){
+      const outsideBtn=$('#globalOutsideRestaurants');
+      const restaurantsActive=globalMapEnabledTypes.has('restaurant');
+      outsideBtn?.classList.toggle('hidden',!restaurantsActive);
+      if(!restaurantsActive&&globalShowOutsideRestaurants){
+        globalShowOutsideRestaurants=false;
+        outsideBtn?.classList.remove('active');
+        if(outsideBtn)outsideBtn.textContent='Mostrar altres restaurants';
+      }
     }
     renderGlobalMapMarkers();
   });
@@ -5259,7 +5969,6 @@ function createFields(type){
     <label>Tipus de vi<select id="new-wine-type"><option value="">Selecciona...</option>${formOptions(masterValues('tipusVi'))}</select></label>
     <label>Nom del celler<input id="new-winery-name"></label>
     <label>Coordenades del celler<input id="new-winery-coords" placeholder="41.0000, 2.0000"></label>
-    <label>Web del celler<input id="new-winery-web" placeholder="https://..."></label>
     <label class="switch-field"><input id="new-winery-visitable" type="checkbox"> Celler visitable</label>
     <label class="switch-field"><input id="new-winery-tourism" type="checkbox"> Ofereix enoturisme</label>
     <label class="wide">Varietats<input id="new-wine-varieties" placeholder="Garnatxa, Samsó..."></label>
@@ -5274,10 +5983,11 @@ function createFields(type){
     ${imageUploadField('new-wine-bottle-image','Imatge de l’ampolla')}
     ${imageUploadField('new-wine-label-image','Imatge de l’etiqueta')}
     ${imageUploadField('new-wine-logo','Logo del productor')}
-    <label class="wide">Elaboració<textarea id="new-wine-production"></textarea></label>
-    <label class="wide">Nota visual<textarea id="new-wine-visual"></textarea></label>
-    <label class="wide">Nota olfactiva<textarea id="new-wine-nose"></textarea></label>
-    <label class="wide">Nota gustativa<textarea id="new-wine-mouth"></textarea></label>
+    <label class="wide wine-short-text">Elaboració<textarea id="new-wine-production" rows="3"></textarea></label>
+    <label class="wide wine-short-text">Nota visual<textarea id="new-wine-visual" rows="3"></textarea></label>
+    <label class="wide wine-short-text">Nota olfactiva<textarea id="new-wine-nose" rows="3"></textarea></label>
+    <label class="wide wine-short-text">Nota gustativa<textarea id="new-wine-mouth" rows="3"></textarea></label>
+    <label class="wide wine-short-text">Maridatge<textarea id="new-wine-pairing" rows="3"></textarea></label>
     <fieldset class="wide admin-checks personal-tags"><legend>Les meves etiquetes</legend>
       <label><input id="new-wine-top" type="checkbox"> TOP</label>
       <label><input id="new-wine-novetat" type="checkbox"> Novetat</label>
@@ -5315,7 +6025,7 @@ function buildItemFromForm(type,existing={}){
     elaborador:existing.elaborador||'',
     celler:field('new-winery-name'),
     coordenadesCeller:field('new-winery-coords'),
-    webCeller:field('new-winery-web'),
+    webCeller:field('new-wine-web'),
     cellerVisitable:!!$('#new-winery-visitable')?.checked,
     enoturisme:!!$('#new-winery-tourism')?.checked,
     observacionsCeller:existing.observacionsCeller||'',
@@ -5335,6 +6045,7 @@ function buildItemFromForm(type,existing={}){
     notaVisual:field('new-wine-visual'),
     notaOlfactiva:field('new-wine-nose'),
     notaGustativa:field('new-wine-mouth'),
+    maridatge:field('new-wine-pairing'),
     top:!!$('#new-wine-top')?.checked,
     novetat:!!$('#new-wine-novetat')?.checked,
     perTastar:!!$('#new-wine-pertastar')?.checked,
@@ -5574,7 +6285,6 @@ function editItem(id){
     setFormValue('new-wine-type',x.tipusVi);
     setFormValue('new-winery-name',x.celler||x.productor);
     setFormValue('new-winery-coords',x.coordenadesCeller);
-    setFormValue('new-winery-web',x.webCeller);
     setFormChecked('new-winery-visitable',x.cellerVisitable);
     setFormChecked('new-winery-tourism',x.enoturisme);
     setFormValue('new-wine-varieties',(x.varietats||[]).join(', '));
@@ -5582,7 +6292,7 @@ function editItem(id){
     setFormValue('new-wine-temperature',stripTemperatureUnit(x.temperatura));
     setFormValue('new-wine-alcohol',stripAlcoholUnit(x.graduacio));
     setFormValue('new-wine-price',x.preu);
-    setFormValue('new-wine-web',x.web);
+    setFormValue('new-wine-web',x.web||x.webCeller);
     setFormValue('new-wine-instagram',x.instagram);
     setFormValue('new-wine-bottle-image',x.imatgeAmpolla);
     setFormValue('new-wine-label-image',x.imatgeEtiqueta);
@@ -5591,6 +6301,7 @@ function editItem(id){
     setFormValue('new-wine-visual',x.notaVisual);
     setFormValue('new-wine-nose',x.notaOlfactiva);
     setFormValue('new-wine-mouth',x.notaGustativa);
+    setFormValue('new-wine-pairing',x.maridatge);
     $('#new-wine-top').checked=!!x.top;
     $('#new-wine-novetat').checked=!!x.novetat;
     $('#new-wine-pertastar').checked=!!x.perTastar;
@@ -5878,7 +6589,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
       imatgeAmpolla:text(row.imatge_ampolla),imatge:text(row.imatge_ampolla),
       imatgeEtiqueta:text(row.imatge_etiqueta),logoProductor:text(row.logo_productor),
       notaVisual:text(row.nota_visual),notaOlfactiva:text(row.nota_olfactiva),
-      notaGustativa:text(row.nota_gustativa),elaboracio:text(row.elaboracio),
+      notaGustativa:text(row.nota_gustativa),maridatge:text(row.maridatge),
+      elaboracio:text(row.elaboracio),
       notes:text(row.observacions),top:Boolean(row.top),novetat:Boolean(row.novetat),
       pendent:Boolean(row.pendent),perTastar:Boolean(row.per_tastar),
       tancat:Boolean(row.tancat||['tancat','eliminat'].includes(row.estat)),
