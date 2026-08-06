@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Fa venir SALIVERA · Títol de vi únic corregit</title>
+<title>Fa venir SALIVERA · Gestió de restaurants desactivats</title>
 <meta name="theme-color" content="#7e3f28">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
@@ -3416,6 +3416,94 @@ body{background:linear-gradient(135deg,#fffaf6 0%,#fffdf9 60%,#f5faf6 100%)!impo
   }
 }
 
+
+/* RESTAURANTS DESACTIVATS */
+.deactivated-admin-card{
+  border:1px solid rgba(170,80,58,.18)!important;
+  background:linear-gradient(145deg,#fffaf6,#fff4ef)!important;
+}
+.deactivated-admin-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+}
+.deactivated-admin-head h3{margin:0 0 5px!important}
+.deactivated-admin-head p{margin:0!important}
+.deactivated-count{
+  min-width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#b35438;
+  color:#fff;
+  font-weight:800;
+}
+.deactivated-list{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  margin-top:14px;
+}
+.deactivated-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:11px 12px;
+  border-radius:15px;
+  background:#fff;
+  border:1px solid rgba(126,63,40,.09);
+}
+.deactivated-item-info{
+  display:flex;
+  min-width:0;
+  flex-direction:column;
+  gap:3px;
+}
+.deactivated-item-info strong{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.deactivated-item-info small{color:#78685f}
+.deactivated-item-actions{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:7px;
+}
+.reactivate-btn{
+  background:#518263!important;
+  color:#fff!important;
+}
+.permanent-delete-btn{
+  background:#8f2927!important;
+  color:#fff!important;
+  border-color:#8f2927!important;
+}
+.admin-empty-state{
+  margin-top:12px;
+  padding:14px;
+  text-align:center;
+  border-radius:14px;
+  background:rgba(255,255,255,.72);
+  color:#78685f;
+}
+@media(max-width:620px){
+  .deactivated-item{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .deactivated-item-actions{
+    width:100%;
+  }
+  .deactivated-item-actions button{
+    flex:1;
+  }
+}
+
 </style>
 
 <script>
@@ -3885,6 +3973,23 @@ window.SaliveraDB=(()=>{
     return await parseResponse(response);
   }
 
+  async function reactivateRestaurant(id){
+    const response=await fetch(`${URL}/rest/v1/restaurants?id=eq.${encodeURIComponent(String(id))}`,{
+      method:'PATCH',
+      headers:await authHeaders(),
+      body:JSON.stringify({estat:'actiu',tancat:false})
+    });
+    return await parseResponse(response);
+  }
+
+  async function permanentlyDeleteRestaurant(id){
+    const response=await fetch(`${URL}/rest/v1/restaurants?id=eq.${encodeURIComponent(String(id))}`,{
+      method:'DELETE',
+      headers:await authHeaders()
+    });
+    return await parseResponse(response);
+  }
+
   
   function shopToRow(item){
     return {
@@ -4085,7 +4190,7 @@ window.SaliveraDB=(()=>{
     return await parseResponse(response);
   }
 
-  return {insertRestaurant,updateRestaurant,deactivateRestaurant,insertShop,updateShop,deactivateShop,insertExperience,updateExperience,deactivateExperience,insertWine,updateWine,deactivateWine,insertRecipe,updateRecipe,deactivateRecipe,saveTaxonomy,loadFavorites,addFavorite,removeFavorite};
+  return {insertRestaurant,updateRestaurant,deactivateRestaurant,reactivateRestaurant,permanentlyDeleteRestaurant,insertShop,updateShop,deactivateShop,insertExperience,updateExperience,deactivateExperience,insertWine,updateWine,deactivateWine,insertRecipe,updateRecipe,deactivateRecipe,saveTaxonomy,loadFavorites,addFavorite,removeFavorite};
 })();
 </script>
 
@@ -4102,7 +4207,9 @@ const savedEdits={};
 const deletedIds=new Set();
 const BASE_DATA=[...RAW_BASE_DATA];
 const DATA=[...BASE_DATA];
-const byType=t=>DATA.filter(x=>x.tipus===t);
+const allByType=t=>DATA.filter(x=>x.tipus===t);
+const isActiveItem=x=>!x.tancat&&!['tancat','eliminat'].includes(String(x.estat||'').toLowerCase());
+const byType=t=>allByType(t).filter(isActiveItem);
 const restaurants=byType('restaurant');
 let currentType='restaurant',favOnly=false,activeOnly=false,selectedFeatures=new Set(),map=null,mapLayer=null,showOutside=false,currentEditingId=null;
 let adminMode=false;
@@ -5265,7 +5372,7 @@ ${x.tipus==='vi'?`
       ${x.logoProductor?`<img src="${esc(x.logoProductor)}" alt="Logo de ${esc(x.celler||x.productor||x.nom)}">`:''}
     </div>
   </div>
-`:''}${x.tipus==='vi'?'':`<div class="detail-title-row">${logo}<div><h2>${esc(x.nom).toUpperCase()}</h2><div class="meta">${esc([x.zona,x.vegueria].filter(Boolean).join(' · '))}</div></div></div>`}${body}${adminMode?`<div class="admin-actions"><button class="primary-btn" onclick="editItem('${x.id}')">✎ Modificar</button><button class="danger-btn" onclick="deleteItem('${x.id}')">Desactivar</button></div>`:''}</div>`;$('#modal').classList.remove('hidden');document.body.style.overflow='hidden'}
+`:''}${x.tipus==='vi'?'':`<div class="detail-title-row">${logo}<div><h2>${esc(x.nom).toUpperCase()}</h2><div class="meta">${esc([x.zona,x.vegueria].filter(Boolean).join(' · '))}</div></div></div>`}${body}${adminMode?`<div class="admin-actions"><button class="primary-btn" onclick="editItem('${x.id}')">✎ Modificar</button><button class="danger-btn" onclick="deleteItem('${x.id}')">Desactivar</button>${x.tipus==='restaurant'?`<button class="permanent-delete-btn" onclick="permanentlyDeleteItem('${x.id}')">Eliminar definitivament</button>`:''}</div>`:''}</div>`;$('#modal').classList.remove('hidden');document.body.style.overflow='hidden'}
 function closeModal(){$('#modal').classList.add('hidden');document.body.style.overflow=''}
 function parseCoords(s){if(!s)return null;const p=String(s).split(',').map(Number);return p.length===2&&p.every(Number.isFinite)?p:null}
 
@@ -5797,9 +5904,35 @@ function adminCard(type,title){
  <div class="admin-row admin-edit-row"><select id="admin-old-${type}" onchange="prepareTaxEdit('${type}')"><option value="">Selecciona un element...</option>${vals.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('')}</select><input id="admin-new-${type}" placeholder="Nou nom"><button onclick="renameTax('${type}')">Canviar</button><button class="admin-delete-btn" onclick="deleteTax('${type}')">Eliminar</button></div>
  <div class="admin-list">${vals.map(v=>`<span class="admin-pill">${esc(v)}</span>`).join('')}</div></section>`;
 }
+function renderDeactivatedRestaurantsAdmin(){
+  const items=allByType('restaurant').filter(x=>!isActiveItem(x));
+  return `<section class="admin-create deactivated-admin-card">
+    <div class="deactivated-admin-head">
+      <div>
+        <h3>Restaurants desactivats</h3>
+        <p>No apareixen al comptador, a la llista pública ni al mapa.</p>
+      </div>
+      <span class="deactivated-count">${items.length}</span>
+    </div>
+    ${items.length?`<div class="deactivated-list">${items
+      .sort((a,b)=>String(a.nom||'').localeCompare(String(b.nom||''),'ca'))
+      .map(x=>`<article class="deactivated-item">
+        <div class="deactivated-item-info">
+          <strong>${esc(x.nom)}</strong>
+          <small>${esc([x.zona,x.vegueria].filter(Boolean).join(' · ')||'Sense zona')}</small>
+        </div>
+        <div class="deactivated-item-actions">
+          <button class="reactivate-btn" onclick="reactivateRestaurantItem('${x.id}')">Reactivar</button>
+          <button class="permanent-delete-btn" onclick="permanentlyDeleteItem('${x.id}')">Eliminar</button>
+        </div>
+      </article>`).join('')}</div>`:`<div class="admin-empty-state">No hi ha cap restaurant desactivat.</div>`}
+  </section>`;
+}
+
 function renderAdmin(){
- const create=`<section class="admin-create"><h3>Crear contingut nou</h3><p>Pots afegir elements nous i quedaran desats en aquest navegador.</p><div class="admin-create-buttons">${[['restaurant','Restaurant'],['recepta','Recepta'],['vi','Vi'],['botiga','Botiga'],['experiencia','Experiència']].map(([t,n])=>`<button onclick="closeAdmin();openCreate('${t}')">＋ ${n}</button>`).join('')}</div></section>
-<section class="admin-create audit-admin-card"><h3>Qualitat de les dades</h3><p>Revisa errors, inconsistències i informació incompleta dels restaurants.</p><div class="admin-create-buttons"><button onclick="closeAdmin();openDataIssues()">🩺 Auditar restaurants</button></div></section>`;
+ const create=`<section class="admin-create"><h3>Crear contingut nou</h3><p>Pots afegir elements nous i quedaran desats a Supabase.</p><div class="admin-create-buttons">${[['restaurant','Restaurant'],['recepta','Recepta'],['vi','Vi'],['botiga','Botiga'],['experiencia','Experiència']].map(([t,n])=>`<button onclick="closeAdmin();openCreate('${t}')">＋ ${n}</button>`).join('')}</div></section>
+<section class="admin-create audit-admin-card"><h3>Qualitat de les dades</h3><p>Revisa errors, inconsistències i informació incompleta dels restaurants.</p><div class="admin-create-buttons"><button onclick="closeAdmin();openDataIssues()">🩺 Auditar restaurants</button></div></section>
+${renderDeactivatedRestaurantsAdmin()}`;
  $('#adminContent').innerHTML=create+ADMIN_GROUPS.map(g=>`<section class="admin-group"><div class="admin-group-title"><h2>${g.title}</h2></div><div class="admin-grid">${g.items.map(([t,n])=>adminCard(t,n)).join('')}</div></section>`).join('');
 }
 function prepareTaxEdit(type){const old=$('#admin-old-'+type)?.value||'';if($('#admin-new-'+type))$('#admin-new-'+type).value=old}
@@ -6746,16 +6879,75 @@ async function deleteItem(id){
     x.estat='tancat';
 
     const ri=restaurants.findIndex(i=>i.id===id);
-    if(ri>=0)restaurants[ri]=x;
+    if(ri>=0)restaurants.splice(ri,1);
 
+    favorites.delete(String(id));
     closeModal();
     renderModules();fillFilters();renderCurrent();
-    alert(x.tipus==='restaurant'?'Restaurant desactivat.':x.tipus==='botiga'?'Botiga desactivada.':'Experiència desactivada.');
+    if(globalMapLayer)renderGlobalMapMarkers();
+    if(adminMode)renderAdmin();
+    alert(x.tipus==='restaurant'?'Restaurant desactivat i retirat de la llista pública.':x.tipus==='botiga'?'Botiga desactivada.':'Experiència desactivada.');
   }catch(error){
     console.error(error);
     alert('No s’ha pogut desactivar: '+(error.message||error));
   }
 }
+
+async function reactivateRestaurantItem(id){
+  if(!adminMode)return;
+  const x=DATA.find(item=>String(item.id)===String(id)&&item.tipus==='restaurant');
+  if(!x)return;
+  try{
+    await window.SaliveraDB.reactivateRestaurant(id);
+    x.tancat=false;
+    x.estat='actiu';
+    if(!restaurants.some(item=>String(item.id)===String(id)))restaurants.push(x);
+    renderModules();
+    fillFilters();
+    renderCurrent();
+    renderAdmin();
+    if(globalMapLayer)renderGlobalMapMarkers();
+    alert(`«${x.nom}» torna a estar actiu.`);
+  }catch(error){
+    console.error(error);
+    alert('No s’ha pogut reactivar: '+(error.message||error));
+  }
+}
+
+async function permanentlyDeleteItem(id){
+  if(!adminMode)return;
+  const x=DATA.find(item=>String(item.id)===String(id));
+  if(!x||x.tipus!=='restaurant'){
+    alert('L’eliminació definitiva està activada ara mateix per als restaurants.');
+    return;
+  }
+
+  if(!confirm(`Eliminar definitivament «${x.nom}»?\n\nAquesta acció esborrarà el restaurant de Supabase i no es podrà recuperar.`))return;
+  if(!confirm(`Última confirmació: vols esborrar definitivament «${x.nom}»?`))return;
+
+  try{
+    await window.SaliveraDB.permanentlyDeleteRestaurant(id);
+
+    const dataIndex=DATA.findIndex(item=>String(item.id)===String(id));
+    if(dataIndex>=0)DATA.splice(dataIndex,1);
+
+    const restaurantIndex=restaurants.findIndex(item=>String(item.id)===String(id));
+    if(restaurantIndex>=0)restaurants.splice(restaurantIndex,1);
+
+    favorites.delete(String(id));
+    closeModal();
+    renderModules();
+    fillFilters();
+    renderCurrent();
+    renderAdmin();
+    if(globalMapLayer)renderGlobalMapMarkers();
+    alert(`«${x.nom}» s’ha eliminat definitivament.`);
+  }catch(error){
+    console.error(error);
+    alert('No s’ha pogut eliminar definitivament: '+(error.message||error));
+  }
+}
+
 function saveNewItem(type){saveItem(type)}
 function applyAdminUI(){document.querySelectorAll('.admin-only').forEach(el=>el.classList.toggle('hidden',!adminMode));if(adminMode){$('#adminBanner').classList.remove('hidden');setTimeout(()=>$('#adminBanner').classList.add('hidden'),1800)}}
 let logoClicks=0,logoTimer=null;
