@@ -3604,6 +3604,12 @@ label:has(#new-novetat){
 })();
 </script>
 
+
+<style id="related-websites-styles">
+.web-switcher{position:fixed;left:18px;bottom:86px;z-index:8900;font-family:Arial,sans-serif}.web-switcher-toggle{width:52px;height:52px;border:2px solid rgba(92,60,42,.14);border-radius:50%;background:#fffaf2;box-shadow:0 8px 24px rgba(58,37,28,.2);padding:5px;cursor:pointer}.web-switcher-toggle img{width:100%;height:100%;object-fit:contain;border-radius:50%}.web-switcher-panel{position:absolute;left:0;bottom:62px;width:min(330px,calc(100vw - 36px));padding:10px;background:#fffaf2;border:1px solid rgba(92,60,42,.15);border-radius:20px;box-shadow:0 18px 48px rgba(58,37,28,.22)}.web-switcher-panel[hidden]{display:none}.web-switcher-title{padding:5px 8px 9px;color:#6f5d46;font-size:.74rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.web-switcher-list{display:grid;gap:6px}.web-switcher-item{display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:10px;padding:8px;border-radius:14px;color:#2e241e;text-decoration:none}.web-switcher-item:hover{background:#f4eadb}.web-switcher-item.current{background:#efe1cd}.web-switcher-item img{width:48px;height:48px;object-fit:contain;border-radius:12px;background:#fff}.web-switcher-item strong,.web-switcher-item small{display:block}.web-switcher-item small{margin-top:2px;color:#756757;font-size:.76rem}.web-switcher-current{color:#b85335;font-weight:900;font-size:.75rem}
+.related-admin-card{grid-column:1/-1}.related-admin-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.related-admin-list{display:grid;gap:10px;margin-top:14px}.related-admin-row{display:grid;grid-template-columns:58px minmax(120px,1fr) minmax(130px,1fr) minmax(180px,1.4fr) 76px auto;gap:8px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:14px;background:#fff}.related-admin-icon{width:52px;height:52px;object-fit:contain;border-radius:11px;background:#f7f0e5}.related-admin-row input{width:100%;min-width:0;padding:9px;border:1px solid var(--line);border-radius:9px}.related-admin-actions{display:flex;gap:6px;align-items:center}.related-admin-actions button,.related-admin-add{border:0;border-radius:9px;padding:9px 10px;font-weight:800;cursor:pointer}.related-admin-save,.related-admin-add{background:var(--terracotta);color:#fff}.related-admin-delete{background:#f7e8e3;color:#8c352d}.related-admin-upload{display:inline-flex;align-items:center;justify-content:center;padding:8px;border-radius:9px;background:#efe6d7;cursor:pointer;font-size:.78rem;font-weight:800}.related-admin-upload input{display:none}.related-admin-visible{display:flex;gap:5px;align-items:center;font-size:.78rem;font-weight:800}.related-admin-empty{padding:16px;color:#756757}
+@media(max-width:820px){.web-switcher{left:12px;bottom:82px}.related-admin-row{grid-template-columns:52px 1fr}.related-admin-row .related-wide,.related-admin-actions{grid-column:1/-1}.related-admin-actions{justify-content:flex-end}}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -3761,6 +3767,14 @@ label:has(#new-novetat){
   <button class="chip data-issues-btn" onclick="openDataIssues()">Revisar dades pendents</button>
 </div></section>
 </main>
+
+<aside class="web-switcher" id="webSwitcher" aria-label="Les meves webs">
+  <button class="web-switcher-toggle" id="webSwitcherToggle" type="button" aria-expanded="false" aria-controls="webSwitcherPanel" title="Les meves webs"><img src="icon-salivera-web.png" alt=""></button>
+  <div class="web-switcher-panel" id="webSwitcherPanel" hidden>
+    <div class="web-switcher-title">Les meves webs</div>
+    <div class="web-switcher-list" id="webSwitcherList"></div>
+  </div>
+</aside>
 <nav class="bottom"><div class="bottom-inner"><button class="navbtn active" data-nav="home" onclick="goHome()"><b>⌂</b>Inici</button><button class="navbtn" id="globalMapNav" data-nav="globalmap" onclick="showGlobalMap()"><b>🗺</b>Mapa</button><button class="navbtn admin-only hidden" data-nav="favorites" onclick="showGlobalFavorites()"><b>♥</b>Preferits</button><button class="navbtn admin-only hidden" data-nav="create" onclick="openCreate()"><b>＋</b>Afegir</button><button class="navbtn admin-only hidden" data-nav="admin" onclick="openAdmin()"><b>⚙</b>Administrar</button></div></nav>
 <div id="modal" class="modal hidden" onclick="if(event.target===this)closeModal()"><article class="sheet" id="sheet"></article></div><div id="createModal" class="modal hidden"><div class="sheet" style="max-width:860px"><div class="detail" style="padding-top:24px"><button class="close" onclick="closeCreate()">×</button><div class="eyebrow">Nou element</div><h2 id="createTitle">Afegir</h2><div id="createContent"></div></div></div></div><div id="adminModal" class="modal hidden" onclick="if(event.target===this)closeAdmin()"><article class="sheet"><div class="detail"><button class="close" style="position:sticky;float:right" onclick="closeAdmin()">×</button><div class="eyebrow">Configuració</div><h2 style="font-family:Georgia,serif;font-size:2.2rem;margin:.3rem 0 1rem">Administrar llistes</h2><p class="meta">Pots afegir opcions noves o canviar el nom de les existents. Les modificacions queden desades en aquest navegador.</p><div class="admin-grid" id="adminContent"></div></div></article></div>
 
@@ -6141,8 +6155,10 @@ function renderDeactivatedRestaurantsAdmin(){
 function renderAdmin(){
  const create=`<section class="admin-create"><h3>Crear contingut nou</h3><p>Pots afegir elements nous i quedaran desats a Supabase.</p><div class="admin-create-buttons">${[['restaurant','Restaurant'],['recepta','Recepta'],['vi','Vi'],['botiga','Botiga'],['experiencia','Experiència']].map(([t,n])=>`<button onclick="closeAdmin();openCreate('${t}')">＋ ${n}</button>`).join('')}</div></section>
 <section class="admin-create audit-admin-card"><h3>Qualitat de les dades</h3><p>Revisa errors, inconsistències i informació incompleta dels restaurants.</p><div class="admin-create-buttons"><button onclick="closeAdmin();openDataIssues()">🩺 Auditar restaurants</button></div></section>
-${renderDeactivatedRestaurantsAdmin()}`;
+${renderDeactivatedRestaurantsAdmin()}
+<section class="admin-create related-admin-card" id="relatedWebsitesAdmin"><p>Carregant les webs…</p></section>`;
  $('#adminContent').innerHTML=create+ADMIN_GROUPS.map(g=>`<section class="admin-group"><div class="admin-group-title"><h2>${g.title}</h2></div><div class="admin-grid">${g.items.map(([t,n])=>adminCard(t,n)).join('')}</div></section>`).join('');
+ if(window.renderRelatedWebsitesAdmin)window.renderRelatedWebsitesAdmin();
 }
 function prepareTaxEdit(type){const old=$('#admin-old-'+type)?.value||'';if($('#admin-new-'+type))$('#admin-new-'+type).value=old}
 function addTax(type){
@@ -7512,6 +7528,49 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeModal();closeA
 })();
 </script>
 
+
+<script id="related-websites-script">
+(() => {
+  'use strict';
+  const URL='https://uezcqjldkqopevtjjjon.supabase.co';
+  const KEY='sb_publishable_Pv0IsnuTm69Xj2fKscp0ig_0uEENW7h';
+  const CURRENT='fa-venir-salivera';
+  const FALLBACK=[
+    {site_key:'gallipontejant',name:'Gallipontejant',subtitle:'Viatges i rutes',url:'https://nuskadeberga.github.io/gallipontejant/',icon_url:'https://nuskadeberga.github.io/gallipontejant/icon-192.png',sort_order:10,visible:true},
+    {site_key:'fa-venir-salivera',name:'Fa Venir Salivera',subtitle:'Restaurants i gastronomia',url:'https://nuskadeberga.github.io/FaVenirSalivera/',icon_url:'icon-salivera-web.png',sort_order:20,visible:true},
+    {site_key:'ordits-i-trames',name:'Ordits i Trames',subtitle:'Artesania i creacions',url:'https://nuskadeberga.github.io/ORDITSITRAMES/',icon_url:'icon-ordits-web.png',sort_order:30,visible:true}
+  ];
+  let websites=FALLBACK.slice();
+  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const slug=s=>String(s||'web').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'web';
+  const publicHeaders={apikey:KEY,Authorization:'Bearer '+KEY};
+  async function adminHeaders(){const token=await window.SaliveraAuth.getAccessToken();if(!token)throw new Error('La sessió ha caducat.');return {...publicHeaders,Authorization:'Bearer '+token,'Content-Type':'application/json',Prefer:'return=representation'};}
+
+  function renderSwitcher(){
+    const rows=websites.filter(x=>x.visible).sort((a,b)=>(a.sort_order||0)-(b.sort_order||0));
+    const list=document.getElementById('webSwitcherList'); if(!list)return;
+    list.innerHTML=rows.map(x=>`<a class="web-switcher-item ${x.site_key===CURRENT?'current':''}" href="${esc(x.url)}" ${x.site_key===CURRENT?'aria-current="page"':'rel="noopener"'}><img src="${esc(x.icon_url||'')}" alt=""><span><strong>${esc(x.name)}</strong><small>${esc(x.subtitle)}</small></span>${x.site_key===CURRENT?'<span class="web-switcher-current">Ara</span>':'<span aria-hidden="true">↗</span>'}</a>`).join('');
+  }
+  async function loadWebsites(){
+    try{const r=await fetch(URL+'/rest/v1/related_websites?select=*&order=sort_order.asc',{headers:publicHeaders});if(!r.ok)throw new Error(await r.text());const data=await r.json();if(data.length)websites=data;}catch(e){console.warn('Webs relacionades: s\'utilitza la còpia local.',e);}renderSwitcher();renderRelatedWebsitesAdmin();
+  }
+  function togglePanel(force){const p=document.getElementById('webSwitcherPanel'),b=document.getElementById('webSwitcherToggle');const open=force===undefined?p.hidden:force;p.hidden=!open;b.setAttribute('aria-expanded',String(open));}
+  document.getElementById('webSwitcherToggle')?.addEventListener('click',e=>{e.stopPropagation();togglePanel();});
+  document.addEventListener('click',e=>{if(!document.getElementById('webSwitcher')?.contains(e.target))togglePanel(false);});
+
+  window.renderRelatedWebsitesAdmin=function(){
+    const root=document.getElementById('relatedWebsitesAdmin'); if(!root)return;
+    root.innerHTML=`<div class="related-admin-head"><div><h3>Les meves webs</h3><p>Modifica el selector compartit d’aquesta web. Els canvis es desen a Supabase.</p></div><button class="related-admin-add" onclick="addRelatedWebsite()">＋ Afegir web</button></div><div class="related-admin-list">${websites.sort((a,b)=>(a.sort_order||0)-(b.sort_order||0)).map(x=>`<div class="related-admin-row" data-related-id="${esc(x.id||'')}"><img class="related-admin-icon" src="${esc(x.icon_url||'')}" alt=""><input data-field="name" value="${esc(x.name)}" aria-label="Nom"><input data-field="subtitle" value="${esc(x.subtitle)}" aria-label="Subtítol"><input class="related-wide" data-field="url" value="${esc(x.url)}" aria-label="URL"><input type="number" data-field="sort_order" value="${Number(x.sort_order)||0}" aria-label="Ordre"><div class="related-admin-actions"><label class="related-admin-visible"><input type="checkbox" data-field="visible" ${x.visible?'checked':''}>Visible</label><label class="related-admin-upload">Icona<input type="file" accept="image/png,image/jpeg,image/webp" onchange="uploadRelatedWebsiteIcon(this,'${esc(x.id||'') }')"></label><button class="related-admin-save" onclick="saveRelatedWebsite('${esc(x.id||'')}')">Desar</button>${x.site_key===CURRENT?'':`<button class="related-admin-delete" onclick="deleteRelatedWebsite('${esc(x.id||'')}')">Eliminar</button>`}</div><input type="hidden" data-field="site_key" value="${esc(x.site_key)}"><input type="hidden" data-field="icon_url" value="${esc(x.icon_url||'')}"></div>`).join('')}</div>`;
+  };
+  function rowFor(id){return [...document.querySelectorAll('.related-admin-row')].find(x=>x.dataset.relatedId===String(id));}
+  function payloadFrom(row){const get=n=>row.querySelector(`[data-field="${n}"]`);return {site_key:get('site_key').value,name:get('name').value.trim(),subtitle:get('subtitle').value.trim(),url:get('url').value.trim(),icon_url:get('icon_url').value.trim(),sort_order:Number(get('sort_order').value)||0,visible:get('visible').checked,updated_at:new Date().toISOString()};}
+  window.addRelatedWebsite=function(){websites.push({id:'new-'+Date.now(),site_key:'nova-web-'+Date.now(),name:'Nova web',subtitle:'',url:'https://',icon_url:'',sort_order:(Math.max(0,...websites.map(x=>Number(x.sort_order)||0))+10),visible:true});renderRelatedWebsitesAdmin();};
+  window.saveRelatedWebsite=async function(id){try{const row=rowFor(id),data=payloadFrom(row);if(!data.name||!/^https:\/\//.test(data.url))throw new Error('Cal indicar el nom i una adreça https:// correcta.');const isNew=String(id).startsWith('new-');if(isNew)data.site_key=slug(data.name)+'-'+Date.now();const r=await fetch(URL+'/rest/v1/related_websites'+(isNew?'':'?id=eq.'+encodeURIComponent(id)),{method:isNew?'POST':'PATCH',headers:await adminHeaders(),body:JSON.stringify(data)});if(!r.ok)throw new Error(await r.text());await loadWebsites();alert('Web desada.');}catch(e){alert('No s’ha pogut desar: '+(e.message||e));}};
+  window.deleteRelatedWebsite=async function(id){const item=websites.find(x=>String(x.id)===String(id));if(!item||item.site_key===CURRENT)return;if(!confirm('Vols eliminar aquesta web del selector?'))return;try{const r=await fetch(URL+'/rest/v1/related_websites?id=eq.'+encodeURIComponent(id),{method:'DELETE',headers:await adminHeaders()});if(!r.ok)throw new Error(await r.text());await loadWebsites();}catch(e){alert('No s’ha pogut eliminar: '+(e.message||e));}};
+  window.uploadRelatedWebsiteIcon=async function(input,id){const file=input.files?.[0];if(!file)return;try{if(file.size>5*1024*1024)throw new Error('La imatge supera els 5 MB.');const token=await window.SaliveraAuth.getAccessToken();if(!token)throw new Error('La sessió ha caducat.');const ext=(file.name.split('.').pop()||'png').replace(/[^a-z0-9]/gi,'').toLowerCase();const path='webs-relacionades/'+slug(file.name.replace(/\.[^.]+$/,''))+'-'+Date.now()+'.'+ext;const r=await fetch(URL+'/storage/v1/object/salivera-media/'+path,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+token,'Content-Type':file.type,'x-upsert':'false'},body:file});if(!r.ok)throw new Error(await r.text());const row=rowFor(id),icon=URL+'/storage/v1/object/public/salivera-media/'+path;row.querySelector('[data-field="icon_url"]').value=icon;row.querySelector('.related-admin-icon').src=icon;alert('Icona pujada. Prem “Desar” per confirmar el canvi.');}catch(e){alert('No s’ha pogut pujar la icona: '+(e.message||e));}finally{input.value='';}};
+  loadWebsites();
+})();
+</script>
 
 <div id="dataIssuesModal" class="modal hidden">
   <div class="modal-card data-issues-modal-card">
